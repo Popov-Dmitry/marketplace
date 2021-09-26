@@ -6,10 +6,12 @@ import com.github.popovdmitry.nstu.gw.customerservice.model.Customer;
 import com.github.popovdmitry.nstu.gw.customerservice.repository.CustomerRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomerService {
     
     private final CustomerRepository customerRepository;
