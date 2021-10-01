@@ -2,7 +2,8 @@ package com.github.popovdmitry.nstu.gw.gatewayservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,38 +18,35 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
+@Slf4j
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${security.jwt.header}")
-    private String header;
-
-    @Value("${security.jwt.prefix}")
-    private String prefix;
-
-    @Value("${security.jwt.secret}")
-    private String secret;
+    private final JwtConfig jwtConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = httpServletRequest.getHeader(header);
+        String bearerToken = httpServletRequest.getHeader(jwtConfig.getHeader());
+        log.info("bearerToken: {}", bearerToken);
 
-        if (Objects.isNull(authHeader) || !header.startsWith(prefix)) {
+        if (Objects.isNull(bearerToken) || !bearerToken.startsWith(jwtConfig.getPrefix())) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        String token = authHeader.replace(prefix, "");
+        String token = bearerToken.replace(jwtConfig.getPrefix(), "");
 
         try {
             Claims claims = Jwts.parser()
-                    .setSigningKey(secret.getBytes())
+                    .setSigningKey(jwtConfig.getSecret().getBytes())
                     .parseClaimsJws(token)
                     .getBody();
 
             String username = claims.getSubject();
+            log.info("username: {}", bearerToken);
 
             if (Objects.nonNull(username)) {
                 List<String> authorities = (List<String>) claims.get("authorities");
