@@ -55,4 +55,15 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{email}")
+    public boolean isUserExists(@PathVariable String email) {
+        try {
+            customerService.findByEmail(email);
+            return true;
+        }
+        catch (NotFoundException e) {
+            return false;
+        }
+    }
 }
