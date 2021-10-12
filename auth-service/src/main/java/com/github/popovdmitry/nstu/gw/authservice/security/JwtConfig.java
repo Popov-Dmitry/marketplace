@@ -19,4 +19,7 @@ public class JwtConfig {
 
     @Value("${security.jwt.uri}")
     private String authUri;
+
+    @Value("${security.jwt.expirationMilliseconds}")
+    private Long expirationMilliseconds;
 }
