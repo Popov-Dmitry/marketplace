@@ -1,7 +1,5 @@
 package com.github.popovdmitry.nstu.gw.authservice.security;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.popovdmitry.nstu.gw.authservice.model.UserCredentials;
 import io.jsonwebtoken.Jwts;
@@ -12,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,13 +22,15 @@ import java.util.Date;
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
 
     public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig) {
 
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
+
+        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(jwtConfig.getAuthUri(), "POST"));
     }
 
     @Override
