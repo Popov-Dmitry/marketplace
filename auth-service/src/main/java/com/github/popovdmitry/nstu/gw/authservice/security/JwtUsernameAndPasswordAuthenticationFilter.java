@@ -2,8 +2,10 @@ package com.github.popovdmitry.nstu.gw.authservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.popovdmitry.nstu.gw.authservice.model.UserCredentials;
+import com.github.popovdmitry.nstu.gw.authservice.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,12 +22,15 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 
+@Slf4j
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
+    private final UserService userService = UserService.getInstance();
 
-    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig) {
+    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager,
+                                                      JwtConfig jwtConfig) {
 
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
@@ -37,10 +42,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             UserCredentials userCredentials = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
+            userService.setUserCredentials(userCredentials);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userCredentials.getEmail(), userCredentials.getPassword(), Collections.emptyList());
+            System.out.println("attemptAuthentication");
+            System.out.println(usernamePasswordAuthenticationToken.toString());
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (IOException e) {
+            System.out.println("exc");
             throw new RuntimeException(e);
         }
     }
@@ -58,6 +67,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .setExpiration(new Date(now.getTime() + jwtConfig.getExpirationMilliseconds() * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
                 .compact();
+        System.out.println("successfulAuthentication");
+        System.out.println(token);
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
     }
 }

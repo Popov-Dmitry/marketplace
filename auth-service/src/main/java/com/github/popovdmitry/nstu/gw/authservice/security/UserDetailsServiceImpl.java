@@ -20,16 +20,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserService userService = UserService.getInstance();
     private final CustomerFeignClient customerFeignClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserCredentials userCredentials = userService.pop();
+        UserCredentials userCredentials = userService.getUserCredentials();
         if (userCredentials.getEmail().equals(username)) {
             switch (userCredentials.getUserRole()) {
                 case CUSTOMER -> {
                     if (customerFeignClient.isUserExists(username)) {
+                        System.out.println("CUSTOMER");
                         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                                 .commaSeparatedStringToAuthorityList("ROLE_" + userCredentials.getUserRole());
                         return new User(userCredentials.getEmail(), userCredentials.getPassword(), grantedAuthorities);

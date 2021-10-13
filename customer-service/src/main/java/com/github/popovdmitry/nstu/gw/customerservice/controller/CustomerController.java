@@ -56,8 +56,8 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{email}")
-    public boolean isUserExists(@PathVariable String email) {
+    @GetMapping
+    public boolean isUserExists(@RequestParam("email") String email) {
         try {
             customerService.findByEmail(email);
             return true;
