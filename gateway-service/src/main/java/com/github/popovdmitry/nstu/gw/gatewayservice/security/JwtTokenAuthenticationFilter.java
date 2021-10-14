@@ -46,10 +46,12 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                     .getBody();
 
             String username = claims.getSubject();
-            log.info("username: {}", bearerToken);
+            log.info("username: {}", username);
 
             if (Objects.nonNull(username)) {
                 List<String> authorities = (List<String>) claims.get("authorities");
+
+                log.info("authorities: {}", authorities.toString());
 
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                         username,

@@ -1,19 +1,23 @@
-package com.github.popovdmitry.nstu.gw.gatewayservice.security;
+package com.github.popovdmitry.nstu.gw.authservice.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
+public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsService userDetailsService;
     private final JwtConfig jwtConfig;
 
     @Override
@@ -25,10 +29,19 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint((httpServletRequest, httpServletResponse, e) ->
                         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
-                .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, jwtConfig.getAuthUri()).permitAll()
-                .antMatchers("/customers/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -1,6 +1,7 @@
 package com.github.popovdmitry.nstu.gw.customerservice.controller;
 
 import com.github.popovdmitry.nstu.gw.customerservice.dto.CustomerDto;
+import com.github.popovdmitry.nstu.gw.customerservice.dto.EncodedPasswordDto;
 import com.github.popovdmitry.nstu.gw.customerservice.exception.NotUniqueEmailException;
 import com.github.popovdmitry.nstu.gw.customerservice.model.Customer;
 import com.github.popovdmitry.nstu.gw.customerservice.service.CustomerService;
@@ -52,6 +53,16 @@ public class CustomerController {
             customerService.deleteCustomer(id);
             return ResponseEntity.ok().build();
         } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email) {
+        try {
+            return ResponseEntity.ok(new EncodedPasswordDto(customerService.findByEmail(email).getPassword()));
+        }
+        catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
