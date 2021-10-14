@@ -45,11 +45,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             userService.setUserCredentials(userCredentials);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userCredentials.getEmail(), userCredentials.getPassword(), Collections.emptyList());
-            System.out.println("attemptAuthentication");
-            System.out.println(usernamePasswordAuthenticationToken.toString());
+            log.debug("usernamePasswordAuthenticationToken: {}", usernamePasswordAuthenticationToken);
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         } catch (IOException e) {
-            System.out.println("exc");
             throw new RuntimeException(e);
         }
     }
@@ -59,6 +57,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                                             Authentication authResult) throws IOException, ServletException {
         Date now = new Date();
         String token = Jwts.builder()
+                .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)
@@ -67,8 +66,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .setExpiration(new Date(now.getTime() + jwtConfig.getExpirationMilliseconds() * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
                 .compact();
-        System.out.println("successfulAuthentication");
-        System.out.println(token);
+        log.debug("token: {}", token);
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
     }
 }

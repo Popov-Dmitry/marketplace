@@ -1,8 +1,10 @@
 package com.github.popovdmitry.nstu.gw.authservice.security;
 
+import com.github.popovdmitry.nstu.gw.authservice.dto.EncodedPasswordDto;
 import com.github.popovdmitry.nstu.gw.authservice.model.UserCredentials;
 import com.github.popovdmitry.nstu.gw.authservice.service.CustomerFeignClient;
 import com.github.popovdmitry.nstu.gw.authservice.service.UserService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,11 +31,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userCredentials.getEmail().equals(username)) {
             switch (userCredentials.getUserRole()) {
                 case CUSTOMER -> {
-                    if (customerFeignClient.isUserExists(username)) {
-                        System.out.println("CUSTOMER");
+                    try {
+                        EncodedPasswordDto encodedPasswordDto = customerFeignClient.getEncodedPasswordByEmail(username).getBody();
+                        log.debug("CUSTOMER");
                         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                                 .commaSeparatedStringToAuthorityList("ROLE_" + userCredentials.getUserRole());
-                        return new User(userCredentials.getEmail(), userCredentials.getPassword(), grantedAuthorities);
+                        return new User(userCredentials.getEmail(), encodedPasswordDto.getEncodedPassword(), grantedAuthorities);
+                    }
+                    catch (FeignException.NotFound e) {
+                        throw new UsernameNotFoundException("User with email " + username + " is not found");
+                    }
+                    catch (FeignException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }

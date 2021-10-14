@@ -28,6 +28,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, jwtConfig.getAuthUri()).permitAll()
+                .antMatchers("/customers/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated();
     }
 }
