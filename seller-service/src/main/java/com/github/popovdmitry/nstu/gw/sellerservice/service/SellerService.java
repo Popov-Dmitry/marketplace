@@ -1,7 +1,10 @@
 package com.github.popovdmitry.nstu.gw.sellerservice.service;
 
+import com.github.popovdmitry.nstu.gw.sellerservice.dto.NewSellerDto;
 import com.github.popovdmitry.nstu.gw.sellerservice.dto.SellerDto;
 import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueEmailException;
+import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueInnException;
+import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueShopNameException;
 import com.github.popovdmitry.nstu.gw.sellerservice.model.Seller;
 import com.github.popovdmitry.nstu.gw.sellerservice.model.VerificationStatus;
 import com.github.popovdmitry.nstu.gw.sellerservice.repository.SellerRepository;
@@ -10,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,13 +48,43 @@ public class SellerService {
         return sellerRepository.findAllByVerificationStatus(verificationStatus);
     }
 
-    public void saveSeller(Seller seller) throws NotUniqueEmailException {
-        try {
-            sellerRepository.save(seller);
+    public Seller saveSeller(NewSellerDto newSellerDto) throws NotUniqueEmailException, NotUniqueShopNameException, NotUniqueInnException {
+        if (sellerRepository.findSellerByEmail(newSellerDto.getEmail()).isEmpty()) {
+            if (sellerRepository.findSellerByShopName(newSellerDto.getShopName()).isEmpty()) {
+                if (sellerRepository.findSellerByInn(newSellerDto.getInn()).isEmpty()) {
+                    Seller seller = new Seller();
+                    seller.setFirstName(newSellerDto.getFirstName());
+                    seller.setSecondName(newSellerDto.getSecondName());
+                    seller.setEmail(newSellerDto.getEmail());
+                    seller.setPassword(newSellerDto.getPassword());
+                    seller.setShopName(newSellerDto.getShopName());
+                    seller.setCountry(newSellerDto.getCountry());
+                    seller.setOrganizationType(newSellerDto.getOrganizationType());
+                    seller.setInn(newSellerDto.getInn());
+                    seller.setLegalAddress(newSellerDto.getLegalAddress());
+                    seller.setLegalAddress(newSellerDto.getLegalAddress());
+                    seller.setRegistrationDate(new Date(new java.util.Date().getTime()));
+                    seller.setVerificationStatus(VerificationStatus.IN_PROGRESS);
+                    try {
+                        return sellerRepository.save(seller);
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else {
+                    throw new NotUniqueInnException(
+                            String.format("Seller with inn %s is already exist", newSellerDto.getInn()));
+                }
+            }
+            else {
+                throw new NotUniqueShopNameException(
+                        String.format("Seller with shop name %s is already exist", newSellerDto.getSecondName()));
+            }
         }
-        catch (Exception e) {
+        else {
             throw new NotUniqueEmailException(
-                    String.format("Seller with email %s is already exist", seller.getEmail()));
+                    String.format("Seller with email %s is already exist", newSellerDto.getEmail()));
         }
     }
 
