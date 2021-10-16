@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Date;
 
 @Entity
 @Table(name = "sellers")
@@ -33,4 +34,22 @@ public class Seller {
 
     @Column(name = "shop_name")
     private String shopName;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "organization_type")
+    private OrganizationType organizationType;
+
+    @Column(name = "inn")
+    private String inn;
+
+    @Column(name = "legal_address")
+    private String legalAddress;
+
+    @Column(name = "registration_date")
+    private Date registrationDate;
+
+    @Column(name = "verification_status")
+    private VerificationStatus verificationStatus;
 }
