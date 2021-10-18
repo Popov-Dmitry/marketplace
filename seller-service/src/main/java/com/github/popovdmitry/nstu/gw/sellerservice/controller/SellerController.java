@@ -1,5 +1,6 @@
 package com.github.popovdmitry.nstu.gw.sellerservice.controller;
 
+import com.github.popovdmitry.nstu.gw.sellerservice.dto.EncodedPasswordDto;
 import com.github.popovdmitry.nstu.gw.sellerservice.dto.NewSellerDto;
 import com.github.popovdmitry.nstu.gw.sellerservice.dto.SellerDto;
 import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueEmailException;
@@ -93,4 +94,13 @@ public class SellerController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping
+    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email) {
+        try {
+            return ResponseEntity.ok(new EncodedPasswordDto(sellerService.findByEmail(email).getPassword()));
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
