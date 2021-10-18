@@ -7,6 +7,7 @@ import com.github.popovdmitry.nstu.gw.customerservice.repository.CustomerReposit
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     
     private final CustomerRepository customerRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Customer findById(Long id) throws NotFoundException {
         return customerRepository.findById(id).orElseThrow(() ->
@@ -28,6 +30,7 @@ public class CustomerService {
 
     public void saveCustomer(Customer customer) throws NotUniqueEmailException {
         try {
+            customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
             customerRepository.save(customer);
         }
         catch (Exception e) {
@@ -50,7 +53,7 @@ public class CustomerService {
             customer.setEmail(updatedCustomer.getEmail());
         }
         if (updatedCustomer.getPassword() != null && !updatedCustomer.getPassword().equals("")) {
-            customer.setPassword(updatedCustomer.getPassword());
+            customer.setPassword(bCryptPasswordEncoder.encode(updatedCustomer.getPassword()));
         }
 
         return customerRepository.save(customer);

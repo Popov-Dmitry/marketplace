@@ -11,6 +11,7 @@ import com.github.popovdmitry.nstu.gw.sellerservice.repository.SellerRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -23,6 +24,7 @@ import java.util.Objects;
 public class SellerService {
 
     private final SellerRepository sellerRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public Seller findById(Long id) throws NotFoundException {
         return sellerRepository.findById(id).orElseThrow(() ->
@@ -56,7 +58,7 @@ public class SellerService {
                     seller.setFirstName(newSellerDto.getFirstName());
                     seller.setSecondName(newSellerDto.getSecondName());
                     seller.setEmail(newSellerDto.getEmail());
-                    seller.setPassword(newSellerDto.getPassword());
+                    seller.setPassword(bCryptPasswordEncoder.encode(newSellerDto.getPassword()));
                     seller.setShopName(newSellerDto.getShopName());
                     seller.setCountry(newSellerDto.getCountry());
                     seller.setOrganizationType(newSellerDto.getOrganizationType());
@@ -102,7 +104,7 @@ public class SellerService {
             seller.setEmail(sellerDto.getEmail());
         }
         if (Objects.nonNull(sellerDto.getPassword()) && !sellerDto.getPassword().isEmpty()) {
-            seller.setPassword(sellerDto.getPassword());
+            seller.setPassword(bCryptPasswordEncoder.encode(sellerDto.getPassword()));
         }
         if (Objects.nonNull(sellerDto.getShopName()) && !sellerDto.getShopName().isEmpty()) {
             seller.setShopName(sellerDto.getShopName());
