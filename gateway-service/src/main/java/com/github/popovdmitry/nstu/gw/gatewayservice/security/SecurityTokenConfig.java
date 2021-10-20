@@ -28,7 +28,10 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, jwtConfig.getAuthUri()).permitAll()
-                .antMatchers("/customers/**").hasRole("CUSTOMER")
+                .antMatchers(HttpMethod.POST, "/customers/").permitAll()
+                .antMatchers("/customers/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/sellers/").permitAll()
+                .antMatchers("/sellers/**").hasAnyRole("SELLER", "ADMIN")
                 .anyRequest().authenticated();
     }
 }

@@ -3,6 +3,7 @@ package com.github.popovdmitry.nstu.gw.authservice.security;
 import com.github.popovdmitry.nstu.gw.authservice.dto.EncodedPasswordDto;
 import com.github.popovdmitry.nstu.gw.authservice.model.UserCredentials;
 import com.github.popovdmitry.nstu.gw.authservice.service.CustomerFeignClient;
+import com.github.popovdmitry.nstu.gw.authservice.service.SellerFeignClient;
 import com.github.popovdmitry.nstu.gw.authservice.service.UserService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 @Service
@@ -24,6 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService userService = UserService.getInstance();
     private final CustomerFeignClient customerFeignClient;
+    private final SellerFeignClient sellerFeignClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,6 +48,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         throw new RuntimeException(e);
                     }
                 }
+                case SELLER -> {
+                    try {
+                        EncodedPasswordDto encodedPasswordDto = sellerFeignClient.getEncodedPasswordByEmail(username).getBody();
+                        log.debug("SELLER");
+                        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+                                .commaSeparatedStringToAuthorityList("ROLE_" + userCredentials.getUserRole());
+                        return new User(userCredentials.getEmail(), encodedPasswordDto.getEncodedPassword(), grantedAuthorities);
+                    }
+                    catch (FeignException.NotFound e) {
+                        throw new UsernameNotFoundException("Seller with email " + username + " is not found");
+                    }
+                    catch (FeignException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case ADMIN -> {
+                    //TODO
+                }
+                default -> throw new UsernameNotFoundException("Role " + userCredentials.getUserRole() + " does not exist");
             }
         }
         throw new UsernameNotFoundException("User with email " + username + " is not found");
