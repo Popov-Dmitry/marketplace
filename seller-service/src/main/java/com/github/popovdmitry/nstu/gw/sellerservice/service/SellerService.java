@@ -25,7 +25,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SellerService {
 
-    @Value("${kafka.topic.sellerTopic}")
+    @Value("${kafka.topic.seller-topic}")
     private String sellerTopic;
 
     private final SellerRepository sellerRepository;
@@ -135,5 +135,11 @@ public class SellerService {
         Seller customer = sellerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Seller with id %d is not found", id)));
         sellerRepository.delete(customer);
+    }
+
+    public void updateModeratedSeller(String sellerId, String status) {
+        Seller seller = sellerRepository.findById(Long.parseLong(sellerId)).get();
+        seller.setVerificationStatus(VerificationStatus.valueOf(status));
+        sellerRepository.save(seller);
     }
 }
