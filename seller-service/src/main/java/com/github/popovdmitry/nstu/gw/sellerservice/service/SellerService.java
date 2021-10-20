@@ -11,6 +11,8 @@ import com.github.popovdmitry.nstu.gw.sellerservice.repository.SellerRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SellerService {
 
+    @Value("${kafka.topic.sellerTopic}")
+    private String sellerTopic;
+
     private final SellerRepository sellerRepository;
+    private final KafkaTemplate<String, Seller> kafkaTemplate;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public Seller findById(Long id) throws NotFoundException {
@@ -68,7 +74,10 @@ public class SellerService {
                     seller.setRegistrationDate(new Date(new java.util.Date().getTime()));
                     seller.setVerificationStatus(VerificationStatus.IN_PROGRESS);
                     try {
-                        return sellerRepository.save(seller);
+                        Seller savedSeller = sellerRepository.save(seller);
+                        kafkaTemplate.send(sellerTopic, savedSeller.getId().toString(), savedSeller);
+                        log.debug("Save and send seller {}", savedSeller.toString());
+                        return savedSeller;
                     }
                     catch (Exception e) {
                         throw new RuntimeException(e);
