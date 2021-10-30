@@ -136,9 +136,9 @@ public class SellerService {
     }
 
     public void deleteSeller(Long id) throws NotFoundException {
-        Seller customer = sellerRepository.findById(id).orElseThrow(() ->
+        Seller seller = sellerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Seller with id %d is not found", id)));
-        sellerRepository.delete(customer);
+        sellerRepository.delete(seller);
     }
 
     public void updateModeratedSeller(String sellerId, String status) {
