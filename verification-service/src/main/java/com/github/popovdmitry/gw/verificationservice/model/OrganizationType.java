@@ -1,4 +1,4 @@
-package com.github.popovdmitry.gw.verificationservice.dto;
+package com.github.popovdmitry.gw.verificationservice.model;
 
 public enum OrganizationType {
     IP,

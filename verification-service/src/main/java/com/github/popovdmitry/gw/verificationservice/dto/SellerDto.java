@@ -1,5 +1,6 @@
 package com.github.popovdmitry.gw.verificationservice.dto;
 
+import com.github.popovdmitry.gw.verificationservice.model.OrganizationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,6 @@ public class SellerDto {
     private String firstName;
     private String secondName;
     private String email;
-    private String password;
     private String shopName;
     private String country;
     private OrganizationType organizationType;
