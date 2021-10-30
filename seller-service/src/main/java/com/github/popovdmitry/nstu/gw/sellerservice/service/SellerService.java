@@ -25,11 +25,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SellerService {
 
-    @Value("${kafka.topic.seller-topic}")
-    private String sellerTopic;
+    @Value("${kafka.topic.producer.seller-topic}")
+    private String sellerInfoTopic;
 
     private final SellerRepository sellerRepository;
-    private final KafkaTemplate<String, Seller> kafkaTemplate;
+    private final KafkaTemplate<String, NewSellerDto> kafkaTemplate;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public Seller findById(Long id) throws NotFoundException {
@@ -75,7 +75,7 @@ public class SellerService {
                     seller.setVerificationStatus(VerificationStatus.IN_PROGRESS);
                     try {
                         Seller savedSeller = sellerRepository.save(seller);
-                        kafkaTemplate.send(sellerTopic, savedSeller.getId().toString(), savedSeller);
+                        kafkaTemplate.send(sellerInfoTopic, savedSeller.getId().toString(), newSellerDto);
                         log.debug("Save and send seller {}", savedSeller.toString());
                         return savedSeller;
                     }
