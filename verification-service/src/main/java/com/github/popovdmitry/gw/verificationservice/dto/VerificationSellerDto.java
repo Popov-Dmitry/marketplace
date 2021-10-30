@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SellerDto {
+public class VerificationSellerDto {
 
     private String firstName;
     private String secondName;
