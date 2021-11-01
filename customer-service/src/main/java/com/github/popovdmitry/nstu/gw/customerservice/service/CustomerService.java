@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     
     private final CustomerRepository customerRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public Customer findById(Long id) throws NotFoundException {
         return customerRepository.findById(id).orElseThrow(() ->
