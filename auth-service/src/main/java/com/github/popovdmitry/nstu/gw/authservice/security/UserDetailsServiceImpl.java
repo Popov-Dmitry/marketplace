@@ -63,7 +63,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         throw new RuntimeException(e);
                     }
                 }
-                case ADMIN -> {
+                case ADMIN, MODER -> {
                     //TODO
                 }
                 default -> throw new UsernameNotFoundException("Role " + userCredentials.getUserRole() + " does not exist");

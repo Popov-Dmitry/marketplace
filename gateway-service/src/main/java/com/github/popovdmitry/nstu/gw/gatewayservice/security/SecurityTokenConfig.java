@@ -32,6 +32,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/customers/**").hasAnyRole("CUSTOMER", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/sellers/").permitAll()
                 .antMatchers("/sellers/**").hasAnyRole("SELLER", "ADMIN")
+                .antMatchers("/verification/**").hasAnyRole("MODER", "ADMIN")
                 .anyRequest().authenticated();
     }
 }
