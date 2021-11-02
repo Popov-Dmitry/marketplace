@@ -14,8 +14,8 @@ public class MessageListener {
 
     private final SellerService sellerService;
 
-    @KafkaListener(topics = "${kafka.topic.moderated-seller-topic}",
-            groupId = "${kafka.consumer-group.moderated-seller}", containerFactory = "sellerListener")
+    @KafkaListener(topics = "${kafka.topic.consumer.moderated-seller-topic}",
+            groupId = "${kafka.consumer-group.moderated-seller}", containerFactory = "moderatedSellerListener")
     void kafkaUsersListener(ConsumerRecord<String, String> consumerRecord) {
         sellerService.updateModeratedSeller(consumerRecord.key(), consumerRecord.value());
     }

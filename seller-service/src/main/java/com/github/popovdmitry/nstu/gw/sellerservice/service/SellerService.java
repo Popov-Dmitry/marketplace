@@ -2,6 +2,7 @@ package com.github.popovdmitry.nstu.gw.sellerservice.service;
 
 import com.github.popovdmitry.nstu.gw.sellerservice.dto.NewSellerDto;
 import com.github.popovdmitry.nstu.gw.sellerservice.dto.SellerDto;
+import com.github.popovdmitry.nstu.gw.sellerservice.dto.VerificationSellerDTO;
 import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueEmailException;
 import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueInnException;
 import com.github.popovdmitry.nstu.gw.sellerservice.exceprion.NotUniqueShopNameException;
@@ -25,11 +26,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SellerService {
 
-    @Value("${kafka.topic.seller-topic}")
-    private String sellerTopic;
+    @Value("${kafka.topic.producer.seller-topic}")
+    private String sellerInfoTopic;
 
     private final SellerRepository sellerRepository;
-    private final KafkaTemplate<String, Seller> kafkaTemplate;
+    private final KafkaTemplate<String, VerificationSellerDTO> kafkaTemplate;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public Seller findById(Long id) throws NotFoundException {
@@ -75,7 +76,10 @@ public class SellerService {
                     seller.setVerificationStatus(VerificationStatus.IN_PROGRESS);
                     try {
                         Seller savedSeller = sellerRepository.save(seller);
-                        kafkaTemplate.send(sellerTopic, savedSeller.getId().toString(), savedSeller);
+                        kafkaTemplate.send(
+                                sellerInfoTopic,
+                                savedSeller.getId().toString(),
+                                VerificationSellerDTO.fromNewSellerDTO(newSellerDto));
                         log.debug("Save and send seller {}", savedSeller.toString());
                         return savedSeller;
                     }
@@ -132,9 +136,9 @@ public class SellerService {
     }
 
     public void deleteSeller(Long id) throws NotFoundException {
-        Seller customer = sellerRepository.findById(id).orElseThrow(() ->
+        Seller seller = sellerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Seller with id %d is not found", id)));
-        sellerRepository.delete(customer);
+        sellerRepository.delete(seller);
     }
 
     public void updateModeratedSeller(String sellerId, String status) {
