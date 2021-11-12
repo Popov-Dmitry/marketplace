@@ -32,6 +32,12 @@ public class ClothesDetails {
     @Column(name = "composition")
     private String composition;
 
+    @Column(name = "category")
+    private Category category;
+
+    @Column(name = "season")
+    private Season season;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "clothesDetails",
             cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
