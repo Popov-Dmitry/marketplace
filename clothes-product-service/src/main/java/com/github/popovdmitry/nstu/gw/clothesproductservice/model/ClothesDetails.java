@@ -38,6 +38,9 @@ public class ClothesDetails {
     @Column(name = "season")
     private Season season;
 
+    @Column(name = "type")
+    private String type;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "clothesDetails",
             cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
