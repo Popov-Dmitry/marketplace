@@ -3,15 +3,13 @@ package com.github.popovdmitry.nstu.gw.clothesproductservice.dto;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Category;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Season;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ClothesProductDto {
 
     private String color;

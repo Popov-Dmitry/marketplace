@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     @Query("select c from Clothes c where " +
             "(:clothesDetails is null or c.clothesDetails = :clothesDetails) " +
-            "and (:color is null or upper(c.color) like concat('%', upper(:color), '%')) " +
+            "and (:color = '' or upper(c.color) like concat('%', upper(:color), '%')) " +
             "and (:size is null or c.size = :size) " +
             "and (:price is null or c.price <= :price) ")
     Optional<List<Clothes>> findAllByQuery(@Param("clothesDetails") ClothesDetails clothesDetails,

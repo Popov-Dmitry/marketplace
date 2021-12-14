@@ -14,11 +14,11 @@ import java.util.Optional;
 @Repository
 public interface ClothesDetailsRepository extends JpaRepository<ClothesDetails, Long> {
     @Query("select cd from ClothesDetails cd where " +
-            "(:brand is null or upper(cd.brand) like concat('%', upper(:brand), '%')) " +
-            "and (:title is null or upper(cd.title) like concat('%', upper(:title), '%')) " +
-            "and (:category is null or upper(cd.category) like concat('%', upper(:category), '%')) " +
-            "and (:season is null or upper(cd.season) like concat('%', upper(:season), '%')) " +
-            "and (:type is null or upper(cd.type) like concat('%', upper(:type), '%')) ")
+            "(:brand = '' or upper(cd.brand) like concat('%', upper(:brand), '%')) " +
+            "and (:title = '' or upper(cd.title) like concat('%', upper(:title), '%')) " +
+            "and (:category is null or cd.category = :category) " +
+            "and (:season is null or cd.season = :season) " +
+            "and (:type = '' or upper(cd.type) like concat('%', upper(:type), '%')) ")
     Optional<List<ClothesDetails>> findAllByQuery(@Param("brand") String brand,
                                                  @Param("title") String title,
                                                  @Param("category") Category category,
