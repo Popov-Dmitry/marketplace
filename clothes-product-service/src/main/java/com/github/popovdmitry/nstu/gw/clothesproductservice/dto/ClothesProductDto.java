@@ -16,6 +16,7 @@ public class ClothesProductDto {
 
     private String color;
     private Size size;
+    private Long price;
 
     private String brand;
     private String title;

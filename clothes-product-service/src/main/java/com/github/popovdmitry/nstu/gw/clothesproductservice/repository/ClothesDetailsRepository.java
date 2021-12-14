@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClothesDetailsRepository extends JpaRepository<ClothesDetails, Long> {
@@ -18,9 +19,9 @@ public interface ClothesDetailsRepository extends JpaRepository<ClothesDetails, 
             "and (:category is null or upper(cd.category) like concat('%', upper(:category), '%')) " +
             "and (:season is null or upper(cd.season) like concat('%', upper(:season), '%')) " +
             "and (:type is null or upper(cd.type) like concat('%', upper(:type), '%')) ")
-    List<ClothesDetails> findAllByQuery(@Param("brand") String brand,
-                                        @Param("title") String title,
-                                        @Param("category") Category category,
-                                        @Param("season") Season season,
-                                        @Param("type") String type);
+    Optional<List<ClothesDetails>> findAllByQuery(@Param("brand") String brand,
+                                                 @Param("title") String title,
+                                                 @Param("category") Category category,
+                                                 @Param("season") Season season,
+                                                 @Param("type") String type);
 }

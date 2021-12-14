@@ -31,4 +31,7 @@ public class Clothes {
 
     @Column(name = "count")
     private Long count;
+
+    @Column(name = "price")
+    private Long price;
 }
