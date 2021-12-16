@@ -14,4 +14,6 @@ public class ClothesDTO {
     private Size size;
     private Long count;
     private Long price;
+
+    private Long clothesDetailsId;
 }
