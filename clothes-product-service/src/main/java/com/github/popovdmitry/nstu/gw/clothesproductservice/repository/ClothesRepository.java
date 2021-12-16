@@ -31,11 +31,11 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     Optional<Clothes> findByColorAndSize(String color, Size size);
     Optional<Clothes> findByClothesDetailsAndColorAndSize(ClothesDetails clothesDetails, String color, Size size);
 
-    Optional<List<Clothes>> findAllByClothesDetails(ClothesDetails clothesDetails);
-    Optional<List<Clothes>> findAllByColor(String color);
-    Optional<List<Clothes>> findAllBySize(Size size);
-    Optional<List<Clothes>> findAllByClothesDetailsAndColor(ClothesDetails clothesDetails, String color);
-    Optional<List<Clothes>> findAllByClothesDetailsAndSize(ClothesDetails clothesDetails, Size size);
-    Optional<List<Clothes>> findAllByColorAndSize(String color, Size size);
-    Optional<List<Clothes>> findAllByClothesDetailsAndColorAndSize(ClothesDetails clothesDetails, String color, Size size);
+    List<Clothes> findAllByClothesDetails(ClothesDetails clothesDetails);
+    List<Clothes> findAllByColor(String color);
+    List<Clothes> findAllBySize(Size size);
+    List<Clothes> findAllByClothesDetailsAndColor(ClothesDetails clothesDetails, String color);
+    List<Clothes> findAllByClothesDetailsAndSize(ClothesDetails clothesDetails, Size size);
+    List<Clothes> findAllByColorAndSize(String color, Size size);
+    List<Clothes> findAllByClothesDetailsAndColorAndSize(ClothesDetails clothesDetails, String color, Size size);
 }
