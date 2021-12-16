@@ -37,7 +37,7 @@ public class ClothesProductService {
         return clothesRepository.findAllByClothesDetails(findByClothesDetailsId(id));
     }
 
-    public void saveClothes(ClothesProductDto clothesProductDto) throws NotFoundException {
+    public Clothes saveClothes(ClothesProductDto clothesProductDto) throws NotFoundException {
         Clothes clothes = new Clothes();
         clothes.setColor(clothesProductDto.getColor());
         clothes.setSize(clothesProductDto.getSize());
@@ -55,9 +55,9 @@ public class ClothesProductService {
             clothesDetails.setCategory(clothesProductDto.getCategory());
             clothesDetails.setSeason(clothesProductDto.getSeason());
             clothesDetails.setType(clothesProductDto.getType());
-            clothes.setClothesDetails(clothesDetails);
+            clothes.setClothesDetails(clothesDetailsRepository.save(clothesDetails));
         }
-        clothesRepository.save(clothes);
+        return clothesRepository.save(clothes);
     }
 
     public Clothes updateClothes(Long clothesId, ClothesDTO clothesDTO) throws NotFoundException {
