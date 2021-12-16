@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClothesProductReplyDto {
+public class SearchClothesProductReplyDto {
 
     private Long clothesId;
     private Long clothesDetailsId;
