@@ -41,6 +41,9 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/clothes/**").hasAnyRole("SELLER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/clothes/**").hasAnyRole("SELLER", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/clothes/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/photos/**").hasAnyRole("SELLER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/photos/**").hasAnyRole("SELLER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/photos/**").permitAll()
                 .anyRequest().authenticated();
     }
 }
