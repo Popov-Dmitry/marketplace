@@ -25,4 +25,7 @@ public class Cart {
 
     @Column(name = "product_id")
     private Long productId;
+
+    @Column(name = "count")
+    private Integer count;
 }

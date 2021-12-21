@@ -13,4 +13,5 @@ public class CartDto {
     private Long customerId;
     private ProductType productType;
     private Long productId;
+    private Integer count;
 }
