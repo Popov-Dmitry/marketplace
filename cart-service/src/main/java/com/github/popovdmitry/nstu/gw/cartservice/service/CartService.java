@@ -27,6 +27,11 @@ public class CartService {
         return cartRepository.findAllByProductId(productId);
     }
 
+    public Cart findById(Long cartId) throws NotFoundException {
+        return cartRepository.findById(cartId).orElseThrow(() ->
+                new NotFoundException(String.format("Cart with id %d is not found", cartId)));
+    }
+
     public Cart saveCart(CartDto cartDto) throws IllegalArgumentException {
         if (Objects.isNull(cartDto.getCustomerId()) || Objects.isNull(cartDto.getProductType()) ||
                 Objects.isNull(cartDto.getProductId()) || Objects.isNull(cartDto.getCount()) ||
