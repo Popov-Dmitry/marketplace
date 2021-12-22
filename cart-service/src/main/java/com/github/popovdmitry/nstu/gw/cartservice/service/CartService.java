@@ -33,13 +33,14 @@ public class CartService {
     }
 
     public Cart saveCart(CartDto cartDto) throws IllegalArgumentException {
+        System.out.println(cartDto.toString());
         if (Objects.isNull(cartDto.getCustomerId()) || Objects.isNull(cartDto.getProductType()) ||
                 Objects.isNull(cartDto.getProductId()) || Objects.isNull(cartDto.getCount()) ||
                 cartDto.getCustomerId() < 0 || cartDto.getProductId() < 0 || cartDto.getCount() < 0) {
             throw new IllegalArgumentException();
         }
         Cart cart = new Cart();
-        cart.setCustomerId(cart.getCustomerId());
+        cart.setCustomerId(cartDto.getCustomerId());
         cart.setProductType(cartDto.getProductType());
         cart.setProductId(cartDto.getProductId());
         cart.setCount(cartDto.getCount());

@@ -27,7 +27,7 @@ public class CartController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> saveCart(CartDto cartDto) {
+    public ResponseEntity<?> saveCart(@RequestBody CartDto cartDto) {
         try {
             return ResponseEntity.ok(cartService.saveCart(cartDto));
         }
@@ -37,7 +37,7 @@ public class CartController {
     }
 
     @PatchMapping("/{cartId}")
-    public ResponseEntity<?> updateCart(@PathVariable Long cartId, ProductCountDto productCountDto) {
+    public ResponseEntity<?> updateCart(@PathVariable Long cartId, @RequestBody ProductCountDto productCountDto) {
         try {
             return ResponseEntity.ok(cartService.updateCart(cartId, productCountDto));
         }
