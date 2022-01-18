@@ -28,14 +28,18 @@ public class AdminService {
                 new NotFoundException(String.format("Admin with email %s is not found", email)));
     }
 
-    public void saveAdmin(Admin admin) throws NotUniqueEmailException {
+    public Admin saveAdmin(AdminDto adminDto) throws NotUniqueEmailException {
         try {
-            admin.setPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
-            adminRepository.save(admin);
+            Admin admin = new Admin();
+            admin.setFirstName(adminDto.getFirstName());
+            admin.setSecondName(adminDto.getSecondName());
+            admin.setEmail(adminDto.getEmail());
+            admin.setPassword(bCryptPasswordEncoder.encode(adminDto.getPassword()));
+            return adminRepository.save(admin);
         }
         catch (Exception e) {
             throw new NotUniqueEmailException(
-                    String.format("Admin with email %s is already exist", admin.getEmail()));
+                    String.format("Admin with email %s is already exist", adminDto.getEmail()));
         }
     }
 

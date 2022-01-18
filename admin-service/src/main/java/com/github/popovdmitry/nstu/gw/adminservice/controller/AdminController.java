@@ -23,10 +23,9 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/")
-    public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
+    public ResponseEntity<Admin> createAdmin(@RequestBody AdminDto adminDto) {
         try {
-            adminService.saveAdmin(admin);
-            return ResponseEntity.status(HttpStatus.CREATED).body(admin);
+            return ResponseEntity.status(HttpStatus.CREATED).body(adminService.saveAdmin(adminDto));
         } catch (NotUniqueEmailException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -42,7 +41,8 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody AdminDto adminDto) {
+    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id,
+                                             @RequestBody AdminDto adminDto) {
         try {
             return ResponseEntity.ok(adminService.updateAdmin(id, adminDto));
         } catch (NotFoundException e) {

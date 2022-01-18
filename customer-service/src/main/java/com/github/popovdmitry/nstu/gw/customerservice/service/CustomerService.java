@@ -28,14 +28,18 @@ public class CustomerService {
                 new NotFoundException(String.format("User with email %s is not found", email)));
     }
 
-    public void saveCustomer(Customer customer) throws NotUniqueEmailException {
+    public Customer saveCustomer(CustomerDto customerDto) throws NotUniqueEmailException {
         try {
-            customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
-            customerRepository.save(customer);
+            Customer customer = new Customer();
+            customer.setFirstName(customerDto.getFirstName());
+            customer.setSecondName(customerDto.getSecondName());
+            customer.setEmail(customerDto.getEmail());
+            customer.setPassword(bCryptPasswordEncoder.encode(customerDto.getPassword()));
+            return customerRepository.save(customer);
         }
         catch (Exception e) {
             throw new NotUniqueEmailException(
-                    String.format("User with email %s is already exist", customer.getEmail()));
+                    String.format("User with email %s is already exist", customerDto.getEmail()));
         }
     }
 

@@ -23,10 +23,9 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("/")
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDto customerDto) {
         try {
-            customerService.saveCustomer(customer);
-            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customerService.saveCustomer(customerDto));
         } catch (NotUniqueEmailException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -42,7 +41,8 @@ public class CustomerController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody CustomerDto updatedCustomer) {
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id,
+                                                   @RequestBody CustomerDto updatedCustomer) {
         try {
             return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
         } catch (NotFoundException e) {
