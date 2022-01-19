@@ -39,7 +39,7 @@ public class CustomerService {
         }
         catch (Exception e) {
             throw new NotUniqueEmailException(
-                    String.format("User with email %s is already exist", customerDto.getEmail()));
+                    String.format("User with email %s is already exists", customerDto.getEmail()));
         }
     }
 

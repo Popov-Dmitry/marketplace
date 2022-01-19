@@ -23,50 +23,34 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("/")
-    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDto customerDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerService.saveCustomer(customerDto));
-        } catch (NotUniqueEmailException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDto customerDto)
+            throws NotUniqueEmailException {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(customerService.saveCustomer(customerDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(customerService.findById(id));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Customer> getCustomer(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(customerService.findById(id));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long id,
-                                                   @RequestBody CustomerDto updatedCustomer) {
-        try {
-            return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+                                                   @RequestBody CustomerDto updatedCustomer)
+            throws NotFoundException {
+        return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
-        try {
-            customerService.deleteCustomer(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) throws NotFoundException {
+        customerService.deleteCustomer(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email) {
-        try {
-            return ResponseEntity.ok(new EncodedPasswordDto(customerService.findByEmail(email).getPassword()));
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email)
+            throws NotFoundException {
+        return ResponseEntity.ok(new EncodedPasswordDto(customerService.findByEmail(email).getPassword()));
     }
 }
