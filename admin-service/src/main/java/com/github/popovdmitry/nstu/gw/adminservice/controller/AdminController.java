@@ -23,50 +23,32 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/")
-    public ResponseEntity<Admin> createAdmin(@RequestBody AdminDto adminDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(adminService.saveAdmin(adminDto));
-        } catch (NotUniqueEmailException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    public ResponseEntity<Admin> createAdmin(@RequestBody AdminDto adminDto) throws NotUniqueEmailException {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(adminService.saveAdmin(adminDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Admin> getAdmin(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(adminService.findById(id));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Admin> getAdmin(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(adminService.findById(id));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Admin> updateAdmin(@PathVariable Long id,
-                                             @RequestBody AdminDto adminDto) {
-        try {
-            return ResponseEntity.ok(adminService.updateAdmin(id, adminDto));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+                                             @RequestBody AdminDto adminDto) throws NotFoundException {
+        return ResponseEntity.ok(adminService.updateAdmin(id, adminDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAdmin(@PathVariable Long id) {
-        try {
-            adminService.deleteAdmin(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteAdmin(@PathVariable Long id) throws NotFoundException {
+        adminService.deleteAdmin(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email) {
-        try {
-            return ResponseEntity.ok(new EncodedPasswordDto(adminService.findByEmail(email).getPassword()));
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email)
+            throws NotFoundException {
+        return ResponseEntity.ok(new EncodedPasswordDto(adminService.findByEmail(email).getPassword()));
     }
 }

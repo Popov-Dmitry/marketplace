@@ -39,7 +39,7 @@ public class AdminService {
         }
         catch (Exception e) {
             throw new NotUniqueEmailException(
-                    String.format("Admin with email %s is already exist", adminDto.getEmail()));
+                    String.format("Admin with email %s is already exists", adminDto.getEmail()));
         }
     }
 

@@ -1,6 +1,6 @@
-package com.github.popovdmitry.nstu.gw.customerservice.exception;
+package com.github.popovdmitry.nstu.gw.adminservice.exception;
 
-import com.github.popovdmitry.nstu.gw.customerservice.dto.ApiErrorDto;
+import com.github.popovdmitry.nstu.gw.adminservice.dto.ApiErrorDto;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
