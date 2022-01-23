@@ -1,5 +1,6 @@
 package com.github.popovdmitry.nstu.gw.cartservice.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 @Getter
@@ -9,5 +10,6 @@ import lombok.*;
 @ToString
 public class ProductCountDto {
 
+    @ApiModelProperty(example = "2")
     private Integer count;
 }
