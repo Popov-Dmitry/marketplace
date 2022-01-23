@@ -1,6 +1,6 @@
-package com.github.popovdmitry.nstu.gw.adminservice.exception;
+package com.github.popovdmitry.nstu.gw.cartservice.exception;
 
-import com.github.popovdmitry.nstu.gw.adminservice.dto.ApiErrorDto;
+import com.github.popovdmitry.nstu.gw.cartservice.dto.ApiErrorDto;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotUniqueEmailException.class)
-    public ResponseEntity<ApiErrorDto> handleNotUniqueEmailException(NotUniqueEmailException e) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new ApiErrorDto(e.getMessage()));
-    }
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiErrorDto> handleNotFoundException(NotFoundException e) {
         return ResponseEntity
@@ -24,7 +17,14 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorDto(e.getMessage()));
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorDto> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiErrorDto(e.getMessage()));
+    }
+
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<ApiErrorDto> handleException(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

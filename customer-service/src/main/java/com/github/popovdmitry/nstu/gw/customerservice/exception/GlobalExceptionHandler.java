@@ -18,14 +18,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiErrorDto> handleNotUniqueEmailException(NotFoundException e) {
+    public ResponseEntity<ApiErrorDto> handleNotFoundException(NotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ApiErrorDto(e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorDto> handleNotUniqueEmailException(Exception e) {
+    public ResponseEntity<ApiErrorDto> handleException(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiErrorDto(e.getMessage()));

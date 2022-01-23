@@ -37,7 +37,7 @@ public class CartService {
         if (Objects.isNull(cartDto.getCustomerId()) || Objects.isNull(cartDto.getProductType()) ||
                 Objects.isNull(cartDto.getProductId()) || Objects.isNull(cartDto.getCount()) ||
                 cartDto.getCustomerId() < 0 || cartDto.getProductId() < 0 || cartDto.getCount() < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect parameter");
         }
         Cart cart = new Cart();
         cart.setCustomerId(cartDto.getCustomerId());
