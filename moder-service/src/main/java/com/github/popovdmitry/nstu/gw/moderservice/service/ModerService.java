@@ -28,14 +28,14 @@ public class ModerService {
                 new NotFoundException(String.format("Moder with email %s is not found", email)));
     }
 
-    public void saveModer(Moder moder) throws NotUniqueEmailException {
+    public Moder saveModer(Moder moder) throws NotUniqueEmailException {
         try {
             moder.setPassword(bCryptPasswordEncoder.encode(moder.getPassword()));
-            moderRepository.save(moder);
+            return moderRepository.save(moder);
         }
         catch (Exception e) {
             throw new NotUniqueEmailException(
-                    String.format("Moder with email %s is already exist", moder.getEmail()));
+                    String.format("Moder with email %s is already exists", moder.getEmail()));
         }
     }
 

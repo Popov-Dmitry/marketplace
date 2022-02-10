@@ -20,41 +20,24 @@ public class ModerController {
     private final ModerService moderService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createModer(@RequestBody Moder moder) {
-        try {
-            moderService.saveModer(moder);
-            return ResponseEntity.status(HttpStatus.CREATED).body(moder);
-        } catch (NotUniqueEmailException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    public ResponseEntity<?> createModer(@RequestBody Moder moder) throws NotUniqueEmailException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(moderService.saveModer(moder));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getModer(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(moderService.findById(id));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> getModer(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(moderService.findById(id));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateModer(@PathVariable Long id, @RequestBody ModerDto updatedModer) {
-        try {
-            return ResponseEntity.ok(moderService.updateModer(id, updatedModer));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> updateModer(@PathVariable Long id, @RequestBody ModerDto updatedModer) throws NotFoundException {
+        return ResponseEntity.ok(moderService.updateModer(id, updatedModer));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteModer(@PathVariable Long id) {
-        try {
-            moderService.deleteModer(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteModer(@PathVariable Long id) throws NotFoundException {
+        moderService.deleteModer(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

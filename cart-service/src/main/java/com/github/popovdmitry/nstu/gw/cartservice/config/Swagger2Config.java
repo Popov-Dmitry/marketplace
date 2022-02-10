@@ -17,8 +17,8 @@ public class Swagger2Config {
 
     public static final String TAG_CART = "Cart Controller";
 
-//    @Value("${documentation.base-url}")
-    private String baseUrl = "123";
+    @Value("${documentation.base-url}")
+    private String baseUrl;
 
     @Bean
     public Docket productApi() {
