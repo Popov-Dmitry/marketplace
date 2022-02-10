@@ -9,10 +9,8 @@ import com.github.popovdmitry.nstu.gw.moderservice.service.ModerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +37,9 @@ public class ModerController {
     })
     public ResponseEntity<Moder> createModer(@Parameter(description = "Moder dto", required = true)
                                                  @RequestBody ModerDto moderDto) throws NotUniqueEmailException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(moderService.saveModer(moderDto));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(moderService.saveModer(moderDto));
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
@@ -68,7 +68,7 @@ public class ModerController {
         return ResponseEntity.ok(moderService.updateModer(id, updatedModer));
     }
 
-    @DeleteMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     @Operation(summary = "Delete moder by id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),

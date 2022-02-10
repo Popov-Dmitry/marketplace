@@ -27,6 +27,7 @@ public class Swagger2Config {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).build()
                 .tags(new Tag(TAG_ADMIN, ""))
                 .host(baseUrl)
+                .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo());
     }
 
