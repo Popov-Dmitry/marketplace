@@ -89,17 +89,17 @@ public class SellerService {
                 }
                 else {
                     throw new NotUniqueInnException(
-                            String.format("Seller with inn %s is already exist", newSellerDto.getInn()));
+                            String.format("Seller with inn %s is already exists", newSellerDto.getInn()));
                 }
             }
             else {
                 throw new NotUniqueShopNameException(
-                        String.format("Seller with shop name %s is already exist", newSellerDto.getSecondName()));
+                        String.format("Seller with shop name %s is already exists", newSellerDto.getSecondName()));
             }
         }
         else {
             throw new NotUniqueEmailException(
-                    String.format("Seller with email %s is already exist", newSellerDto.getEmail()));
+                    String.format("Seller with email %s is already exists", newSellerDto.getEmail()));
         }
     }
 

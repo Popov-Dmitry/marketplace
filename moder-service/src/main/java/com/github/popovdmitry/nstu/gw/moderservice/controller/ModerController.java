@@ -83,12 +83,8 @@ public class ModerController {
 
     @GetMapping
     @ApiIgnore
-    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email) {
-        try {
-            return ResponseEntity.ok(new EncodedPasswordDto(moderService.findByEmail(email).getPassword()));
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email)
+            throws NotFoundException {
+        return ResponseEntity.ok(new EncodedPasswordDto(moderService.findByEmail(email).getPassword()));
     }
 }

@@ -25,67 +25,41 @@ public class SellerController {
     private final SellerService sellerService;
 
     @PostMapping
-    public ResponseEntity<?> createSeller(@RequestBody NewSellerDto newSellerDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(sellerService.saveSeller(newSellerDto));
-        } catch (NotUniqueEmailException | NotUniqueShopNameException | NotUniqueInnException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    public ResponseEntity<?> createSeller(@RequestBody NewSellerDto newSellerDto)
+            throws NotUniqueEmailException, NotUniqueShopNameException, NotUniqueInnException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(sellerService.saveSeller(newSellerDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSeller(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(sellerService.findById(id));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> getSeller(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(sellerService.findById(id));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateSeller(@PathVariable Long id, @RequestBody SellerDto sellerDto) {
-        try {
-            return ResponseEntity.ok(sellerService.updateSeller(id, sellerDto));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> updateSeller(@PathVariable Long id, @RequestBody SellerDto sellerDto) throws NotFoundException {
+        return ResponseEntity.ok(sellerService.updateSeller(id, sellerDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSeller(@PathVariable Long id) {
-        try {
-            sellerService.deleteSeller(id);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteSeller(@PathVariable Long id) throws NotFoundException {
+        sellerService.deleteSeller(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/search")
     public ResponseEntity<?> searchSeller(@RequestParam(required = false) String email,
                                           @RequestParam(required = false) String shopName,
                                           @RequestParam(required = false) String inn,
-                                          @RequestParam(required = false) String verificationStatus) {
+                                          @RequestParam(required = false) String verificationStatus)
+            throws NotFoundException {
         if (Objects.nonNull(email) && !email.isEmpty()) {
-            try {
-                return ResponseEntity.ok(sellerService.findByEmail(email));
-            } catch (NotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
+            return ResponseEntity.ok(sellerService.findByEmail(email));
         }
         if (Objects.nonNull(shopName) && !shopName.isEmpty()) {
-            try {
-                return ResponseEntity.ok(sellerService.findByShopName(shopName));
-            } catch (NotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
+            return ResponseEntity.ok(sellerService.findByShopName(shopName));
         }
         if (Objects.nonNull(inn) && !inn.isEmpty()) {
-            try {
-                return ResponseEntity.ok(sellerService.findByInn(inn));
-            } catch (NotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
+            return ResponseEntity.ok(sellerService.findByInn(inn));
         }
         if (Objects.nonNull(verificationStatus) && !verificationStatus.isEmpty()) {
             return ResponseEntity.ok(sellerService.findByVerificationStatus(
