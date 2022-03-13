@@ -20,71 +20,45 @@ public class ClothesProductController {
     private final ClothesProductService clothesProductService;
 
     @GetMapping("/{clothesDetailsId}/{clothesId}")
-    public ResponseEntity<?> getClothes(@PathVariable Long clothesDetailsId, @PathVariable Long clothesId) {
-        try {
-            return ResponseEntity.ok(clothesProductService.findByClothesId(clothesId));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> getClothes(@PathVariable Long clothesDetailsId, @PathVariable Long clothesId)
+            throws NotFoundException {
+        return ResponseEntity.ok(clothesProductService.findByClothesId(clothesId));
     }
 
     @GetMapping("/{clothesDetailsId}")
-    public ResponseEntity<?> getAll(@PathVariable Long clothesDetailsId) {
-        try {
-            return ResponseEntity.ok(clothesProductService.findAllByClothesDetailsId(clothesDetailsId));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> getAll(@PathVariable Long clothesDetailsId) throws NotFoundException {
+        return ResponseEntity.ok(clothesProductService.findAllByClothesDetailsId(clothesDetailsId));
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> saveClothes(@RequestBody ClothesProductDto clothesProductDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(clothesProductService.saveClothes(clothesProductDto));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> saveClothes(@RequestBody ClothesProductDto clothesProductDto) throws NotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clothesProductService.saveClothes(clothesProductDto));
     }
 
     @PatchMapping("/{clothesDetailsId}/{clothesId}")
     public ResponseEntity<?> updateClothes(@PathVariable Long clothesDetailsId,
                                            @PathVariable Long clothesId,
-                                           @RequestBody ClothesDTO clothesDTO) {
-        try {
-            return ResponseEntity.ok(clothesProductService.updateClothes(clothesId, clothesDTO));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+                                           @RequestBody ClothesDTO clothesDTO) throws NotFoundException {
+        return ResponseEntity.ok(clothesProductService.updateClothes(clothesId, clothesDTO));
     }
 
     @PatchMapping("/{clothesDetailsId}")
     public ResponseEntity<?> updateClothesDetails(@PathVariable Long clothesDetailsId,
-                                           @RequestBody ClothesDetailsDto clothesDetailsDto) {
-        try {
-            return ResponseEntity.ok(clothesProductService.updateClothesDetails(clothesDetailsId, clothesDetailsDto));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+                                           @RequestBody ClothesDetailsDto clothesDetailsDto) throws NotFoundException {
+        return ResponseEntity.ok(clothesProductService.updateClothesDetails(clothesDetailsId, clothesDetailsDto));
     }
 
     @DeleteMapping("/{clothesDetailsId}/{clothesId}")
-    public ResponseEntity<?> deleteClothes(@PathVariable Long clothesDetailsId, @PathVariable Long clothesId) {
-        try {
-            clothesProductService.deleteClothes(clothesId);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteClothes(@PathVariable Long clothesDetailsId, @PathVariable Long clothesId)
+            throws NotFoundException {
+        clothesProductService.deleteClothes(clothesId);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{clothesDetailsId}")
-    public ResponseEntity<?> deleteClothesDetails(@PathVariable Long clothesDetailsId) {
-        try {
-            clothesProductService.deleteClothesDetails(clothesDetailsId);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteClothesDetails(@PathVariable Long clothesDetailsId) throws NotFoundException {
+        clothesProductService.deleteClothesDetails(clothesDetailsId);
+        return ResponseEntity.ok().build();
     }
 
 
