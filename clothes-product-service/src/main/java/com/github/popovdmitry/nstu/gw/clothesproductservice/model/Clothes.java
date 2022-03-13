@@ -1,6 +1,7 @@
 package com.github.popovdmitry.nstu.gw.clothesproductservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,14 +25,18 @@ public class Clothes {
     private ClothesDetails clothesDetails;
 
     @Column(name = "color")
+    @ApiModelProperty(example = "Red")
     private String color;
 
     @Column(name = "size")
+    @ApiModelProperty(example = "L", notes = "From XXS to XXXXL")
     private Size size;
 
     @Column(name = "count")
+    @ApiModelProperty(example = "54")
     private Long count;
 
     @Column(name = "price")
+    @ApiModelProperty(example = "999")
     private Long price;
 }
