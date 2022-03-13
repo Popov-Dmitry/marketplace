@@ -4,11 +4,11 @@ import com.github.popovdmitry.nstu.gw.photoservice.model.ProductType;
 import com.github.popovdmitry.nstu.gw.photoservice.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @RestController
@@ -22,73 +22,47 @@ public class PhotoController {
     public ResponseEntity<?> uploadPhotos(@RequestParam("productType") ProductType productType,
                                           @RequestParam("detailsId") Long detailsId,
                                           @RequestParam("id") Long id,
-                                          @RequestParam("file") MultipartFile[] multipartFile) {
-        try {
-            photoService.uploadPhotos(productType, detailsId, id, multipartFile);
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+                                          @RequestParam("file") MultipartFile[] multipartFile) throws IOException {
+        photoService.uploadPhotos(productType, detailsId, id, multipartFile);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{productType}/{detailsId}/{id}")
     public ResponseEntity<?> getPhotosNames(@PathVariable ProductType productType,
                                             @PathVariable Long detailsId,
-                                            @PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(photoService.getPhotosNames(productType, detailsId, id));
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
-        }
-
+                                            @PathVariable Long id) throws Exception {
+        return ResponseEntity.ok(photoService.getPhotosNames(productType, detailsId, id));
     }
 
     @GetMapping("/{productType}/{detailsId}/{id}/{name}")
     public ResponseEntity<?> getPhoto(@PathVariable ProductType productType,
                                       @PathVariable Long detailsId,
                                       @PathVariable Long id,
-                                      @PathVariable String name) {
-        try {
-            return ResponseEntity.ok(photoService.getPhoto(productType, detailsId, id, name));
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+                                      @PathVariable String name) throws IOException {
+        return ResponseEntity.ok(photoService.getPhoto(productType, detailsId, id, name));
     }
 
     @DeleteMapping("/{productType}/{detailsId}/{id}/{name}")
     public ResponseEntity<?> deletePhoto(@PathVariable ProductType productType,
                                          @PathVariable Long detailsId,
                                          @PathVariable Long id,
-                                         @PathVariable String name) {
-        try {
-            photoService.deletePhoto(productType, detailsId, id, name);
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+                                         @PathVariable String name) throws FileNotFoundException {
+        photoService.deletePhoto(productType, detailsId, id, name);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{productType}/{detailsId}/{id}")
     public ResponseEntity<?> deleteAllById(@PathVariable ProductType productType,
                                            @PathVariable Long detailsId,
-                                           @PathVariable Long id) {
-        try {
-            photoService.deleteAllById(productType, detailsId, id);
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+                                           @PathVariable Long id) throws IOException {
+        photoService.deleteAllById(productType, detailsId, id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{productType}/{detailsId}")
     public ResponseEntity<?> deleteAllByDetailsId(@PathVariable ProductType productType,
-                                                  @PathVariable Long detailsId) {
-        try {
-            photoService.deleteAllByDetailsId(productType, detailsId);
-            return ResponseEntity.ok().build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+                                                  @PathVariable Long detailsId) throws IOException {
+        photoService.deleteAllByDetailsId(productType, detailsId);
+        return ResponseEntity.ok().build();
     }
 }

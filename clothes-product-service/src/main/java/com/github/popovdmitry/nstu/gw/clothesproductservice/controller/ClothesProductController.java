@@ -1,10 +1,9 @@
 package com.github.popovdmitry.nstu.gw.clothesproductservice.controller;
 
 import com.github.popovdmitry.nstu.gw.clothesproductservice.config.Swagger2Config;
-import com.github.popovdmitry.nstu.gw.clothesproductservice.dto.ClothesDTO;
-import com.github.popovdmitry.nstu.gw.clothesproductservice.dto.ClothesDetailsDto;
-import com.github.popovdmitry.nstu.gw.clothesproductservice.dto.ClothesProductDto;
-import com.github.popovdmitry.nstu.gw.clothesproductservice.dto.SearchClothesProductDto;
+import com.github.popovdmitry.nstu.gw.clothesproductservice.dto.*;
+import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Clothes;
+import com.github.popovdmitry.nstu.gw.clothesproductservice.model.ClothesDetails;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.service.ClothesProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
@@ -16,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<?> getClothes(@PathVariable Long clothesDetailsId, @PathVariable Long clothesId)
+    public ResponseEntity<Clothes> getClothes(@PathVariable Long clothesDetailsId, @PathVariable Long clothesId)
             throws NotFoundException {
         return ResponseEntity.ok(clothesProductService.findByClothesId(clothesId));
     }
@@ -46,7 +47,7 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<?> getAll(@PathVariable Long clothesDetailsId) throws NotFoundException {
+    public ResponseEntity<List<Clothes>> getAll(@PathVariable Long clothesDetailsId) throws NotFoundException {
         return ResponseEntity.ok(clothesProductService.findAllByClothesDetailsId(clothesDetailsId));
     }
 
@@ -58,7 +59,7 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<?> saveClothes(@RequestBody ClothesProductDto clothesProductDto) throws NotFoundException {
+    public ResponseEntity<Clothes> saveClothes(@RequestBody ClothesProductDto clothesProductDto) throws NotFoundException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(clothesProductService.saveClothes(clothesProductDto));
@@ -72,7 +73,7 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<?> updateClothes(@PathVariable Long clothesDetailsId,
+    public ResponseEntity<Clothes> updateClothes(@PathVariable Long clothesDetailsId,
                                            @PathVariable Long clothesId,
                                            @RequestBody ClothesDTO clothesDTO) throws NotFoundException {
         return ResponseEntity.ok(clothesProductService.updateClothes(clothesId, clothesDTO));
@@ -86,8 +87,8 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<?> updateClothesDetails(@PathVariable Long clothesDetailsId,
-                                           @RequestBody ClothesDetailsDto clothesDetailsDto) throws NotFoundException {
+    public ResponseEntity<ClothesDetails> updateClothesDetails(@PathVariable Long clothesDetailsId,
+                                                               @RequestBody ClothesDetailsDto clothesDetailsDto) throws NotFoundException {
         return ResponseEntity.ok(clothesProductService.updateClothesDetails(clothesDetailsId, clothesDetailsDto));
     }
 
@@ -125,7 +126,7 @@ public class ClothesProductController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
     })
-    public ResponseEntity<?> searchAll(@RequestBody SearchClothesProductDto searchClothesProductDto) {
+    public ResponseEntity<List<SearchClothesProductReplyDto>> searchAll(@RequestBody SearchClothesProductDto searchClothesProductDto) {
         log.debug(searchClothesProductDto.toString());
         return ResponseEntity.ok(clothesProductService.findBySearchClothesProductDto(searchClothesProductDto));
     }
