@@ -22,22 +22,15 @@ public class SellerInfoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSellerInfo(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(sellerInfoService.findById(id));
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> getSellerInfo(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(sellerInfoService.findById(id));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<?> updateSellerStatus(@PathVariable Long id,
-                                                @RequestBody VerificationVerdictDto verificationVerdictDto) {
-        try {
-            sellerInfoService.deleteSellerInfo(id, verificationVerdictDto);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+                                                @RequestBody VerificationVerdictDto verificationVerdictDto)
+            throws NotFoundException {
+        sellerInfoService.deleteSellerInfo(id, verificationVerdictDto);
+        return ResponseEntity.ok().build();
     }
 }
