@@ -17,14 +17,14 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorDto(e.getMessage()));
     }
 
-    @ExceptionHandler(NotUniqueEmailException.class)
+    @ExceptionHandler(NotUniqueInnException.class)
     public ResponseEntity<ApiErrorDto> handleNotUniqueInnException(NotUniqueInnException e) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(new ApiErrorDto(e.getMessage()));
     }
 
-    @ExceptionHandler(NotUniqueEmailException.class)
+    @ExceptionHandler(NotUniqueShopNameException.class)
     public ResponseEntity<ApiErrorDto> handleNotUniqueShopNameException(NotUniqueShopNameException e) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
