@@ -64,7 +64,7 @@ public class ModerController {
     public ResponseEntity<Moder> updateModer(@Parameter(description = "Moder id", required = true, example = "123")
                                                  @PathVariable Long id,
                                              @Parameter(description = "Moder dto", required = true)
-                                             @RequestBody ModerDto updatedModer) throws NotFoundException {
+                                                 @RequestBody ModerDto updatedModer) throws NotFoundException {
         return ResponseEntity.ok(moderService.updateModer(id, updatedModer));
     }
 

@@ -64,7 +64,7 @@ public class AdminController {
     public ResponseEntity<Admin> updateAdmin(@Parameter(description = "Admin id", required = true, example = "123")
                                                  @PathVariable Long id,
                                              @Parameter(description = "Admin dto", required = true)
-                                             @RequestBody AdminDto adminDto) throws NotFoundException {
+                                                 @RequestBody AdminDto adminDto) throws NotFoundException {
         return ResponseEntity.ok(adminService.updateAdmin(id, adminDto));
     }
 

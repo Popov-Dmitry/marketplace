@@ -32,7 +32,7 @@ public class CartController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED")
     })
     public ResponseEntity<Cart> getCart(@Parameter(description = "Cart id", required = true, example = "123")
-                                         @PathVariable Long cartId) throws NotFoundException {
+                                            @PathVariable Long cartId) throws NotFoundException {
         return ResponseEntity.ok(cartService.findById(cartId));
     }
 
@@ -44,7 +44,7 @@ public class CartController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED")
     })
     public ResponseEntity<Cart> saveCart(@Parameter(description = "Cart dto", required = true)
-                                          @RequestBody CartDto cartDto) throws IllegalArgumentException {
+                                             @RequestBody CartDto cartDto) throws IllegalArgumentException {
         return ResponseEntity.ok(cartService.saveCart(cartDto));
     }
 
@@ -56,9 +56,9 @@ public class CartController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED")
     })
     public ResponseEntity<Cart> updateCart(@Parameter(description = "Cart id", required = true, example = "123")
-                                            @PathVariable Long cartId,
-                                        @Parameter(description = "Product count dto", required = true)
-                                        @RequestBody ProductCountDto productCountDto)
+                                               @PathVariable Long cartId,
+                                           @Parameter(description = "Product count dto", required = true)
+                                               @RequestBody ProductCountDto productCountDto)
             throws IllegalArgumentException, NotFoundException {
         return ResponseEntity.ok(cartService.updateCart(cartId, productCountDto));
     }

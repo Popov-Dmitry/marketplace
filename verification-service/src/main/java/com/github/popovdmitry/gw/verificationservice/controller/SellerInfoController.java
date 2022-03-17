@@ -60,7 +60,7 @@ public class SellerInfoController {
     public ResponseEntity<?> updateSellerStatus(@Parameter(description = "Seller sellerInfo id", required = true, example = "123")
                                                     @PathVariable Long id,
                                                 @Parameter(description = "Verification verdict dto", required = true)
-                                                @RequestBody VerificationVerdictDto verificationVerdictDto)
+                                                    @RequestBody VerificationVerdictDto verificationVerdictDto)
             throws NotFoundException {
         sellerInfoService.deleteSellerInfo(id, verificationVerdictDto);
         return ResponseEntity.ok().build();

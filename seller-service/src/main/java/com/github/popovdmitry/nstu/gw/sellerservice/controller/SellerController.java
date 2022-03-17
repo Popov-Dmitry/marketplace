@@ -73,7 +73,7 @@ public class SellerController {
     public ResponseEntity<Seller> updateSeller(@Parameter(description = "Seller id", required = true, example = "123")
                                                    @PathVariable Long id,
                                                @Parameter(description = "Seller dto", required = true)
-                                               @RequestBody SellerDto sellerDto) throws NotFoundException {
+                                                   @RequestBody SellerDto sellerDto) throws NotFoundException {
         return ResponseEntity.ok(sellerService.updateSeller(id, sellerDto));
     }
 

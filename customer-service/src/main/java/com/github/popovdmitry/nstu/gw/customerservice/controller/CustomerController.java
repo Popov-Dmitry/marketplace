@@ -63,7 +63,7 @@ public class CustomerController {
     public ResponseEntity<Customer> updateCustomer(@Parameter(description = "Customer id", required = true, example = "123")
                                                        @PathVariable Long id,
                                                    @Parameter(description = "Customer dto", required = true)
-                                                   @RequestBody CustomerDto updatedCustomer)
+                                                       @RequestBody CustomerDto updatedCustomer)
             throws NotFoundException {
         return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
     }
