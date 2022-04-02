@@ -1,5 +1,6 @@
 export const MAIN_ROUTE = "/";
 export const REGISTRATION_ROUTE = "/registration";
+export const LOGIN_ROUTE = "/login";
 export const ACCOUNT_ROUTE = "/account";
 export const SEARCH_ROUTE = "/search";
 export const CATALOG_ROUTE = "/catalog";
