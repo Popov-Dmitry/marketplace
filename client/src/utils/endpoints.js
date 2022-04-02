@@ -19,10 +19,10 @@ export const DELETE_CLOTHES = "/clothes/"; //{clothesDetailsId}/{clothesId}
 export const DELETE_CLOTHES_DETAILS = "/clothes/"; //{clothesDetailsId}
 export const SEARCH_CLOTHES = "/clothes/search/";
 
-export const ADD_CUSTOMERS = "/customers/";
-export const GET_CUSTOMERS = "/customers/"; //{id}
-export const UPDATE_CUSTOMERS = "/customers/"; //{id}
-export const DELETE_CUSTOMERS = "/customers/"; //{id}
+export const ADD_CUSTOMER = "/customers/";
+export const GET_CUSTOMER = "/customers/"; //{id}
+export const UPDATE_CUSTOMER = "/customers/"; //{id}
+export const DELETE_CUSTOMER = "/customers/"; //{id}
 
 export const ADD_MODER = "/moders/";
 export const GET_MODER = "/moders/"; //{id}
