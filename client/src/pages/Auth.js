@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useHistory, useLocation, NavLink} from "react-router-dom";
 import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import {login} from "../http/authApi";
-import {fetchCustomerByEmail, fetchCustomerById, registrationCustomer} from "../http/customerApi";
+import {fetchCustomerByEmail, registrationCustomer} from "../http/customerApi";
 import {authUser, fetchUser} from "../redux/actions";
-import {Alert, Button, Card, Container, Form} from "react-bootstrap";
+import {Button, Card, Container, Form} from "react-bootstrap";
 import "../styles/App.css";
 import ErrorAlert from "../components/ErrorAlert";
 
@@ -33,7 +33,7 @@ const Auth = () => {
             }
                 dispatch(fetchUser(resp));
                 dispatch(authUser(true));
-                // history.push(MAIN_ROUTE);
+                history.push(MAIN_ROUTE);
             }
         catch (e) {
             console.log(e);
