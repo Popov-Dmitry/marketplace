@@ -1,7 +1,32 @@
-.btn-primary {
+:root {
+    --main-color: #41B3A3
+}
+
+.btn-main {
     color: #fff;
-    background-color: #41B3A3;
-    border-color: #41B3A3;
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.btn-main:hover {
+    color: #fff;
+    background-color: #25a99a;
+    border-color: #25a99a;
+}
+
+.form-control:focus{
+    border-color: #25a99a;
+    box-shadow: 0 0 0 0.1rem var(--main-color);
+}
+
+.form-control-error{
+    border-color: #d50000;
+    box-shadow: 0 0 0 0.1rem #d50000;
+}
+
+.form-control-error:focus{
+    border-color: #d50000;
+    box-shadow: 0 0 0 0.1rem #d50000;
 }
 
 .error-alert {

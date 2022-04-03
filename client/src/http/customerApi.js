@@ -11,6 +11,15 @@ export const fetchCustomerById = async (id) => {
     return data;
 }
 
+export const fetchCustomerByEmail = async (email) => {
+    const {data} = await $authHost.get(GET_CUSTOMER, {
+        params: {
+            e:email
+        }
+    })
+    return data;
+}
+
 export const updateCustomer = async (id, firstName, secondName, email, password) => {
     const {data} = await $authHost.patch(UPDATE_CUSTOMER + id, {firstName, secondName, email, password});
     return data;
