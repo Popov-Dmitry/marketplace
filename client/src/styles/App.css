@@ -2,6 +2,11 @@
     --main-color: #41B3A3
 }
 
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 .btn-main {
     color: #fff;
     background-color: var(--main-color);
