@@ -13,6 +13,7 @@ import "../styles/App.css";
 import "../styles/NavBar.css";
 import NavBarCategoriesList from "./NavBarCategoriesList";
 import {boys, girls, men, women} from "../utils/categories";
+import {NavLink} from "react-router-dom";
 
 const NavBar = () => {
     return (
@@ -73,15 +74,15 @@ const NavBar = () => {
                 </Form>
 
                 <Nav>
-                    <Nav.Link href={CART_ROUTE}>
+                    <NavLink to={CART_ROUTE}>
                         <Image src={cart} width="36px" height="36px" className={"me-3"}/>
-                    </Nav.Link>
-                    <Nav.Link href={WISHLIST_ROUTE}>
+                    </NavLink>
+                    <NavLink to={WISHLIST_ROUTE}>
                         <Image src={favorite} width="35px" height="35px" className={"me-3"}/>
-                    </Nav.Link>
-                    <Nav.Link href={ACCOUNT_ROUTE} className={"text-center"}>
+                    </NavLink>
+                    <NavLink to={ACCOUNT_ROUTE}>
                         <Image src={user} width="32px" height="32px"/>
-                    </Nav.Link>
+                    </NavLink>
                 </Nav>
             </Container>
         </Navbar>
