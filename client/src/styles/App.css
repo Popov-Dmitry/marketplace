@@ -24,6 +24,11 @@
     box-shadow: 0 0 0 0.1rem var(--main-color);
 }
 
+.form-select:focus{
+    border-color: #25a99a;
+    box-shadow: 0 0 0 0.1rem var(--main-color);
+}
+
 .form-control-error{
     border-color: #d50000;
     box-shadow: 0 0 0 0.1rem #d50000;
@@ -39,4 +44,12 @@
     width: 22%;
     margin-top: 3px;
     margin-left: 6px;
+}
+
+.opacity-95 {
+    opacity: 95%
+}
+
+.border-radius-10 {
+    border-radius: 10px;
 }
