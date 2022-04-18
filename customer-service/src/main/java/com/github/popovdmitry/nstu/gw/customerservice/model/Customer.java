@@ -34,4 +34,20 @@ public class Customer {
     @Column(name = "password")
     @ApiModelProperty(notes = "In requests decoded, in responses encoded", position = 4)
     private String password;
+
+    @Column(name = "sex")
+    @ApiModelProperty(example = "MALE")
+    private Sex sex;
+
+    @Column(name = "birth_day")
+    @ApiModelProperty(example = "12")
+    private Integer birthDay;
+
+    @Column(name = "birth_month")
+    @ApiModelProperty(example = "2")
+    private Integer birthMonth;
+
+    @Column(name = "birth_year")
+    @ApiModelProperty(example = "1984")
+    private Integer birthYear;
 }

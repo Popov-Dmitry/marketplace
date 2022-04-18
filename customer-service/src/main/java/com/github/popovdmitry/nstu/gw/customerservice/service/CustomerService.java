@@ -35,6 +35,10 @@ public class CustomerService {
             customer.setSecondName(customerDto.getSecondName());
             customer.setEmail(customerDto.getEmail());
             customer.setPassword(bCryptPasswordEncoder.encode(customerDto.getPassword()));
+            customer.setSex(customerDto.getSex());
+            customer.setBirthDay(customer.getBirthDay());
+            customer.setBirthMonth(customerDto.getBirthMonth());
+            customer.setBirthYear(customerDto.getBirthYear());
             return customerRepository.save(customer);
         }
         catch (Exception e) {
@@ -58,6 +62,18 @@ public class CustomerService {
         }
         if (updatedCustomer.getPassword() != null && !updatedCustomer.getPassword().equals("")) {
             customer.setPassword(bCryptPasswordEncoder.encode(updatedCustomer.getPassword()));
+        }
+        if (updatedCustomer.getSex() != null) {
+            customer.setSex(updatedCustomer.getSex());
+        }
+        if (updatedCustomer.getBirthDay() != null) {
+            customer.setBirthDay(updatedCustomer.getBirthDay());
+        }
+        if (updatedCustomer.getBirthMonth() != null) {
+            customer.setBirthMonth(updatedCustomer.getBirthMonth());
+        }
+        if (updatedCustomer.getBirthYear() != null) {
+            customer.setBirthYear(updatedCustomer.getBirthYear());
         }
 
         return customerRepository.save(customer);
