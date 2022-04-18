@@ -1,12 +1,12 @@
 import React from 'react';
 import {Alert} from "react-bootstrap";
 
-const ErrorAlert = ({text}) => {
+const MyAlert = ({variant, text}) => {
     return (
-        <Alert variant="danger" className="error-alert">
+        <Alert variant={variant} className="my-alert">
             {text}
         </Alert>
     );
 };
 
-export default ErrorAlert;
+export default MyAlert;

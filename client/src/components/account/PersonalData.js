@@ -3,8 +3,7 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import DatePicker from "../DatePicker";
 import {updateCustomer} from "../../http/customerApi";
-import ErrorAlert from "../ErrorAlert";
-import {fetchUser} from "../../redux/actions";
+import {fetchUser, showAlert} from "../../redux/actions";
 
 const PersonalData = () => {
     const dispatch = useDispatch();
@@ -25,8 +24,7 @@ const PersonalData = () => {
         }
         catch (e) {
             console.log(e);
-            setError(e.response.request.response);
-            setTimeout(() => setError(""), 4000);
+            dispatch(showAlert("danger", e.response.request.response));
         }
     }
 
@@ -46,68 +44,65 @@ const PersonalData = () => {
     changeChecker();
 
     return (
-        <div>
-            {error && <ErrorAlert text={error}/>}
-            <Form>
-                <Row>
-                    <Col>
-                        <Form.Label className={"opacity-95"}>Имя</Form.Label>
-                        <Form.Control
-                            className={"mb-2 border-radius-10"}
-                            placeholder="Имя"
-                            value={firstName}
-                            onChange={e => setFirstName(e.target.value)}
-                        />
-                    </Col>
-                    <Col>
-                        <Form.Label className={"opacity-95"}>Фамилия</Form.Label>
-                        <Form.Control
-                            className={"mb-2 border-radius-10"}
-                            placeholder="Фамилия"
-                            value={secondName}
-                            onChange={e => setSecondName(e.target.value)}
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Label className={"opacity-95"}>Пол</Form.Label>
-                        <Form.Select
-                            className={"mb-2 border-radius-10"}
-                            value={sex}
-                            onChange={e => setSex(e.target.value)}
-                        >
-                            <option value="MALE">Мужской</option>
-                            <option value="FEMALE">Женский</option>
-                        </Form.Select>
-                    </Col>
-                    <Col>
-                        <Form.Label className={"opacity-95"}>Дата рождения</Form.Label>
-                        <DatePicker
-                            maxYear={new Date().getFullYear() - 7}
-                            initialDate={{
-                                day: birthDay,
-                                month: birthMonth,
-                                year: birthYear
+        <Form>
+            <Row>
+                <Col>
+                    <Form.Label className={"opacity-95"}>Имя</Form.Label>
+                    <Form.Control
+                        className={"mb-2 border-radius-10"}
+                        placeholder="Имя"
+                        value={firstName}
+                        onChange={e => setFirstName(e.target.value)}
+                    />
+                </Col>
+                <Col>
+                    <Form.Label className={"opacity-95"}>Фамилия</Form.Label>
+                    <Form.Control
+                        className={"mb-2 border-radius-10"}
+                        placeholder="Фамилия"
+                        value={secondName}
+                        onChange={e => setSecondName(e.target.value)}
+                    />
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Label className={"opacity-95"}>Пол</Form.Label>
+                    <Form.Select
+                        className={"mb-2 border-radius-10"}
+                        value={sex}
+                        onChange={e => setSex(e.target.value)}
+                    >
+                        <option value="MALE">Мужской</option>
+                        <option value="FEMALE">Женский</option>
+                    </Form.Select>
+                </Col>
+                <Col>
+                    <Form.Label className={"opacity-95"}>Дата рождения</Form.Label>
+                    <DatePicker
+                        maxYear={new Date().getFullYear() - 7}
+                        initialDate={{
+                            day: birthDay,
+                            month: birthMonth,
+                            year: birthYear
                         }}
-                            onChange={date => {
-                                setBirthDay(date.day);
-                                setBirthMonth(date.month);
-                                setBirthYear(date.year);
-                            }}
-                        />
-                    </Col>
-                </Row>
-                <Button
-                    id={"save"}
-                    variant={"main"}
-                    className={"mt-2 float-end disabled"}
-                    onClick={saveBtnClick}
-                >
-                    Сохранить
-                </Button>
-            </Form>
-        </div>
+                        onChange={date => {
+                            setBirthDay(date.day);
+                            setBirthMonth(date.month);
+                            setBirthYear(date.year);
+                        }}
+                    />
+                </Col>
+            </Row>
+            <Button
+                id={"save"}
+                variant={"main"}
+                className={"mt-2 float-end disabled"}
+                onClick={saveBtnClick}
+            >
+                Сохранить
+            </Button>
+        </Form>
     );
 };
 

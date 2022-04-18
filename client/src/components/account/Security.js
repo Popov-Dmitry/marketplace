@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../http/authApi";
-import ErrorAlert from "../ErrorAlert";
 import {updateCustomer} from "../../http/customerApi";
-import {fetchUser} from "../../redux/actions";
+import {fetchUser, showAlert} from "../../redux/actions";
 
 const Security = () => {
     const dispatch = useDispatch();
@@ -14,7 +13,6 @@ const Security = () => {
     const [newPassword, setNewPassword] = useState("");
     const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
     const [email, setEmail] = useState(account.user.email);
-    const [error, setError] = useState("");
 
     const checkCurrentPasswordClick = async () => {
         try {
@@ -24,12 +22,11 @@ const Security = () => {
         catch (e) {
             console.log(e);
             if(e.response.status === 401) {
-                setError("Неверный пароль");
+                dispatch(showAlert("danger", "Неверный пароль"));
             }
             else {
-                setError(e.response.request.response)
+                dispatch(showAlert("danger", e.response.request.response));
             }
-            setTimeout(() => setError(""), 4000);
         }
     }
 
@@ -43,8 +40,7 @@ const Security = () => {
         }
         catch (e) {
             console.log(e);
-            setError(e.response.request.response);
-            setTimeout(() => setError(""), 4000);
+            dispatch(showAlert("danger", e.response.request.response));
         }
     }
     const changeChecker = () => {
@@ -63,7 +59,6 @@ const Security = () => {
 
     return (
         <div>
-            {error && <ErrorAlert text={error}/>}
             {isConfirmed ?
             <Form>
                 <Form.Label>Email</Form.Label>

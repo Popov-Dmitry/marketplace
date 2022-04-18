@@ -39,7 +39,7 @@
     box-shadow: 0 0 0 0.1rem #d50000;
 }
 
-.error-alert {
+.my-alert {
     position: absolute;
     width: 22%;
     bottom: 2px;

@@ -6,7 +6,7 @@ const NavBarCategoriesList = ({categories}) => {
     return (
         <DropdownMenu className={"dropdown-submenu"}>
             {categories.map(value =>
-                <DropdownItem>
+                <DropdownItem key={value}>
                     {value}
                 </DropdownItem>
             )}
