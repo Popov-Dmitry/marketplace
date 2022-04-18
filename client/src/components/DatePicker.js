@@ -70,7 +70,7 @@ const DatePicker = ({maxYear, initialDate, onChange}) => {
                 className={"border-radius-10 me-1"}
                 onChange={e => setMonth(e.target.value)}
             >
-                {months.map(m => <option key={m} value={m}>{m}</option>)}
+                {months.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
             </FormSelect>
             <FormSelect
                 value={year}

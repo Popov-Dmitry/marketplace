@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import DatePicker from "../DatePicker";
+import {updateCustomer} from "../../http/customerApi";
+import ErrorAlert from "../ErrorAlert";
+import {fetchUser} from "../../redux/actions";
 
 const PersonalData = () => {
+    const dispatch = useDispatch();
     const account = useSelector(state => state.userReducer);
     const [firstName, setFirstName] = useState(account.user.firstName);
     const [secondName, setSecondName] = useState(account.user.secondName);
@@ -11,7 +15,20 @@ const PersonalData = () => {
     const [birthDay, setBirthDay] = useState(account.user.birthDay);
     const [birthMonth, setBirthMonth] = useState(account.user.birthMonth);
     const [birthYear, setBirthYear] = useState(account.user.birthYear);
+    const [error, setError] = useState("");
 
+    const saveBtnClick = async () => {
+        try {
+            let resp = await updateCustomer(account.user.id, firstName, secondName,
+                null, null, sex, birthDay, birthMonth, birthYear);
+            dispatch(fetchUser(resp));
+        }
+        catch (e) {
+            console.log(e);
+            setError(e.response.request.response);
+            setTimeout(() => setError(""), 4000);
+        }
+    }
 
     const changeChecker = () => {
         if (document.getElementById("save")) {
@@ -30,6 +47,7 @@ const PersonalData = () => {
 
     return (
         <div>
+            {error && <ErrorAlert text={error}/>}
             <Form>
                 <Row>
                     <Col>
@@ -84,6 +102,7 @@ const PersonalData = () => {
                     id={"save"}
                     variant={"main"}
                     className={"mt-2 float-end disabled"}
+                    onClick={saveBtnClick}
                 >
                     Сохранить
                 </Button>

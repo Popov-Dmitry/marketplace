@@ -19,11 +19,12 @@ const NavBar = () => {
     return (
         <Navbar bg={"light"} variant={"light"}>
             <Container>
-                <Navbar.Brand
-                    href={MAIN_ROUTE}
-                    className="nav-title fs-3 text-uppercase"
-                >
-                    КЛАДОВКА
+                <Navbar.Brand>
+                    <NavLink
+                        to={MAIN_ROUTE}
+                        className={"nav-title fs-3 text-uppercase text-decoration-none"}>
+                        КЛАДОВКА
+                    </NavLink>
                 </Navbar.Brand>
                 <Nav className="me-auto">
                     <Dropdown>
