@@ -42,8 +42,8 @@
 .error-alert {
     position: absolute;
     width: 22%;
-    margin-top: 3px;
-    margin-left: 6px;
+    bottom: 2px;
+    right: 10px;
 }
 
 .opacity-95 {
@@ -52,4 +52,16 @@
 
 .border-radius-10 {
     border-radius: 10px;
+}
+
+.black-to-main {
+    filter: invert(61%) sepia(10%) saturate(2330%) hue-rotate(122deg) brightness(100%) contrast(82%);
+}
+
+.main-color {
+    color: var(--main-color);
+}
+
+.main-color:hover {
+    color: var(--main-color);
 }
