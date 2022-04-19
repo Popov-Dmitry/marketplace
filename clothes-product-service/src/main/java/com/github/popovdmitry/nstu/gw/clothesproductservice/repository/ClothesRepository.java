@@ -13,12 +13,12 @@ import java.util.Optional;
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     @Query("select c from Clothes c where " +
             "(:clothesDetails is null or c.clothesDetails = :clothesDetails) " +
-            "and (:color = '' or upper(c.color) like concat('%', upper(:color), '%')) " +
-            "and (:size is null or c.size = :size) " +
-            "and (:price is null or c.price <= :price) ")
+            "and ((:colors) is null or c.color in (:colors)) " +
+            "and ((:sizes) is null or c.size in (:sizes)) " +
+            "and ((:price) is null or c.price <= :price) ")
     Optional<List<Clothes>> findAllByQuery(@Param("clothesDetails") ClothesDetails clothesDetails,
-                                                  @Param("color") String color,
-                                                  @Param("size") Size size,
+                                                  @Param("colors") List<String> color,
+                                                  @Param("sizes") List<Size> size,
                                                   @Param("price") Long price);
 
     @Query("SELECT DISTINCT c.color FROM Clothes c")

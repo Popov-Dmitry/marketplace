@@ -1,5 +1,6 @@
 package com.github.popovdmitry.nstu.gw.clothesproductservice.dto;
 
+import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class SearchClothesProductReplyDto {
     private Long clothesDetailsId;
 
     private Long price;
+    private Size size;
 
     private String brand;
     private String title;
