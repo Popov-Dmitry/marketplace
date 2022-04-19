@@ -21,7 +21,8 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
                                                   @Param("size") Size size,
                                                   @Param("price") Long price);
 
-
+    @Query("SELECT DISTINCT c.color FROM Clothes c")
+    List<String> findDistinctColors();
 
     Optional<Clothes> findByClothesDetails(ClothesDetails clothesDetails);
     Optional<Clothes> findByColor(String color);

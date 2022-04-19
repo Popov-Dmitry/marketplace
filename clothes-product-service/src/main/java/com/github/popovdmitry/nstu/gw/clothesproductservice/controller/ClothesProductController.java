@@ -140,11 +140,21 @@ public class ClothesProductController {
     @Operation(summary = "Search clothes by filter")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 400, message = "BAD REQUEST")
     })
     public ResponseEntity<List<SearchClothesProductReplyDto>> searchAll(@Parameter(description = "Search clothes product dto", required = true)
                                                                             @RequestBody SearchClothesProductDto searchClothesProductDto) {
         log.debug(searchClothesProductDto.toString());
         return ResponseEntity.ok(clothesProductService.findBySearchClothesProductDto(searchClothesProductDto));
+    }
+
+    @GetMapping(value = "/search/info", produces = "application/json")
+    @Operation(summary = "Get distinct brands colors and types")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST")
+    })
+    public ResponseEntity<BrandsColorsTypesDistinctDto> getBrandsColorsTypesDistinct() {
+        return ResponseEntity.ok(clothesProductService.findBrandsColorsTypesDistinct());
     }
 }

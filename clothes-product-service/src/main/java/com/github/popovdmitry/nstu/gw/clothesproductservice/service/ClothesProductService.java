@@ -168,4 +168,12 @@ public class ClothesProductService {
         }
         return searchClothesProductReplyDtoList;
     }
+
+    public BrandsColorsTypesDistinctDto findBrandsColorsTypesDistinct() {
+        BrandsColorsTypesDistinctDto brandsColorsTypesDistinctDto = new BrandsColorsTypesDistinctDto();
+        brandsColorsTypesDistinctDto.setBrands(clothesDetailsRepository.findDistinctBrands());
+        brandsColorsTypesDistinctDto.setColors(clothesRepository.findDistinctColors());
+        brandsColorsTypesDistinctDto.setTypes(clothesDetailsRepository.findDistinctTypes());
+        return brandsColorsTypesDistinctDto;
+    }
 }

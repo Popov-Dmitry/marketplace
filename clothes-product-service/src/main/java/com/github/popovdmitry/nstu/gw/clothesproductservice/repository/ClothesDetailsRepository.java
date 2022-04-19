@@ -24,4 +24,10 @@ public interface ClothesDetailsRepository extends JpaRepository<ClothesDetails, 
                                                  @Param("category") Category category,
                                                  @Param("season") Season season,
                                                  @Param("type") String type);
+
+    @Query("SELECT DISTINCT cd.brand FROM ClothesDetails cd")
+    List<String> findDistinctBrands();
+
+    @Query("SELECT DISTINCT cd.type FROM ClothesDetails cd")
+    List<String> findDistinctTypes();
 }
