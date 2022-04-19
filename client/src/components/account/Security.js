@@ -35,6 +35,7 @@ const Security = () => {
             let resp = await updateCustomer(account.user.id, null, null,
                 email, newPassword, null, null, null, null);
             dispatch(fetchUser(resp));
+            dispatch(showAlert("success", "Данные успешно обновлены"));
             setNewPassword("");
             setNewPasswordConfirmation("");
         }
@@ -43,6 +44,7 @@ const Security = () => {
             dispatch(showAlert("danger", e.response.request.response));
         }
     }
+
     const changeChecker = () => {
         if (document.getElementById("save")) {
             if (account.user.email !== email ||

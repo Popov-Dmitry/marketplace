@@ -14,13 +14,13 @@ const PersonalData = () => {
     const [birthDay, setBirthDay] = useState(account.user.birthDay);
     const [birthMonth, setBirthMonth] = useState(account.user.birthMonth);
     const [birthYear, setBirthYear] = useState(account.user.birthYear);
-    const [error, setError] = useState("");
 
     const saveBtnClick = async () => {
         try {
             let resp = await updateCustomer(account.user.id, firstName, secondName,
                 null, null, sex, birthDay, birthMonth, birthYear);
             dispatch(fetchUser(resp));
+            dispatch(showAlert("success", "Данные успешно обновлены"));
         }
         catch (e) {
             console.log(e);
