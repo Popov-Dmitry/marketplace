@@ -40,7 +40,8 @@ export const clothesReducer = (state = initialState, action) => {
                     newFilterRemove[action.payload.field] = null;
                 }
                 else {
-                    newFilterRemove = newFilterRemove[action.payload.field].filter(e => e !== action.payload.value);
+                    newFilterRemove[action.payload.field] =
+                        newFilterRemove[action.payload.field].filter(e => e !== action.payload.value);
                 }
             }
             return { ...state, filter: newFilterRemove };
