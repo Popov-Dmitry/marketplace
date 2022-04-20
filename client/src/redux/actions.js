@@ -2,7 +2,7 @@ import {
     ADD_FILTER,
     AUTH_USER, FETCH_USER,
     HIDE_ALERT, REMOVE_FILTER,
-    REQUEST_ALERT, REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_SEARCH_CLOTHES
+    REQUEST_ALERT, REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_PHOTOS_NAMES, REQUEST_SEARCH_CLOTHES
 } from "./types";
 
 export function authUser(isAuth) {
@@ -65,5 +65,12 @@ export function fetchSearchClothes(filter) {
             seasons: filter.seasons,
             types: filter.types
         }
+    }
+}
+
+export function fetchPhotosNames(productType, detailsId, id) {
+    return {
+        type: REQUEST_PHOTOS_NAMES,
+        payload: { productType, detailsId, id }
     }
 }

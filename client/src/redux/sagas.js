@@ -1,13 +1,14 @@
 import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
-    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_SEARCH_CLOTHES,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_PHOTOS_NAMES, FETCH_SEARCH_CLOTHES,
     FETCH_USER,
     HIDE_ALERT,
-    REQUEST_ALERT, REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_SEARCH_CLOTHES, REQUEST_USER,
+    REQUEST_ALERT, REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_PHOTOS_NAMES, REQUEST_SEARCH_CLOTHES, REQUEST_USER,
     SHOW_ALERT
 } from "./types";
 import {fetchCustomerById} from "../http/customerApi";
 import {fetchSearchPanelInfo, searchClothes} from "../http/clothesProductApi";
+import {fetchPhotosNames} from "../http/photoApi";
 
 export function* watchAll() {
     yield all([
@@ -15,6 +16,7 @@ export function* watchAll() {
         takeEvery(REQUEST_ALERT, requestAlertWorker),
         takeEvery(REQUEST_CLOTHES_SEARCH_PANEL_INFO, requestSearchPanelInfoWorker),
         takeEvery(REQUEST_SEARCH_CLOTHES, requestSearchClothesWorker),
+        takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNames),
     ]);
 }
 
@@ -40,6 +42,16 @@ function* requestSearchPanelInfoWorker(action) {
 function* requestSearchClothesWorker(action) {
     const payload = yield call(searchClothes, action.payload.colors, action.payload.sizes, action.payload.price,
         action.payload.brands, action.payload.title, action.payload.categories, action.payload.seasons, action.payload.types);
-    console.log(payload);
     yield put({ type: FETCH_SEARCH_CLOTHES, payload });
+}
+
+function* requestPhotosNames(action) {
+    const photosNames = yield call(fetchPhotosNames, action.payload.productType, action.payload.detailsId, action.payload.id);
+    const payload = {
+        detailsId: action.payload.detailsId,
+        id: action.payload.id,
+        photosNames
+    };
+    yield put({ type: FETCH_PHOTOS_NAMES, payload });
+
 }
