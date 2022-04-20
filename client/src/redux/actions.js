@@ -1,10 +1,8 @@
 import {
     ADD_FILTER,
-    AUTH_USER,
-    FETCH_USER,
+    AUTH_USER, FETCH_USER,
     HIDE_ALERT, REMOVE_FILTER,
-    REQUEST_ALERT,
-    REQUEST_FETCH_CLOTHES_SEARCH_PANEL_INFO
+    REQUEST_ALERT, REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_SEARCH_CLOTHES
 } from "./types";
 
 export function authUser(isAuth) {
@@ -36,7 +34,7 @@ export function hideAlert() {
 
 export function fetchSearchPanelInfo() {
     return {
-        type: REQUEST_FETCH_CLOTHES_SEARCH_PANEL_INFO
+        type: REQUEST_CLOTHES_SEARCH_PANEL_INFO
     }
 }
 
@@ -51,5 +49,21 @@ export function removeFilter(field, value) {
     return {
         type: REMOVE_FILTER,
         payload: { field, value }
+    }
+}
+
+export function fetchSearchClothes(filter) {
+    return {
+        type: REQUEST_SEARCH_CLOTHES,
+        payload: {
+            colors: filter.colors,
+            sizes: filter.sizes,
+            price: filter.price,
+            brands: filter.brands,
+            title: filter.title,
+            categories: filter.categories,
+            seasons: filter.seasons,
+            types: filter.types
+        }
     }
 }

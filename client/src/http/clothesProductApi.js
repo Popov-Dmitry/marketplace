@@ -47,9 +47,9 @@ export const deleteClothesDetails = async (clothesDetailsId, clothesId) => {
     return data;
 }
 
-export const searchClothes = async (color, size, price, brand, title, category, season, type) => {
+export const searchClothes = async (colors, sizes, price, brands, title, categories, seasons, types) => {
     const {data} = await $host.post(SEARCH_CLOTHES,
-        { color, size, price, brand, title, category, season, type });
+        { colors, sizes, price, brands, title, categories, seasons, types });
     return data;
 }
 

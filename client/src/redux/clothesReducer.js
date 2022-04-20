@@ -1,4 +1,4 @@
-import {ADD_FILTER, FETCH_CLOTHES_SEARCH_PANEL_INFO, REMOVE_FILTER} from "./types";
+import {ADD_FILTER, FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_SEARCH_CLOTHES, REMOVE_FILTER} from "./types";
 
 const initialState = {
     searchPanelInfo: null,
@@ -11,7 +11,8 @@ const initialState = {
         categories: null,
         seasons: null,
         types: null
-    }
+    },
+    clothes: []
 };
 
 export const clothesReducer = (state = initialState, action) => {
@@ -45,6 +46,8 @@ export const clothesReducer = (state = initialState, action) => {
                 }
             }
             return { ...state, filter: newFilterRemove };
+        case FETCH_SEARCH_CLOTHES:
+            return { ...state, clothes: action.payload };
         default:
             return state;
     }

@@ -17,7 +17,7 @@ export const UPDATE_CLOTHES = "/clothes/"; //{clothesDetailsId}/{clothesId}
 export const UPDATE_CLOTHES_DETAILS = "/clothes/"; //{clothesDetailsId}
 export const DELETE_CLOTHES = "/clothes/"; //{clothesDetailsId}/{clothesId}
 export const DELETE_CLOTHES_DETAILS = "/clothes/"; //{clothesDetailsId}
-export const SEARCH_CLOTHES = "/clothes/search/";
+export const SEARCH_CLOTHES = "/clothes/search";
 export const SEARCH_CLOTHES_PANEL_INFO = "/clothes/search/info/";
 
 export const ADD_CUSTOMER = "/customers/";

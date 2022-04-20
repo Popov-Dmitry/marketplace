@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Row} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {addFilter, removeFilter} from "../redux/actions";
+import {addFilter, fetchSearchClothes, removeFilter} from "../redux/actions";
 
 let typingTimer;
 let doneTypingInterval = 1000;
@@ -9,10 +9,12 @@ let doneTypingInterval = 1000;
 const SearchPanel = () => {
     const dispatch = useDispatch();
     const searchPanelInfo = useSelector(state => state.clothesReducer.searchPanelInfo);
+    const filter = useSelector(state => state.clothesReducer.filter);
     const [maxPrice, setMaxPrice] = useState("");
 
+    useEffect(() => dispatch(fetchSearchClothes(filter)), [filter]);
+
     const onChange = (event) => {
-        console.log(event.target.checked);
         if (event.target.checked) {
             dispatch(addFilter(event.target.name, event.target.value));
         }
@@ -22,7 +24,6 @@ const SearchPanel = () => {
     }
 
     const onMaxPriceChange = (event) => {
-        console.log(event.target.value);
         setMaxPrice(event.target.value);
         clearTimeout(typingTimer);
         if (event.target.value && event.target.value > 0) {
