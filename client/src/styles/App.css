@@ -19,6 +19,10 @@
     border-color: #25a99a;
 }
 
+.spinner-main {
+    color: var(--main-color);
+}
+
 .form-control:focus{
     border-color: #25a99a;
     box-shadow: 0 0 0 0.1rem var(--main-color);
@@ -81,4 +85,12 @@
     border: 3px;  /* creates padding around scroll thumb */
 }
 
+.product-item {
+    cursor: pointer;
+}
 
+.product-item-param {
+    background-color: #fafafa;
+    border-radius: 10px;
+    font-size: small;
+}
