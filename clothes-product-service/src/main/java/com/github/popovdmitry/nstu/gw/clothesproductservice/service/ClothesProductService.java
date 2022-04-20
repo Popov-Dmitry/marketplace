@@ -1,7 +1,8 @@
 package com.github.popovdmitry.nstu.gw.clothesproductservice.service;
 
 import com.github.popovdmitry.nstu.gw.clothesproductservice.dto.*;
-import com.github.popovdmitry.nstu.gw.clothesproductservice.model.*;
+import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Clothes;
+import com.github.popovdmitry.nstu.gw.clothesproductservice.model.ClothesDetails;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.repository.ClothesDetailsRepository;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.repository.ClothesRepository;
 import javassist.NotFoundException;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,8 +21,6 @@ public class ClothesProductService {
 
     private final ClothesRepository clothesRepository;
     private final ClothesDetailsRepository clothesDetailsRepository;
-
-    private final static String EMPTY_SEARCH_LIST = "___SYSTEM___EMPTY_SEARCH_LIST___SYSTEM___";
 
     public Clothes findByClothesId(Long id) throws NotFoundException {
         return clothesRepository.findById(id).orElseThrow(() ->
@@ -122,55 +120,7 @@ public class ClothesProductService {
         clothesDetailsRepository.delete(clothesDetails);
     }
 
-//    public List<SearchClothesProductReplyDto> findBySearchClothesProductDto(SearchClothesProductDto searchClothesProductDto) {
-//        if (Objects.isNull(searchClothesProductDto.getBrand())) {
-//            searchClothesProductDto.setBrand("");
-//        }
-//        if (Objects.isNull(searchClothesProductDto.getTitle())) {
-//            searchClothesProductDto.setTitle("");
-//        }
-//        if (Objects.isNull(searchClothesProductDto.getType())) {
-//            searchClothesProductDto.setType("");
-//        }
-//        if (Objects.isNull(searchClothesProductDto.getColor())) {
-//            searchClothesProductDto.setColor("");
-//        }
-//        log.debug(searchClothesProductDto.toString());
-//
-//        Optional<List<ClothesDetails>> optionalClothesDetailsList = clothesDetailsRepository.findAllByQuery(
-//                searchClothesProductDto.getBrand(),
-//                searchClothesProductDto.getTitle(),
-//                searchClothesProductDto.getCategory(),
-//                searchClothesProductDto.getSeason(),
-//                searchClothesProductDto.getType());
-//        List<ClothesDetails> clothesDetailsList = optionalClothesDetailsList.get();
-//        log.debug(clothesDetailsList.toString());
-//        List<SearchClothesProductReplyDto> searchClothesProductReplyDtoList = new ArrayList<>();
-//
-//        for (ClothesDetails clothesDetails : clothesDetailsList) {
-//            Optional<List<Clothes>> optionalClothesList = clothesRepository.findAllByQuery(
-//                    clothesDetails,
-//                    searchClothesProductDto.getColor(),
-//                    searchClothesProductDto.getSize(),
-//                    searchClothesProductDto.getPrice()
-//            );
-//            if (optionalClothesList.isPresent()) {
-//                List<Clothes> clothesList = optionalClothesList.get();
-//                for (Clothes clothes : clothesList) {
-//                    searchClothesProductReplyDtoList.add(new SearchClothesProductReplyDto(
-//                            clothes.getId(),
-//                            clothes.getClothesDetails().getId(),
-//                            clothes.getPrice(),
-//                            clothes.getClothesDetails().getBrand(),
-//                            clothes.getClothesDetails().getTitle()
-//                    ));
-//                }
-//            }
-//        }
-//        return searchClothesProductReplyDtoList;
-//    }
-
-    public List<SearchClothesProductReplyDto> findBySearchClothesProductDto(SearchClothesProductDto searchClothesProductDto) {
+    public List<ClothesDetails> findBySearchClothesProductDto(SearchClothesProductDto searchClothesProductDto) {
         if (Objects.isNull(searchClothesProductDto.getTitle())) {
             searchClothesProductDto.setTitle("");
         }
@@ -184,31 +134,85 @@ public class ClothesProductService {
                 searchClothesProductDto.getSeasons(),
                 searchClothesProductDto.getTypes());
         List<ClothesDetails> clothesDetailsList = optionalClothesDetailsList.get();
-        log.info(clothesDetailsList.toString());
-        List<SearchClothesProductReplyDto> searchClothesProductReplyDtoList = new ArrayList<>();
 
-        for (ClothesDetails clothesDetails : clothesDetailsList) {
-            Optional<List<Clothes>> optionalClothesList = clothesRepository.findAllByQuery(
-                    clothesDetails,
-                    searchClothesProductDto.getColors(),
-                    searchClothesProductDto.getSizes(),
-                    searchClothesProductDto.getPrice()
-            );
-            if (optionalClothesList.isPresent()) {
-                List<Clothes> clothesList = optionalClothesList.get();
-                for (Clothes clothes : clothesList) {
-                    searchClothesProductReplyDtoList.add(new SearchClothesProductReplyDto(
-                            clothes.getId(),
-                            clothes.getClothesDetails().getId(),
-                            clothes.getPrice(),
-                            clothes.getSize(),
-                            clothes.getClothesDetails().getBrand(),
-                            clothes.getClothesDetails().getTitle()
-                    ));
-                }
+        if (Objects.nonNull(searchClothesProductDto.getColors()) &&
+                Objects.nonNull(searchClothesProductDto.getSizes()) &&
+                Objects.nonNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
+                                        searchClothesProductDto.getSizes().contains(c.getSize()) &&
+                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                .toList());
             }
         }
-        return searchClothesProductReplyDtoList;
+        if (Objects.nonNull(searchClothesProductDto.getColors()) &&
+                Objects.nonNull(searchClothesProductDto.getSizes()) &&
+                Objects.isNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
+                                        searchClothesProductDto.getSizes().contains(c.getSize()))
+                                .toList());
+            }
+        }
+        if (Objects.nonNull(searchClothesProductDto.getColors()) &&
+                Objects.isNull(searchClothesProductDto.getSizes()) &&
+                Objects.nonNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
+                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                .toList());
+            }
+        }
+        if (Objects.isNull(searchClothesProductDto.getColors()) &&
+                Objects.nonNull(searchClothesProductDto.getSizes()) &&
+                Objects.nonNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getSizes().contains(c.getSize()) &&
+                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                .toList());
+            }
+        }
+        if (Objects.nonNull(searchClothesProductDto.getColors()) &&
+                Objects.isNull(searchClothesProductDto.getSizes()) &&
+                Objects.isNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()))
+                                .toList());
+            }
+        }
+        if (Objects.isNull(searchClothesProductDto.getColors()) &&
+                Objects.nonNull(searchClothesProductDto.getSizes()) &&
+                Objects.isNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getSizes().contains(c.getSize()))
+                                .toList());
+            }
+        }
+        if (Objects.isNull(searchClothesProductDto.getColors()) &&
+                Objects.isNull(searchClothesProductDto.getSizes()) &&
+                Objects.nonNull(searchClothesProductDto.getPrice())) {
+            for (ClothesDetails clothesDetails : clothesDetailsList) {
+                clothesDetails.setClothes(
+                        clothesDetails.getClothes().stream()
+                                .filter(c -> searchClothesProductDto.getPrice() <= c.getPrice())
+                                .toList());
+            }
+        }
+        clothesDetailsList = clothesDetailsList.stream().filter(cd -> !cd.getClothes().isEmpty()).toList();
+        log.info(clothesDetailsList.toString());
+        return clothesDetailsList;
     }
 
     public BrandsColorsTypesDistinctDto findBrandsColorsTypesDistinct() {

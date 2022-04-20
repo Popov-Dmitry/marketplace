@@ -142,7 +142,7 @@ public class ClothesProductController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "BAD REQUEST")
     })
-    public ResponseEntity<List<SearchClothesProductReplyDto>> searchAll(@Parameter(description = "Search clothes product dto", required = true)
+    public ResponseEntity<List<ClothesDetails>> searchAll(@Parameter(description = "Search clothes product dto", required = true)
                                                                             @RequestBody SearchClothesProductDto searchClothesProductDto) {
         log.debug(searchClothesProductDto.toString());
         return ResponseEntity.ok(clothesProductService.findBySearchClothesProductDto(searchClothesProductDto));
