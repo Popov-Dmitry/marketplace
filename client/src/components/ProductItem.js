@@ -4,33 +4,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchPhotosNames} from "../redux/actions";
 import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../utils/consts";
-
-const getColors = (clothes) => {
-    let colors = [];
-    for (let c of clothes) {
-        if (!colors.includes(c.color)) {
-            colors.push(c.color);
-        }
-    }
-    return colors;
-}
-
-const getSizes = (clothes) => {
-    let sizes = [];
-    for (let c of clothes) {
-        if (!sizes.includes(c.size)) {
-            sizes.push(c.size);
-        }
-    }
-    return sizes;
-}
+import {getColorsByDetails, getSizesByDetails} from "../utils/productUtils";
 
 const ProductItem = ({product}) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const photos = useSelector(state => state.photoReducer.photosNames);
-    const colors = useMemo(() => getColors(product.clothes), [product]);
-    const sizes = useMemo(() => getSizes(product.clothes), [product]);
+    const colors = useMemo(() => getColorsByDetails(product.clothes), [product]);
+    const sizes = useMemo(() => getSizesByDetails(product.clothes), [product]);
 
     useEffect(() => dispatch(fetchPhotosNames("CLOTHES", product.id, product.clothes[0].id)), []);
 
@@ -44,10 +25,9 @@ const ProductItem = ({product}) => {
                     <Card.Img
                         src={process.env.REACT_APP_API_URL + "photos/CLOTHES/" + product.id + "/"
                             + product.clothes[0].id + "/" + photos[product.id].photosNames[0]}
-                        height={400}
-                        className={"text-center"}
+                        className={"text-center ratio-3x4"}
                         alt={product.title}
-                    />
+                        />
                     :
                     <div className={"text-center"} style={{height: "250px"}}>
                         <Spinner className={"spinner-main"} animation="border"/>

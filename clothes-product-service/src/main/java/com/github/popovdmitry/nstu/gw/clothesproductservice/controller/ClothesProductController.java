@@ -51,9 +51,9 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<List<Clothes>> getAll(@Parameter(description = "Clothes details id", required = true, example = "123")
+    public ResponseEntity<ClothesDetails> getAll(@Parameter(description = "Clothes details id", required = true, example = "123")
                                                     @PathVariable Long clothesDetailsId) throws NotFoundException {
-        return ResponseEntity.ok(clothesProductService.findAllByClothesDetailsId(clothesDetailsId));
+        return ResponseEntity.ok(clothesProductService.findByClothesDetailsId(clothesDetailsId));
     }
 
     @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
