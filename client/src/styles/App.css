@@ -94,3 +94,20 @@
     border-radius: 10px;
     font-size: small;
 }
+
+.product-item-param-border {
+    border: 1px solid lightgray;
+}
+
+.product-item-param-active-border {
+    border: 2px solid #41B3A3;
+}
+
+img {
+    max-width: 100%;
+}
+
+.ratio-3x4 {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+}
