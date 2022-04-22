@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -24,16 +26,16 @@ public class CartController {
 
     private final CartService cartService;
 
-    @GetMapping(value = "/{cartId}", produces = "application/json")
-    @Operation(summary = "Get cart by id")
+    @GetMapping(value = "/{customerId}", produces = "application/json")
+    @Operation(summary = "Get all cart by customerId")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
             @ApiResponse(code = 401, message = "UNAUTHORIZED")
     })
-    public ResponseEntity<Cart> getCart(@Parameter(description = "Cart id", required = true, example = "123")
-                                            @PathVariable Long cartId) throws NotFoundException {
-        return ResponseEntity.ok(cartService.findById(cartId));
+    public ResponseEntity<List<Cart>> getCart(@Parameter(description = "Customer id", required = true, example = "123")
+                                            @PathVariable Long customerId) {
+        return ResponseEntity.ok(cartService.findAllByCustomerId(customerId));
     }
 
     @PostMapping(value = "/", consumes = "application/json", produces = "application/json")

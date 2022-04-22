@@ -27,11 +27,15 @@ public class Cart {
     @ApiModelProperty(example = "CLOTHES", position = 2)
     private ProductType productType;
 
+    @Column(name = "product_details_id")
+    @ApiModelProperty(example = "12345", position = 3)
+    private Long productDetailsId;
+
     @Column(name = "product_id")
-    @ApiModelProperty(example = "5421", position = 3)
+    @ApiModelProperty(example = "5421", position = 4)
     private Long productId;
 
     @Column(name = "count")
-    @ApiModelProperty(example = "2", position = 4)
+    @ApiModelProperty(example = "2", position = 5)
     private Integer count;
 }
