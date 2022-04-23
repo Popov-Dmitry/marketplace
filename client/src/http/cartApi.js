@@ -11,9 +11,9 @@ export const saveCart = async (customerId, productType, productDetailsId, produc
     return data;
 }
 
-export const updateCart = async (cartId, customerId, productType, productDetailsId, productId, count) => {
+export const updateCart = async (cartId, count) => {
     const {data} = await $authHost.patch(UPDATE_CART + cartId,
-        { customerId, productType, productDetailsId, productId, count });
+        { count });
     return data;
 }
 
