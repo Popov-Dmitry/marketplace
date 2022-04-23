@@ -1,8 +1,15 @@
 import {
     ADD_FILTER,
-    AUTH_USER, FETCH_USER,
-    HIDE_ALERT, REMOVE_FILTER,
-    REQUEST_ALERT, REQUEST_CART, REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_PHOTOS_NAMES, REQUEST_SEARCH_CLOTHES
+    AUTH_USER,
+    FETCH_USER,
+    HIDE_ALERT,
+    REMOVE_FILTER,
+    REQUEST_ALERT,
+    REQUEST_CART,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
+    REQUEST_DELETE_CART,
+    REQUEST_PHOTOS_NAMES,
+    REQUEST_SEARCH_CLOTHES
 } from "./types";
 
 export function authUser(isAuth) {
@@ -79,5 +86,12 @@ export function fetchCart(customerId) {
     return {
         type: REQUEST_CART,
         payload: customerId
+    }
+}
+
+export function deleteCart(cartId) {
+    return {
+        type: REQUEST_DELETE_CART,
+        payload: cartId
     }
 }

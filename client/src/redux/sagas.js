@@ -1,5 +1,6 @@
 import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
+    DELETE_CART,
     FETCH_CART,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
     FETCH_PHOTOS_NAMES,
@@ -8,7 +9,7 @@ import {
     HIDE_ALERT,
     REQUEST_ALERT,
     REQUEST_CART,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES,
     REQUEST_SEARCH_CLOTHES,
     REQUEST_USER,
@@ -17,7 +18,8 @@ import {
 import {fetchCustomerById} from "../http/customerApi";
 import {fetchSearchPanelInfo, searchClothes} from "../http/clothesProductApi";
 import {fetchPhotosNames} from "../http/photoApi";
-import {fetchCart} from "../http/cartApi";
+import {deleteCart, fetchCart} from "../http/cartApi";
+import {showAlert} from "./actions";
 
 export function* watchAll() {
     yield all([
@@ -26,7 +28,8 @@ export function* watchAll() {
         takeEvery(REQUEST_CLOTHES_SEARCH_PANEL_INFO, requestSearchPanelInfoWorker),
         takeEvery(REQUEST_SEARCH_CLOTHES, requestSearchClothesWorker),
         takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNames),
-        takeEvery(REQUEST_CART, requestCartWorker)
+        takeEvery(REQUEST_CART, requestCartWorker),
+        takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker)
     ]);
 }
 
@@ -68,4 +71,21 @@ function* requestPhotosNames(action) {
 function* requestCartWorker(action) {
     const payload = yield call(fetchCart, action.payload);
     yield put({ type: FETCH_CART , payload });
+}
+
+function* requestDeleteCartWorker(action) {
+    try {
+        yield call(deleteCart, action.payload);
+        yield put({ type: DELETE_CART, payload: action.payload});
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Чтото пошлол не так"
+            }
+        });
+    }
 }
