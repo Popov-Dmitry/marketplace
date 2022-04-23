@@ -58,6 +58,10 @@
     border-radius: 10px;
 }
 
+.border-radius-50 {
+    border-radius: 50px;
+}
+
 .black-to-main {
     filter: invert(61%) sepia(10%) saturate(2330%) hue-rotate(122deg) brightness(100%) contrast(82%);
 }
@@ -85,7 +89,7 @@
     border: 3px;  /* creates padding around scroll thumb */
 }
 
-.product-item {
+.cursor-pointer {
     cursor: pointer;
 }
 
@@ -110,4 +114,12 @@ img {
 .ratio-3x4 {
     aspect-ratio: 3 / 4;
     object-fit: cover;
+}
+
+.background-light {
+    background-color: rgba(248,249,250);
+}
+
+.background-white {
+    background-color: white;
 }

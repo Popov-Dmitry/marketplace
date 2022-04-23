@@ -18,7 +18,7 @@ const ProductItem = ({product}) => {
     return (
         <Col md={4}>
             <Card
-                className={"product-item"}
+                className={"cursor-pointer"}
                 onClick={() => history.push(CLOTHES_ROUTE + "/" + product.id + "/" + product.clothes[0].id)}
             >
                 {photos[product.id] ?

@@ -36,6 +36,16 @@ public class ClothesProductService {
         return clothesRepository.findAllByClothesDetails(findByClothesDetailsId(id));
     }
 
+    public ClothesDetails findByClothesDetailsIdAndClothesId(Long clothesDetailsId, Long clothesId)
+            throws NotFoundException {
+        ClothesDetails clothesDetails = clothesDetailsRepository.findById(clothesDetailsId).orElseThrow(() ->
+                new NotFoundException(String.format("ClothesDetails with id %d is not found", clothesDetailsId)));
+        clothesDetails.setClothes(clothesDetails.getClothes().stream()
+                .filter(clothes -> Objects.equals(clothes.getId(), clothesId))
+                .toList());
+        return clothesDetails;
+    }
+
     public Clothes saveClothes(ClothesProductDto clothesProductDto) throws NotFoundException {
         Clothes clothes = new Clothes();
         clothes.setColor(clothesProductDto.getColor());

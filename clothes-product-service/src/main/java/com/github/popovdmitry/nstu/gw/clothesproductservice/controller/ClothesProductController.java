@@ -35,12 +35,12 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<Clothes> getClothes(@Parameter(description = "Clothes details id", required = true, example = "123")
+    public ResponseEntity<ClothesDetails> getClothes(@Parameter(description = "Clothes details id", required = true, example = "123")
                                                   @PathVariable Long clothesDetailsId,
                                               @Parameter(description = "Clothes id", required = true, example = "10")
                                                   @PathVariable Long clothesId)
             throws NotFoundException {
-        return ResponseEntity.ok(clothesProductService.findByClothesId(clothesId));
+        return ResponseEntity.ok(clothesProductService.findByClothesDetailsIdAndClothesId(clothesDetailsId, clothesId));
     }
 
     @GetMapping(value = "/{clothesDetailsId}", produces = "application/json")
