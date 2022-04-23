@@ -3,7 +3,7 @@ import {
     ACCOUNT_CARDS_ROUTE,
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
-    ACCOUNT_SECURITY_ROUTE, CLOTHES_ROUTE,
+    ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE,
     LOGIN_ROUTE,
     MAIN_ROUTE,
     REGISTRATION_ROUTE, SEARCH_ROUTE
@@ -13,6 +13,7 @@ import Main from "./pages/Main";
 import Account from "./pages/Account";
 import Search from "./pages/Search";
 import Product from "./pages/Product";
+import Cart from "./pages/Cart";
 
 export const publicRoutes = [
     {
@@ -58,4 +59,8 @@ export const authRoutes = [
         path: ACCOUNT_ADDRESSES_ROUTE,
         Component: Account
     },
+    {
+        path: CART_ROUTE,
+        Component: Cart
+    }
 ];
