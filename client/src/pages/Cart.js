@@ -6,6 +6,7 @@ import {fetchPhotosNames} from "../http/photoApi";
 import Summary from "../components/cart/Summary";
 import CartItem from "../components/cart/CartItem";
 import EmptyCart from "../components/cart/EmptyCart";
+import TopControls from "../components/cart/TopControls";
 
 const Cart = () => {
     const cart = useSelector(state => state.cartReducer.info);
@@ -36,11 +37,14 @@ const Cart = () => {
                 {cart.length ?
                     <Row>
                         <Col>
-                            <div className={"mt-4"}>
+                            <div className={"mt-3 mb-5 background-white border-radius-10 p-4"}>
                                 <div className={"fs-3 fw-bold"}>Корзина ({cart.length})</div>
                                 {isRequestsDone &&
-                                    <div>
-                                        {cart.map(item => <CartItem key={item.id} item={item}/>)}
+                                    <div className={"mt-4"}>
+                                        <TopControls cart={cart}/>
+                                        <div className={"mt-2"}>
+                                            {cart.map(item => <CartItem key={item.id} item={item}/>)}
+                                        </div>
                                     </div>
                                 }
                             </div>

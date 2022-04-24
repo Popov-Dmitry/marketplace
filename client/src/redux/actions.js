@@ -9,7 +9,7 @@ import {
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
     REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES,
-    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART
+    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, SELECT_ITEM
 } from "./types";
 
 export function authUser(isAuth) {
@@ -100,5 +100,12 @@ export function updateCart(cartId, count) {
     return {
         type: REQUEST_UPDATE_CART,
         payload: { cartId, count }
+    }
+}
+
+export function selectItemCart(cartId, checked) {
+    return {
+        type: SELECT_ITEM,
+        payload: { cartId, checked }
     }
 }

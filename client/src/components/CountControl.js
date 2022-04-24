@@ -30,7 +30,7 @@ const CountControl = ({item}) => {
             <div>
                 <div
                     id={item.id}
-                    className={"text-danger text-center cursor-pointer"}
+                    className={"text-danger text-center cursor-pointer mt-2"}
                     onClick={event => dispatch(deleteCart(event.target.id))}
                 >
                     Удалить
