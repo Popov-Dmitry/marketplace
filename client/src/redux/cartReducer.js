@@ -1,4 +1,4 @@
-import {DELETE_CART, FETCH_CART, SELECT_ITEM, UPDATE_CART} from "./types";
+import {DELETE_CART, FETCH_CART, SAVE_CART, SELECT_ITEM, UPDATE_CART} from "./types";
 
 const initialState = {
     info: [],
@@ -7,10 +7,14 @@ const initialState = {
 
 export const cartReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SAVE_CART:
+            const newInfo = [ ...state.info ];
+            newInfo.push(action.payload);
+            return { ...state, info: newInfo };
         case FETCH_CART:
             return { ...state, info: action.payload };
         case DELETE_CART:
-            return { ...state, info: state.info.filter(value => value.id !== action.payload) };
+            return { ...state, info: state.info.filter(value => value.id != action.payload) };
         case UPDATE_CART:
             return { ...state, info: state.info.map(i =>
                     action.payload.id === i.id ? { ...i, count: action.payload.count} : i)};

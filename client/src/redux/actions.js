@@ -8,7 +8,7 @@ import {
     REQUEST_CART,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
     REQUEST_DELETE_CART,
-    REQUEST_PHOTOS_NAMES,
+    REQUEST_PHOTOS_NAMES, REQUEST_SAVE_CART,
     REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, SELECT_ITEM
 } from "./types";
 
@@ -107,5 +107,12 @@ export function selectItemCart(cartId, checked) {
     return {
         type: SELECT_ITEM,
         payload: { cartId, checked }
+    }
+}
+
+export function saveCart(customerId, productType, productDetailsId, productId, count) {
+    return {
+        type: REQUEST_SAVE_CART,
+        payload: { customerId, productType, productDetailsId, productId, count }
     }
 }

@@ -10,15 +10,6 @@ const CartItem = ({item}) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    if (item.hasOwnProperty("count") && document.getElementById("minus")) {
-        if (item.count === 1) {
-            document.getElementById("minus").classList.add("disabled");
-        }
-        else {
-            document.getElementById("minus").classList.remove("disabled");
-        }
-    }
-
     const onProductClick = (event) => {
         history.push(CLOTHES_ROUTE + "/" + event.target.dataset.detailsId + "/" + event.target.dataset.id);
     }

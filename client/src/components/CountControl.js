@@ -9,9 +9,9 @@ const CountControl = ({item}) => {
     return (
         <div>
             <Button
-                id={"minus"}
+                id={item.id + "-minus"}
                 variant={"light"}
-                className={"fs-4 text-black-50 pt-0 pb-0"}
+                className={`fs-4 text-black-50 pt-0 pb-0 ${item.count === 1 && "disabled"}`}
                 style={{borderRadius: "100px"}}
                 onClick={() => dispatch(updateCart(item.id, item.count - 1))}
             >

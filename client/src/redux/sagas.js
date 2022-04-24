@@ -10,15 +10,15 @@ import {
     REQUEST_ALERT,
     REQUEST_CART,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
-    REQUEST_PHOTOS_NAMES,
+    REQUEST_PHOTOS_NAMES, REQUEST_SAVE_CART,
     REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART,
-    REQUEST_USER,
+    REQUEST_USER, SAVE_CART,
     SHOW_ALERT, UPDATE_CART
 } from "./types";
 import {fetchCustomerById} from "../http/customerApi";
 import {fetchSearchPanelInfo, searchClothes} from "../http/clothesProductApi";
 import {fetchPhotosNames} from "../http/photoApi";
-import {deleteCart, fetchCart, updateCart} from "../http/cartApi";
+import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 
 export function* watchAll() {
     yield all([
@@ -29,7 +29,8 @@ export function* watchAll() {
         takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNames),
         takeEvery(REQUEST_CART, requestCartWorker),
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
-        takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker)
+        takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
+        takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker)
     ]);
 }
 
@@ -94,6 +95,24 @@ function* requestUpdateCartWorker(action) {
     try {
         const payload = yield call(updateCart, action.payload.cartId, action.payload.count);
         yield put({ type: UPDATE_CART, payload: payload});
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошлол не так"
+            }
+        });
+    }
+}
+
+function* requestSaveCartWorker(action) {
+    try {
+        const payload = yield call(saveCart, action.payload.customerId, action.payload.productType,
+            action.payload.productDetailsId, action.payload.productId, action.payload.count);
+        yield put({ type: SAVE_CART, payload: payload});
     }
     catch (e) {
         console.log(e);

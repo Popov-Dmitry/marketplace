@@ -1,10 +1,13 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Button, Image} from "react-bootstrap";
 import favoriteShaded from "../../assets/heart_shaded.png";
 import favorite from "../../assets/heart.png";
 import {getColorsByDetails, getSizesByColor} from "../../utils/productUtils";
 import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../../utils/consts";
+import {useDispatch, useSelector} from "react-redux";
+import {saveCart} from "../../redux/actions";
+import CountControl from "../CountControl";
 
 const getCurrentClothes = (clothesArr, id) => {
     const currentClothes = clothesArr.filter(c => c.id == id);
@@ -13,9 +16,26 @@ const getCurrentClothes = (clothesArr, id) => {
 
 const ProductInfo = ({clothes}) => {
     const history = useHistory();
-    const currentClothes = useMemo(() => getCurrentClothes(clothes.clothes, history.location.pathname.split("/")[3]), [clothes]);
+    const dispatch = useDispatch();
+    const currentClothes = useMemo(() =>
+        getCurrentClothes(clothes.clothes, history.location.pathname.split("/")[3]), [clothes]);
+    const user = useSelector(state => state.userReducer);
+    const cartItem = useSelector(state => state.cartReducer.info);
     const colors = useMemo(() => getColorsByDetails(clothes.clothes), [clothes]);
     const sizes = useMemo(() => getSizesByColor(clothes.clothes, currentClothes.color), [clothes, currentClothes]);
+
+    const addToCartClick = () => {
+        if (user.isAuth && user.user.id) {
+            dispatch(saveCart(user.user.id, "CLOTHES", clothes.id, currentClothes.id, 1));
+        }
+        else {
+            //TODO: добовлять в локальную корзину и при логине суммировать
+        }
+    }
+
+    useEffect(() => console.log(cartItem.find(c =>
+        c.productDetailsId === clothes.id && c.productId === currentClothes.id)), [cartItem])
+
 
     return (
         <div>
@@ -52,7 +72,20 @@ const ProductInfo = ({clothes}) => {
                 </div>
             </div>
             <div className={"mt-4 d-flex"}>
-                <Button variant={"main"} size={"lg"} className={"w-75 me-2"}>Добавить в корзину</Button>
+                {cartItem.find(c =>
+                    c.productDetailsId === clothes.id && c.productId === currentClothes.id) ?
+                    <CountControl item={cartItem.find(c =>
+                        c.productDetailsId === clothes.id && c.productId === currentClothes.id)}/>
+                    :
+                    <Button
+                        variant={"main"}
+                        size={"lg"}
+                        className={"w-75 me-2"}
+                        onClick={addToCartClick}
+                    >
+                        Добавить в корзину
+                    </Button>
+                }
                 <Button
                     variant={"light"}
                     size={"lg"}
