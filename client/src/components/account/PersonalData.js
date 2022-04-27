@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import DatePicker from "../DatePicker";
-import {updateCustomer} from "../../http/customerApi";
-import {fetchUser, showAlert} from "../../redux/actions";
+import {updateCustomer} from "../../redux/actions";
 
 const PersonalData = () => {
     const dispatch = useDispatch();
@@ -14,19 +13,6 @@ const PersonalData = () => {
     const [birthDay, setBirthDay] = useState(account.user.birthDay);
     const [birthMonth, setBirthMonth] = useState(account.user.birthMonth);
     const [birthYear, setBirthYear] = useState(account.user.birthYear);
-
-    const saveBtnClick = async () => {
-        try {
-            let resp = await updateCustomer(account.user.id, firstName, secondName,
-                null, null, sex, birthDay, birthMonth, birthYear);
-            dispatch(fetchUser(resp));
-            dispatch(showAlert("success", "Данные успешно обновлены"));
-        }
-        catch (e) {
-            console.log(e);
-            dispatch(showAlert("danger", e.response.request.response));
-        }
-    }
 
     const changeChecker = () => {
         if (document.getElementById("save")) {
@@ -98,7 +84,8 @@ const PersonalData = () => {
                 id={"save"}
                 variant={"main"}
                 className={"mt-2 float-end disabled"}
-                onClick={saveBtnClick}
+                onClick={() => dispatch(updateCustomer(account.user.id, firstName, secondName,
+                    null, null, sex, birthDay, birthMonth, birthYear))}
             >
                 Сохранить
             </Button>

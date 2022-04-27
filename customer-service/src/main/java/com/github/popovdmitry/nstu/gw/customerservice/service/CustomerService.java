@@ -36,7 +36,7 @@ public class CustomerService {
             customer.setEmail(customerDto.getEmail());
             customer.setPassword(bCryptPasswordEncoder.encode(customerDto.getPassword()));
             customer.setSex(customerDto.getSex());
-            customer.setBirthDay(customer.getBirthDay());
+            customer.setBirthDay(customerDto.getBirthDay());
             customer.setBirthMonth(customerDto.getBirthMonth());
             customer.setBirthYear(customerDto.getBirthYear());
             return customerRepository.save(customer);

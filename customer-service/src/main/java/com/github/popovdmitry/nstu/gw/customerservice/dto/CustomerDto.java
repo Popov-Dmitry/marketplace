@@ -2,15 +2,13 @@ package com.github.popovdmitry.nstu.gw.customerservice.dto;
 
 import com.github.popovdmitry.nstu.gw.customerservice.model.Sex;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CustomerDto {
 
     @ApiModelProperty(example = "Ivan")

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../http/authApi";
-import {updateCustomer} from "../../http/customerApi";
-import {fetchUser, showAlert} from "../../redux/actions";
+import {updateCustomer, showAlert} from "../../redux/actions";
+import {blink} from "../../utils/uiUtils";
 
 const Security = () => {
     const dispatch = useDispatch();
@@ -16,7 +16,8 @@ const Security = () => {
 
     const checkCurrentPasswordClick = async () => {
         try {
-            await login(account.user.email, currentPassword, "CUSTOMER");
+            const resp = await login(account.user.email, currentPassword, "CUSTOMER");
+            localStorage.setItem("token", resp.headers.authorization.substring(6));
             setIsConfirmed(true);
         }
         catch (e) {
@@ -31,17 +32,24 @@ const Security = () => {
     }
 
     const saveBtnClick = async () => {
-        try {
-            let resp = await updateCustomer(account.user.id, null, null,
-                email, newPassword, null, null, null, null);
-            dispatch(fetchUser(resp));
-            dispatch(showAlert("success", "Данные успешно обновлены"));
+        let errors = 0;
+        if (email.trim().length < 5) {
+            blink("email");
+            errors++;
+        }
+        if (newPassword.trim().length < 8) {
+            blink("password");
+            errors++;
+        }
+        if (newPasswordConfirmation.trim().length < 8) {
+            blink("password");
+            errors++;
+        }
+        if (errors === 0) {
+            dispatch(updateCustomer(account.user.id, null, null,
+                email, newPassword, null, null, null, null));
             setNewPassword("");
             setNewPasswordConfirmation("");
-        }
-        catch (e) {
-            console.log(e);
-            dispatch(showAlert("danger", e.response.request.response));
         }
     }
 
