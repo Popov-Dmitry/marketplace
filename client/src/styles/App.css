@@ -74,6 +74,14 @@
     color: var(--main-color);
 }
 
+.green-color {
+    color: #127e6d;
+}
+
+.green-color:hover {
+    color: #1da28d;
+}
+
 .panel-scroll {
     overflow-y: scroll;
     height: 105px;

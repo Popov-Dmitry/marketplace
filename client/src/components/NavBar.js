@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Container, Dropdown, Form, Image, Nav, Navbar} from "react-bootstrap";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
@@ -6,7 +6,7 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, WISHLIST_ROUTE} from "../utils/consts";
 import catalog from "../assets/catalog.png";
 import search from "../assets/search.png";
-import user from "../assets/user.png";
+import account from "../assets/user.png";
 import cart from "../assets/bag.png";
 import favorite from "../assets/heart.png";
 import "../styles/App.css";
@@ -14,8 +14,13 @@ import "../styles/NavBar.css";
 import NavBarCategoriesList from "./NavBarCategoriesList";
 import {boys, girls, men, women} from "../utils/categories";
 import {NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
+import Auth from "./modals/Auth";
 
 const NavBar = () => {
+    const user = useSelector(state => state.userReducer);
+    const [authVisible, setAuthVisible] = useState(false);
+
     return (
         <Navbar bg={"light"} variant={"light"}>
             <Container>
@@ -81,9 +86,20 @@ const NavBar = () => {
                     <NavLink to={WISHLIST_ROUTE}>
                         <Image src={favorite} width="35px" height="35px" className={"me-3"}/>
                     </NavLink>
-                    <NavLink to={ACCOUNT_ROUTE}>
-                        <Image src={user} width="32px" height="32px"/>
-                    </NavLink>
+                    {user.isAuth ?
+                        <NavLink to={ACCOUNT_ROUTE}>
+                            <Image src={account} width="32px" height="32px"/>
+                        </NavLink>
+                        :
+                        <Image
+                            src={account}
+                            width="32px"
+                            height="32px"
+                            className={"cursor-pointer"}
+                            onClick={() => setAuthVisible(true)}
+                        />
+                    }
+                    <Auth show={authVisible} onHide={setAuthVisible}/>
                 </Nav>
             </Container>
         </Navbar>

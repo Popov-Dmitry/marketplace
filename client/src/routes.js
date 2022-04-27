@@ -4,11 +4,8 @@ import {
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
     ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE,
-    LOGIN_ROUTE,
-    MAIN_ROUTE,
-    REGISTRATION_ROUTE, SEARCH_ROUTE
+    MAIN_ROUTE, SEARCH_ROUTE
 } from "./utils/consts";
-import Auth from "./pages/Auth";
 import Main from "./pages/Main";
 import Account from "./pages/Account";
 import Search from "./pages/Search";
@@ -16,14 +13,6 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 
 export const publicRoutes = [
-    {
-        path: REGISTRATION_ROUTE,
-        Component: Auth
-    },
-    {
-        path: LOGIN_ROUTE,
-        Component: Auth
-    },
     {
         path: MAIN_ROUTE,
         Component: Main
