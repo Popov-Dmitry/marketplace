@@ -11,7 +11,7 @@ import {
     REQUEST_CART,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART,
-    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_CUSTOMER, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
+    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
     SAVE_CART, SHOW_ALERT, UPDATE_CART
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
@@ -20,7 +20,7 @@ import {fetchPhotosNames} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, SELLER} from "../utils/roles";
-import {registrationSeller, updateSeller} from "../http/sellerApi";
+import {fetchSellerByEmail, registrationSeller, updateSeller} from "../http/sellerApi";
 
 export function* watchAll() {
     yield all([
@@ -92,7 +92,13 @@ function* requestAuthAndFetchUserWorker(action) {
         const payload1 = yield call(login, action.payload.email, action.payload.password, action.payload.userRole);
         localStorage.setItem("token", payload1.headers.authorization.substring(6));
         yield put({ type: AUTH_USER , payload: true });
-        const payload2 = yield call(fetchCustomerByEmail, action.payload.email);
+        let payload2;
+        if (action.payload.userRole === CUSTOMER) {
+            payload2 = yield call(fetchCustomerByEmail, action.payload.email);
+        }
+        if (action.payload.userRole === SELLER) {
+            payload2 = yield call(fetchSellerByEmail, action.payload.email);
+        }
         yield put({ type: FETCH_USER , payload: payload2 });
     }
     catch (e) {

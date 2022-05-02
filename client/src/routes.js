@@ -3,7 +3,7 @@ import {
     ACCOUNT_CARDS_ROUTE,
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
-    ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE,
+    ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE, LOGIN_ROUTE,
     MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE
 } from "./utils/consts";
 import Main from "./pages/Main";
@@ -13,6 +13,7 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Landing from "./pages/seller/Landing";
 import Registration from "./pages/seller/Registration";
+import Login from "./pages/seller/Login";
 
 export const publicCustomerRoutes = [
     {
@@ -64,6 +65,10 @@ export const publicSellerRoutes = [
     {
         path: REGISTRATION_ROUTE,
         Component: Registration
+    },
+    {
+        path: LOGIN_ROUTE,
+        Component: Login
     }
 ];
 

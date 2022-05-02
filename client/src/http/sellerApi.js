@@ -12,6 +12,15 @@ export const fetchSellerById = async (id) => {
     return data;
 }
 
+export const fetchSellerByEmail = async (email) => {
+    const {data} = await $authHost.get(GET_SELLER, {
+        params: {
+            e:email
+        }
+    })
+    return data;
+}
+
 export const updateSeller = async (id, firstName, secondName, email, password, shopName, country, organizationType, inn, legalAddress) => {
     const {data} = await $authHost.patch(UPDATE_SELLER + id,
         {firstName, secondName, email, password, shopName, country, organizationType, inn, legalAddress});
