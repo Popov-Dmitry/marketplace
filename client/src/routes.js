@@ -4,15 +4,17 @@ import {
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
     ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE,
-    MAIN_ROUTE, SEARCH_ROUTE
+    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE
 } from "./utils/consts";
 import Main from "./pages/Main";
 import Account from "./pages/Account";
 import Search from "./pages/Search";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
+import Landing from "./pages/seller/Landing";
+import Registration from "./pages/seller/Registration";
 
-export const publicRoutes = [
+export const publicCustomerRoutes = [
     {
         path: MAIN_ROUTE,
         Component: Main
@@ -27,7 +29,7 @@ export const publicRoutes = [
     }
 ];
 
-export const authRoutes = [
+export const authCustomerRoutes = [
     {
         path: ACCOUNT_ROUTE,
         Component: Account
@@ -52,4 +54,19 @@ export const authRoutes = [
         path: CART_ROUTE,
         Component: Cart
     }
+];
+
+export const publicSellerRoutes = [
+    {
+        path: MAIN_ROUTE,
+        Component: Landing
+    },
+    {
+        path: REGISTRATION_ROUTE,
+        Component: Registration
+    }
+];
+
+export const authSellerRoutes = [
+
 ];
