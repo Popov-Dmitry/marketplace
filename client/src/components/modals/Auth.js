@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import {authAndFetchUser, registrationCustomer} from "../../redux/actions";
+import {authAndFetchUser, registrationUser} from "../../redux/actions";
 import {useDispatch} from "react-redux";
 import DatePicker from "../DatePicker";
 import {blink} from "../../utils/uiUtils";
+import {CUSTOMER} from "../../utils/roles";
 
 const Auth = ({show, onHide}) => {
     const dispatch = useDispatch();
@@ -50,36 +51,19 @@ const Auth = ({show, onHide}) => {
                 errors++;
             }
         }
-            if (errors === 0) {
-                // try {
-                //     let resp;
-                    if (!isRegistration) {
-                        console.log(1)
-                        // resp = await login(email, password, "CUSTOMER");
-                        // localStorage.setItem("token", resp.headers.authorization.substring(6));
-                        // resp = await fetchCustomerByEmail(email);
-                        dispatch(authAndFetchUser(email, password, "CUSTOMER"));
-
-                    }
-                    else {
-                        if (registrationStep === 2) {
-                            dispatch(registrationCustomer(firstName, secondName, email, password, sex, birthDay, birthMonth, birthYear));
-                        }
-                        // resp = await registrationCustomer(firstName, secondName, email, password);
-                    }
-                    // dispatch(fetchUser(resp));
-                    // dispatch(authUser(true));
-                    // history.push(MAIN_ROUTE);
-                // }
-                // catch (e) {
-                //     if(e.response.status === 401) {
-                //         dispatch(showAlert("danger", "Неверный email или пароль"));
-                //     }
-                //     else {
-                //         dispatch(showAlert("danger", e.response.request.response));
-                //     }
-                // }
+        if (errors === 0) {
+            if (!isRegistration) {
+                dispatch(authAndFetchUser(email, password, "CUSTOMER"));
+                onHide();
             }
+            else {
+                if (registrationStep === 2) {
+                    const user = {firstName, secondName, email, password, sex, birthDay, birthMonth, birthYear};
+                    dispatch(registrationUser(user, CUSTOMER));
+                    onHide();
+                }
+            }
+        }
     };
 
     return (

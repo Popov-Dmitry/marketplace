@@ -2,12 +2,20 @@ import {
     ADD_FILTER,
     HIDE_ALERT,
     REMOVE_FILTER,
-    REQUEST_ALERT, REQUEST_AUTH, REQUEST_AUTH_AND_FETCH_USER,
+    REQUEST_ALERT,
+    REQUEST_AUTH,
+    REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
     REQUEST_DELETE_CART,
-    REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_CUSTOMER, REQUEST_SAVE_CART,
-    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_CUSTOMER, REQUEST_USER_BY_EMAIL, SELECT_ITEM
+    REQUEST_PHOTOS_NAMES,
+    REQUEST_REGISTRATION_USER,
+    REQUEST_SAVE_CART,
+    REQUEST_SEARCH_CLOTHES,
+    REQUEST_UPDATE_CART,
+    REQUEST_UPDATE_USER,
+    REQUEST_USER_BY_EMAIL,
+    SELECT_ITEM
 } from "./types";
 
 export function authUser(email, password, userRole) {
@@ -31,17 +39,17 @@ export function authAndFetchUser(email, password, userRole) {
     }
 }
 
-export function registrationCustomer(firstName, secondName, email, password, sex, birthDay, birthMonth, birthYear) {
+export function registrationUser(user, userRole) {
     return {
-        type: REQUEST_REGISTRATION_CUSTOMER,
-        payload: { firstName, secondName, email, password, sex, birthDay, birthMonth, birthYear }
+        type: REQUEST_REGISTRATION_USER,
+        payload: { user, userRole }
     }
 }
 
-export function updateCustomer(id, firstName, secondName, email, password, sex, birthDay, birthMonth, birthYear) {
+export function updateUser(user, userRole) {
     return {
-        type: REQUEST_UPDATE_CUSTOMER,
-        payload: { id, firstName, secondName, email, password, sex, birthDay, birthMonth, birthYear }
+        type: REQUEST_UPDATE_USER,
+        payload: { user, userRole }
     }
 }
 

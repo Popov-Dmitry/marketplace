@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../http/authApi";
-import {updateCustomer, showAlert} from "../../redux/actions";
+import {showAlert, updateUser} from "../../redux/actions";
 import {blink} from "../../utils/uiUtils";
+import {CUSTOMER} from "../../utils/roles";
 
 const Security = () => {
     const dispatch = useDispatch();
@@ -46,8 +47,9 @@ const Security = () => {
             errors++;
         }
         if (errors === 0) {
-            dispatch(updateCustomer(account.user.id, null, null,
-                email, newPassword, null, null, null, null));
+            const user = { id: account.user.id, firstName: null, secondName: null, email,
+                password: newPassword, sex: null, birthDay: null, birthMonth: null, birthYear: null }
+            dispatch(updateUser(user, CUSTOMER));
             setNewPassword("");
             setNewPasswordConfirmation("");
         }

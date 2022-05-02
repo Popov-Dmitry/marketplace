@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import DatePicker from "../DatePicker";
-import {updateCustomer} from "../../redux/actions";
+import {updateUser} from "../../redux/actions";
+import {CUSTOMER} from "../../utils/roles";
 
 const PersonalData = () => {
     const dispatch = useDispatch();
@@ -84,8 +85,11 @@ const PersonalData = () => {
                 id={"save"}
                 variant={"main"}
                 className={"mt-2 float-end disabled"}
-                onClick={() => dispatch(updateCustomer(account.user.id, firstName, secondName,
-                    null, null, sex, birthDay, birthMonth, birthYear))}
+                onClick={() => {
+                    const user = { id: account.user.id, firstName, secondName, email: null,
+                        password: null, sex, birthDay, birthMonth, birthYear }
+                    dispatch(updateUser(user, CUSTOMER))
+                }}
             >
                 Сохранить
             </Button>

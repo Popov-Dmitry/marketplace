@@ -10,8 +10,8 @@ import {
     REQUEST_ALERT, REQUEST_AUTH, REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
-    REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_CUSTOMER, REQUEST_SAVE_CART,
-    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_CUSTOMER, REQUEST_USER_BY_EMAIL,
+    REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART,
+    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_CUSTOMER, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
     SAVE_CART, SHOW_ALERT, UPDATE_CART
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
@@ -19,14 +19,16 @@ import {fetchSearchPanelInfo, searchClothes} from "../http/clothesProductApi";
 import {fetchPhotosNames} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
+import {CUSTOMER, SELLER} from "../utils/roles";
+import {registrationSeller, updateSeller} from "../http/sellerApi";
 
 export function* watchAll() {
     yield all([
         takeEvery(REQUEST_AUTH, requestAuthWorker),
         takeEvery(REQUEST_USER_BY_EMAIL, requestUserByEmailWorker),
         takeEvery(REQUEST_AUTH_AND_FETCH_USER, requestAuthAndFetchUserWorker),
-        takeEvery(REQUEST_REGISTRATION_CUSTOMER, requestRegistrationCustomerWorker),
-        takeEvery(REQUEST_UPDATE_CUSTOMER, requestUpdateCustomer),
+        takeEvery(REQUEST_REGISTRATION_USER, requestRegistrationUserWorker),
+        takeEvery(REQUEST_UPDATE_USER, requestUpdateUser),
         takeEvery(REQUEST_ALERT, requestAlertWorker),
         takeEvery(REQUEST_CLOTHES_SEARCH_PANEL_INFO, requestSearchPanelInfoWorker),
         takeEvery(REQUEST_SEARCH_CLOTHES, requestSearchClothesWorker),
@@ -117,13 +119,22 @@ function* requestAuthAndFetchUserWorker(action) {
     }
 }
 
-function* requestRegistrationCustomerWorker(action) {
+function* requestRegistrationUserWorker(action) {
     try {
-        const payload1 = yield call(registrationCustomer, action.payload.firstName,
-            action.payload.secondName, action.payload.email, action.payload.password, action.payload.sex,
-            action.payload.birthDay, action.payload.birthMonth, action.payload.birthYear);
+        let payload1;
+        if (action.payload.userRole === CUSTOMER) {
+            payload1 = yield call(registrationCustomer, action.payload.user.firstName,
+                action.payload.user.secondName, action.payload.user.email, action.payload.user.password, action.payload.user.sex,
+                action.payload.user.birthDay, action.payload.user.birthMonth, action.payload.user.birthYear);
+        }
+        if (action.payload.userRole === SELLER) {
+            payload1 = yield call(registrationSeller, action.payload.user.firstName, action.payload.user.secondName,
+                action.payload.user.email, action.payload.user.password, action.payload.user.shopName,
+                action.payload.user.country, action.payload.user.organizationType, action.payload.user.inn,
+                action.payload.user.legalAddress);
+        }
         yield put({type: FETCH_USER, payload: payload1});
-        const payload2 = yield call(login, action.payload.email, action.payload.password, "CUSTOMER");
+        const payload2 = yield call(login, action.payload.user.email, action.payload.user.password, action.payload.userRole);
         localStorage.setItem("token", payload2.headers.authorization.substring(6));
         yield put({type: AUTH_USER, payload: true});
     }
@@ -140,11 +151,20 @@ function* requestRegistrationCustomerWorker(action) {
     }
 }
 
-function* requestUpdateCustomer(action) {
+function* requestUpdateUser(action) {
     try {
-        const payload = yield call(updateCustomer, action.payload.id, action.payload.firstName,
-            action.payload.secondName, action.payload.email, action.payload.password, action.payload.sex,
-            action.payload.birthDay, action.payload.birthMonth, action.payload.birthYear);
+        let payload;
+        if (action.payload.userRole === CUSTOMER) {
+            payload = yield call(updateCustomer, action.payload.user.id, action.payload.user.firstName,
+                action.payload.user.secondName, action.payload.user.email, action.payload.user.password,
+                action.payload.user.sex, action.payload.user.birthDay, action.payload.user.birthMonth, action.payload.user.birthYear);
+        }
+        if (action.payload.userRole === SELLER) {
+            payload = yield call(updateSeller, action.payload.user.id, action.payload.user.firstName,
+                action.payload.user.secondName, action.payload.user.email, action.payload.user.password,
+                action.payload.user.shopName, action.payload.user.country, action.payload.user.organizationType,
+                action.payload.user.inn, action.payload.user.legalAddress);
+        }
         yield put({ type: FETCH_USER , payload });
         yield put({
             type: REQUEST_ALERT,
