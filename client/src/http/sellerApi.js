@@ -21,8 +21,8 @@ export const fetchSellerByEmail = async (email) => {
     return data;
 }
 
-export const updateSeller = async (id, firstName, secondName, email, password, shopName, country, organizationType, inn, legalAddress) => {
+export const updateSeller = async (id, firstName, secondName, email, password, shopName, country, organizationType, legalAddress) => {
     const {data} = await $authHost.patch(UPDATE_SELLER + id,
-        {firstName, secondName, email, password, shopName, country, organizationType, inn, legalAddress});
+        {firstName, secondName, email, password, shopName, country, organizationType, legalAddress});
     return data;
 }

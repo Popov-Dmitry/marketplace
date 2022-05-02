@@ -4,7 +4,7 @@ import {
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
     ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE, LOGIN_ROUTE,
-    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE
+    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE, SELLER_SHOP_ROUTE
 } from "./utils/consts";
 import Main from "./pages/Main";
 import Account from "./pages/Account";
@@ -73,5 +73,24 @@ export const publicSellerRoutes = [
 ];
 
 export const authSellerRoutes = [
-
+    {
+        path: ACCOUNT_ROUTE,
+        Component: Account
+    },
+    {
+        path: ACCOUNT_PERSONAL_ROUTE,
+        Component: Account
+    },
+    {
+        path: ACCOUNT_SECURITY_ROUTE,
+        Component: Account
+    },
+    {
+        path: ACCOUNT_CARDS_ROUTE,
+        Component: Account
+    },
+    {
+        path: SELLER_SHOP_ROUTE,
+        Component: Account
+    },
 ];

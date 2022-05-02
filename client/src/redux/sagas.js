@@ -12,7 +12,7 @@ import {
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART,
     REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
-    SAVE_CART, SHOW_ALERT, UPDATE_CART
+    SAVE_CART, SET_USER_ROLE, SHOW_ALERT, UPDATE_CART
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {fetchSearchPanelInfo, searchClothes} from "../http/clothesProductApi";
@@ -45,6 +45,7 @@ function* requestAuthWorker(action) {
         const payload = yield call(login, action.payload.email, action.payload.password, action.payload.userRole);
         localStorage.setItem("token", payload.headers.authorization.substring(6));
         yield put({ type: AUTH_USER , payload: true });
+        yield put({ type: SET_USER_ROLE , payload: action.payload.userRole });
     }
     catch (e) {
         console.log(e);
@@ -81,7 +82,7 @@ function* requestUserByEmailWorker(action) {
             type: REQUEST_ALERT,
             payload: {
                 variant: "danger",
-                text: "Что-то пошлол не так"
+                text: "Что-то пошло не так"
             }
         });
     }
@@ -100,6 +101,7 @@ function* requestAuthAndFetchUserWorker(action) {
             payload2 = yield call(fetchSellerByEmail, action.payload.email);
         }
         yield put({ type: FETCH_USER , payload: payload2 });
+        yield put({ type: SET_USER_ROLE , payload: action.payload.userRole });
     }
     catch (e) {
         console.log(e);
@@ -143,6 +145,7 @@ function* requestRegistrationUserWorker(action) {
         const payload2 = yield call(login, action.payload.user.email, action.payload.user.password, action.payload.userRole);
         localStorage.setItem("token", payload2.headers.authorization.substring(6));
         yield put({type: AUTH_USER, payload: true});
+        yield put({ type: SET_USER_ROLE , payload: action.payload.userRole });
     }
     catch (e) {
         console.log(e);
@@ -158,6 +161,7 @@ function* requestRegistrationUserWorker(action) {
 }
 
 function* requestUpdateUser(action) {
+    console.log(action.payload.user)
     try {
         let payload;
         if (action.payload.userRole === CUSTOMER) {
@@ -168,8 +172,8 @@ function* requestUpdateUser(action) {
         if (action.payload.userRole === SELLER) {
             payload = yield call(updateSeller, action.payload.user.id, action.payload.user.firstName,
                 action.payload.user.secondName, action.payload.user.email, action.payload.user.password,
-                action.payload.user.shopName, action.payload.user.country, action.payload.user.organizationType,
-                action.payload.user.inn, action.payload.user.legalAddress);
+                action.payload.user.shopName, action.payload.user.country,
+                action.payload.user.organizationType, action.payload.user.legalAddress);
         }
         yield put({ type: FETCH_USER , payload });
         yield put({
@@ -186,7 +190,7 @@ function* requestUpdateUser(action) {
             type: REQUEST_ALERT,
             payload: {
                 variant: "danger",
-                text: "Что-то пошлол не так"
+                text: "Что-то пошло не так"
             }
         });
     }
@@ -258,7 +262,7 @@ function* requestDeleteCartWorker(action) {
             type: REQUEST_ALERT,
             payload: {
                 variant: "danger",
-                text: "Что-то пошлол не так"
+                text: "Что-то пошло не так"
             }
         });
     }
@@ -275,7 +279,7 @@ function* requestUpdateCartWorker(action) {
             type: REQUEST_ALERT,
             payload: {
                 variant: "danger",
-                text: "Что-то пошлол не так"
+                text: "Что-то пошло не так"
             }
         });
     }
@@ -293,7 +297,7 @@ function* requestSaveCartWorker(action) {
             type: REQUEST_ALERT,
             payload: {
                 variant: "danger",
-                text: "Что-то пошлол не так"
+                text: "Что-то пошло не так"
             }
         });
     }
