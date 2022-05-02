@@ -4,9 +4,12 @@ import {useDispatch} from "react-redux";
 import {blink} from "../../utils/uiUtils";
 import {authAndFetchUser} from "../../redux/actions";
 import {SELLER} from "../../utils/roles";
+import {useHistory} from "react-router-dom";
+import {ACCOUNT_PERSONAL_ROUTE} from "../../utils/consts";
 
 const Login = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -22,6 +25,7 @@ const Login = () => {
         }
         if (errors === 0) {
             dispatch(authAndFetchUser(email, password, SELLER));
+            history.push(ACCOUNT_PERSONAL_ROUTE);
         }
     }
 

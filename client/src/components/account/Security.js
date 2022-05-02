@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {login} from "../../http/authApi";
 import {showAlert, updateUser} from "../../redux/actions";
 import {blink} from "../../utils/uiUtils";
-import {CUSTOMER} from "../../utils/roles";
+import {CUSTOMER, SELLER} from "../../utils/roles";
 
 const Security = () => {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Security = () => {
 
     const checkCurrentPasswordClick = async () => {
         try {
-            const resp = await login(account.user.email, currentPassword, "CUSTOMER");
+            const resp = await login(account.user.email, currentPassword, account.userRole);
             localStorage.setItem("token", resp.headers.authorization.substring(6));
             setIsConfirmed(true);
         }
@@ -47,8 +47,15 @@ const Security = () => {
             errors++;
         }
         if (errors === 0) {
-            const user = { id: account.user.id, firstName: null, secondName: null, email,
-                password: newPassword, sex: null, birthDay: null, birthMonth: null, birthYear: null }
+            let user;
+            if (account.userRole === CUSTOMER) {
+                user = { id: account.user.id, firstName: null, secondName: null, email,
+                    password: newPassword, sex: null, birthDay: null, birthMonth: null, birthYear: null }
+            }
+            if (account.userRole === SELLER) {
+                user = { id: account.user.id, firstName: null, secondName: null, email, password: newPassword,
+                    shopName: null, country: null, organizationType: null, legalAddress: null }
+            }
             dispatch(updateUser(user, CUSTOMER));
             setNewPassword("");
             setNewPasswordConfirmation("");
@@ -65,7 +72,7 @@ const Security = () => {
                 document.getElementById("save").classList.add("disabled");
             }
         }
-    }
+    };
 
     changeChecker();
 

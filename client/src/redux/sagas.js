@@ -161,7 +161,6 @@ function* requestRegistrationUserWorker(action) {
 }
 
 function* requestUpdateUser(action) {
-    console.log(action.payload.user)
     try {
         let payload;
         if (action.payload.userRole === CUSTOMER) {
