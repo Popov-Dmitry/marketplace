@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 import {addProductDetails} from "../../redux/actions";
+import {blink} from "../../utils/uiUtils";
 
 const NewClothesProductDetails = ({step, setStep}) => {
     const dispatch = useDispatch();
@@ -13,10 +14,44 @@ const NewClothesProductDetails = ({step, setStep}) => {
     const [season, setSeason] = useState("");
     const [type, setType] = useState("");
 
+    const validation = () => {
+        let errors = 0;
+        if (brand.trim().length < 1) {
+            blink("brand");
+            errors++;
+        }
+        if (title.trim().length < 3) {
+            blink("title");
+            errors++;
+        }
+        if (description.trim().length < 5) {
+            blink("description");
+            errors++;
+        }
+        if (composition.trim().length < 5) {
+            blink("composition");
+            errors++
+        }
+        if (category === "") {
+            blink("category");
+            errors++
+        }
+        if (season === "") {
+            blink("season");
+            errors++
+        }
+        if (type.trim().length < 1) {
+            blink("type");
+            errors++
+        }
+        return errors === 0;
+    }
+
     return (
         <div>
             <Form.Label className={"opacity-95"}>Бренд</Form.Label>
             <Form.Control
+                id={"brand"}
                 className={"mb-2 border-radius-10 w-50"}
                 placeholder="Бренд"
                 value={brand}
@@ -24,6 +59,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
             />
             <Form.Label className={"opacity-95"}>Название товара</Form.Label>
             <Form.Control
+                id={"title"}
                 className={"mb-2 border-radius-10 w-50"}
                 placeholder="Название товара"
                 value={title}
@@ -31,6 +67,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
             />
             <Form.Label className={"opacity-95"}>Описание товара</Form.Label>
             <Form.Control
+                id={"description"}
                 className={"mb-2 border-radius-10 w-50 resize-none"}
                 as={"textarea"}
                 rows={3}
@@ -40,6 +77,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
             />
             <Form.Label className={"opacity-95"}>Состав</Form.Label>
             <Form.Control
+                id={"composition"}
                 className={"mb-2 border-radius-10 w-50"}
                 placeholder="Состав"
                 value={composition}
@@ -47,6 +85,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
             />
             <Form.Label className={"opacity-95"}>Пол</Form.Label>
             <Form.Select
+                id={"category"}
                 className={"mb-2 border-radius-10 w-25"}
                 value={category}
                 onChange={e => setCategory(e.target.value)}
@@ -60,6 +99,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
             </Form.Select>
             <Form.Label className={"opacity-95"}>Сезон</Form.Label>
             <Form.Select
+                id={"season"}
                 className={"mb-2 border-radius-10 w-25"}
                 value={season}
                 onChange={e => setSeason(e.target.value)}
@@ -72,6 +112,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
             </Form.Select>
             <Form.Label className={"opacity-95"}>Тип одежды</Form.Label>
             <Form.Control
+                id={"type"}
                 className={"mb-2 border-radius-10 w-50"}
                 placeholder="Тип одежды"
                 value={type}
@@ -81,6 +122,9 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 variant={"main"}
                 className={"mt-2"}
                 onClick={() => {
+                    if (!validation()) {
+                        return;
+                    }
                     const productDetails = { brand, title, description, composition, category, season, type }
                     dispatch(addProductDetails(productDetails));
                     setStep(step + 1);

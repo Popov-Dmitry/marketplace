@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Form} from "react-bootstrap";
-import {addProduct, addProductPhotos} from "../../redux/actions";
+import {addProduct, addProductPhotos, showAlert} from "../../redux/actions";
 import {useDispatch} from "react-redux";
+import {blink} from "../../utils/uiUtils";
 
 const NewClothesProduct = ({clothesDetailsId = null}) => {
     const dispatch = useDispatch();
@@ -11,10 +12,50 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
     const [price, setPrice] = useState(0);
     const [photos, setPhotos] = useState([]);
 
+    const validation = () => {
+        let errors = 0;
+        if (color.trim().length < 1) {
+            blink("color");
+            errors++;
+        }
+        if (size === "") {
+            blink("size");
+            errors++;
+        }
+        if (photos.length < 1) {
+            blink("files-input");
+            errors++;
+        }
+        return errors === 0;
+    };
+
+    const onFileChange = (event) => {
+        if (event.target.files.length > 5) {
+            dispatch(showAlert("danger", "Загрузите до 5 изображений"));
+            event.target.value = "";
+            return;
+        }
+        const maxSize = 10 * 1024 * 1024;
+        for (const file of event.target.files) {
+            if (file.type !== "image/jpeg" || file.type !== "image/png") {
+                dispatch(showAlert("danger", "Тип файла должен быть png, jpeg или jpg"));
+                event.target.value = "";
+                return;
+            }
+            if(file.size > maxSize) {
+                dispatch(showAlert("danger", "Максимальный размер файла 10МБ"));
+                event.target.value = "";
+                return;
+            }
+        }
+        setPhotos(event.target.files);
+    };
+
     return (
         <Form className={"w-50"}>
             <Form.Label className={"mt-2 opacity-95"}>Цвет</Form.Label>
             <Form.Control
+                id={"color"}
                 className={"mb-2 border-radius-10"}
                 placeholder="Цвет"
                 value={color}
@@ -22,6 +63,7 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
             />
             <Form.Label className={"opacity-95"}>Размер</Form.Label>
             <Form.Select
+                id={"size"}
                 className={"mb-2 border-radius-10 w-25"}
                 value={size}
                 onChange={e => setSize(e.target.value)}
@@ -66,9 +108,11 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
             <Form.Label className={"opacity-95"}>Изображения</Form.Label>
             <Form.Control
                 id={"files-input"}
+                className={"border-radius-10"}
                 type="file"
+                accept={"image/jpeg,image/png"}
                 multiple
-                onChange={event => setPhotos(event.target.files)}
+                onChange={onFileChange}
             />
             <div className={"fw-light fst-italic mt-1"}>
                 Загрузите до 5 изображений (каждая до 10МБ) в хорошем качестве.<br/>
@@ -78,6 +122,9 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                 variant={"main"}
                 className={"mt-2"}
                 onClick={() => {
+                    if (!validation()) {
+                        return;
+                    }
                     const product = { color, size, count, price, clothesDetailsId };
                     dispatch(addProduct(product));
                     dispatch(addProductPhotos({...photos}));
@@ -95,6 +142,9 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                 variant={"main"}
                 className={"mt-2 float-end"}
                 onClick={() => {
+                    if (!validation()) {
+                        return;
+                    }
                     const product = { color, size, count, price, clothesDetailsId };
                     dispatch(addProduct(product));
                     dispatch(addProductPhotos({...photos}));
