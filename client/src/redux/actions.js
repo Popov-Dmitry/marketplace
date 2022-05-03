@@ -1,5 +1,5 @@
 import {
-    ADD_FILTER,
+    ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS,
     HIDE_ALERT,
     REMOVE_FILTER,
     REQUEST_ALERT,
@@ -141,5 +141,19 @@ export function saveCart(customerId, productType, productDetailsId, productId, c
     return {
         type: REQUEST_SAVE_CART,
         payload: { customerId, productType, productDetailsId, productId, count }
+    }
+}
+
+export function addProductDetails(productDetails) {
+    return {
+        type: ADD_PRODUCT_DETAILS,
+        payload: productDetails
+    }
+}
+
+export function addProduct(product) {
+    return {
+        type: ADD_PRODUCT,
+        payload: product
     }
 }
