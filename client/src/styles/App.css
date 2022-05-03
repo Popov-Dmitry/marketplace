@@ -179,3 +179,7 @@ img {
 .custom-checkbox:disabled+label::before {
     background-color: #e9ecef;
 }
+
+.resize-none {
+    resize: none;
+}
