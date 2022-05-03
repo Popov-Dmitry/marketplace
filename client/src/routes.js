@@ -4,7 +4,7 @@ import {
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
     ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE, LOGIN_ROUTE,
-    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE, SELLER_SHOP_ROUTE
+    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE, SELLER_NEW_PRODUCT_ROUTE, SELLER_SHOP_ROUTE
 } from "./utils/consts";
 import Main from "./pages/Main";
 import Account from "./pages/Account";
@@ -14,6 +14,7 @@ import Cart from "./pages/Cart";
 import Landing from "./pages/seller/Landing";
 import Registration from "./pages/seller/Registration";
 import Login from "./pages/seller/Login";
+import NewProduct from "./pages/seller/NewProduct";
 
 export const publicCustomerRoutes = [
     {
@@ -93,4 +94,8 @@ export const authSellerRoutes = [
         path: SELLER_SHOP_ROUTE,
         Component: Account
     },
+    {
+        path: SELLER_NEW_PRODUCT_ROUTE,
+        Component: NewProduct
+    }
 ];
