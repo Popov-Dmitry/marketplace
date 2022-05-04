@@ -4,12 +4,13 @@ import {addProduct, addProductPhotos, showAlert} from "../../redux/actions";
 import {useDispatch} from "react-redux";
 import {blink} from "../../utils/uiUtils";
 
-const NewClothesProduct = ({clothesDetailsId = null}) => {
+const NewClothesProduct = () => {
     const dispatch = useDispatch();
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
     const [count, setCount] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [regularPrice, setRegularPrice] = useState(0);
+    const [weight, setWeight] = useState(0);
     const [photos, setPhotos] = useState([]);
 
     const validation = () => {
@@ -53,7 +54,7 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
 
     return (
         <Form className={"w-50"}>
-            <Form.Label className={"mt-2 opacity-95"}>Цвет</Form.Label>
+            <Form.Label className={"mt-2 opacity-95"}>Цвет <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"color"}
                 className={"mb-2 border-radius-10"}
@@ -61,7 +62,7 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                 value={color}
                 onChange={e => setColor(e.target.value)}
             />
-            <Form.Label className={"opacity-95"}>Размер</Form.Label>
+            <Form.Label className={"opacity-95"}>Размер <span className={"text-danger"}>*</span></Form.Label>
             <Form.Select
                 id={"size"}
                 className={"mb-2 border-radius-10 w-25"}
@@ -79,7 +80,7 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                 <option value="XXXL">XXXL</option>
                 <option value="XXXXL">XXXXL</option>
             </Form.Select>
-            <Form.Label className={"opacity-95"}>Количество</Form.Label>
+            <Form.Label className={"opacity-95"}>Количество <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 className={"mb-2 border-radius-10"}
                 placeholder="Количество"
@@ -92,20 +93,33 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                     setCount(e.target.value);
                 }}
             />
-            <Form.Label className={"opacity-95"}>Цена</Form.Label>
+            <Form.Label className={"opacity-95"}>Цена <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 className={"mb-2 border-radius-10"}
                 placeholder="Цена"
                 type={"number"}
-                value={price}
+                value={regularPrice}
                 onChange={e => {
                     if (e.target.value < 0) {
                         e.target.value = e.target.value * -1;
                     }
-                    setPrice(e.target.value);
+                    setRegularPrice(e.target.value);
                 }}
             />
-            <Form.Label className={"opacity-95"}>Изображения</Form.Label>
+            <Form.Label className={"opacity-95"}>Вес, г <span className={"text-danger"}>*</span></Form.Label>
+            <Form.Control
+                className={"mb-2 border-radius-10"}
+                placeholder="Вес"
+                type={"number"}
+                value={weight}
+                onChange={e => {
+                    if (e.target.value < 0) {
+                        e.target.value = e.target.value * -1;
+                    }
+                    setWeight(e.target.value);
+                }}
+            />
+            <Form.Label className={"opacity-95"}>Изображения <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"files-input"}
                 className={"border-radius-10"}
@@ -125,13 +139,14 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                     if (!validation()) {
                         return;
                     }
-                    const product = { color, size, count, price, clothesDetailsId };
+                    const product = { color, size, count, regularPrice, weight };
                     dispatch(addProduct(product));
                     dispatch(addProductPhotos({...photos}));
                     setColor("");
                     setSize("");
                     setCount(0);
-                    setPrice(0);
+                    setRegularPrice(0);
+                    setWeight(0);
                     setPhotos([]);
                     document.getElementById("files-input").value = null;
                 }}
@@ -145,7 +160,7 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
                     if (!validation()) {
                         return;
                     }
-                    const product = { color, size, count, price, clothesDetailsId };
+                    const product = { color, size, count, regularPrice, weight };
                     dispatch(addProduct(product));
                     dispatch(addProductPhotos({...photos}));
                 }}

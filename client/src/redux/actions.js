@@ -108,10 +108,10 @@ export function fetchPhotosNames(productType, detailsId, id) {
     }
 }
 
-export function saveProduct(productType, productDetails, detailsId, product, photos) {
+export function saveProduct(productType, productDetails, detailsId, product, photos, sellerId) {
     return {
         type: REQUEST_SAVE_PRODUCT,
-        payload: { productType, productDetails, detailsId, product, photos }
+        payload: { productType, productDetails, detailsId, product, photos, sellerId }
     }
 }
 

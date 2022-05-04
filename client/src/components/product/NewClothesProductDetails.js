@@ -13,6 +13,9 @@ const NewClothesProductDetails = ({step, setStep}) => {
     const [category, setCategory] = useState("");
     const [season, setSeason] = useState("");
     const [type, setType] = useState("");
+    const [productionCountry, setProductionCountry] = useState("");
+    const [care, setCare] = useState("");
+    const [style, setStyle] = useState("");
 
     const validation = () => {
         let errors = 0;
@@ -49,7 +52,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
 
     return (
         <div>
-            <Form.Label className={"opacity-95"}>Бренд</Form.Label>
+            <Form.Label className={"opacity-95"}>Бренд <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"brand"}
                 className={"mb-2 border-radius-10 w-50"}
@@ -57,7 +60,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 value={brand}
                 onChange={e => setBrand(e.target.value)}
             />
-            <Form.Label className={"opacity-95"}>Название товара</Form.Label>
+            <Form.Label className={"opacity-95"}>Название товара <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"title"}
                 className={"mb-2 border-radius-10 w-50"}
@@ -65,7 +68,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 value={title}
                 onChange={e => setTitle(e.target.value)}
             />
-            <Form.Label className={"opacity-95"}>Описание товара</Form.Label>
+            <Form.Label className={"opacity-95"}>Описание товара <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"description"}
                 className={"mb-2 border-radius-10 w-50 resize-none"}
@@ -75,7 +78,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 value={description}
                 onChange={e => setDescription(e.target.value)}
             />
-            <Form.Label className={"opacity-95"}>Состав</Form.Label>
+            <Form.Label className={"opacity-95"}>Состав <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"composition"}
                 className={"mb-2 border-radius-10 w-50"}
@@ -83,7 +86,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 value={composition}
                 onChange={e => setComposition(e.target.value)}
             />
-            <Form.Label className={"opacity-95"}>Пол</Form.Label>
+            <Form.Label className={"opacity-95"}>Пол <span className={"text-danger"}>*</span></Form.Label>
             <Form.Select
                 id={"category"}
                 className={"mb-2 border-radius-10 w-25"}
@@ -97,7 +100,7 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 <option value="BOYS">Мальчики</option>
                 <option value="GIRLS">Девочки</option>
             </Form.Select>
-            <Form.Label className={"opacity-95"}>Сезон</Form.Label>
+            <Form.Label className={"opacity-95"}>Сезон <span className={"text-danger"}>*</span></Form.Label>
             <Form.Select
                 id={"season"}
                 className={"mb-2 border-radius-10 w-25"}
@@ -109,23 +112,54 @@ const NewClothesProductDetails = ({step, setStep}) => {
                 <option value="SPRING">Весна</option>
                 <option value="SUMMER">Лето</option>
                 <option value="AUTUMN">Осень</option>
+                <option value="WINTER_SPRING">Зима-Весна</option>
+                <option value="SPRING_SUMMER">Весна-Лето</option>
+                <option value="SUMMER_AUTUMN">Лето-Осень</option>
+                <option value="AUTUMN_WINTER">Осень-Зима</option>
+                <option value="SPRING_AUTUMN">Весна-Осень</option>
+                <option value="AUTUMN_SPRING">Осень-Весна</option>
+                <option value="DEMISEASON">Демисезон</option>
+                <option value="ANY">Любой</option>
             </Form.Select>
-            <Form.Label className={"opacity-95"}>Тип одежды</Form.Label>
+            <Form.Label className={"opacity-95"}>Тип одежды <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"type"}
-                className={"mb-2 border-radius-10 w-50"}
+                className={"border-radius-10 w-50"}
                 placeholder="Тип одежды"
                 value={type}
                 onChange={e => setType(e.target.value)}
             />
+            <div className={"mb-2 fw-light fst-italic"}>Например: куртка, футболка, джинсы,...</div>
+            <Form.Label className={"opacity-95"}>Стиль одежды</Form.Label>
+            <Form.Control
+                className={"mb-2 border-radius-10 w-50"}
+                placeholder="Стиль одежды"
+                value={style}
+                onChange={e => setStyle(e.target.value)}
+            />
+            <Form.Label className={"opacity-95"}>Страна производитель</Form.Label>
+            <Form.Control
+                className={"mb-2 border-radius-10 w-50"}
+                placeholder="Страна производитель"
+                value={productionCountry}
+                onChange={e => setProductionCountry(e.target.value)}
+            />
+            <Form.Label className={"opacity-95"}>Уход за одеждой</Form.Label>
+            <Form.Control
+                className={"mb-2 border-radius-10 w-50"}
+                placeholder="Уход за одеждой"
+                value={care}
+                onChange={e => setCare(e.target.value)}
+            />
             <Button
                 variant={"main"}
-                className={"mt-2"}
+                className={"mt-2 mb-4"}
                 onClick={() => {
                     if (!validation()) {
                         return;
                     }
-                    const productDetails = { brand, title, description, composition, category, season, type }
+                    const productDetails = { brand, title, description, composition, category,
+                        season, type, productionCountry, care, style }
                     dispatch(addProductDetails(productDetails));
                     setStep(step + 1);
                 }}

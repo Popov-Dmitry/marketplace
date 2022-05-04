@@ -250,15 +250,19 @@ function* requestSaveProductWorker(action) {
             let resp;
             if (action.payload.detailsId) {
                 resp = yield call(saveClothes, action.payload.product.color, action.payload.product.size,
-                    action.payload.product.count, action.payload.product.price, action.payload.detailsId,
-                    null, null, null, null, null, null, null);
+                    action.payload.product.count, action.payload.product.regularPrice, null,
+                    action.payload.product.weight, action.payload.detailsId, null, null, null, null, null,
+                    null, null, null, null, null, action.payload.sellerId);
             }
             else {
                 resp = yield call(saveClothes, action.payload.product.color, action.payload.product.size,
-                    action.payload.product.count, action.payload.product.price, null, action.payload.productDetails.brand,
-                    action.payload.productDetails.title, action.payload.productDetails.description,
-                    action.payload.productDetails.composition, action.payload.productDetails.category,
-                    action.payload.productDetails.season, action.payload.productDetails.type);
+                    action.payload.product.count, action.payload.product.regularPrice, null, action.payload.product.weight,
+                    null, action.payload.productDetails.brand, action.payload.productDetails.title,
+                    action.payload.productDetails.description, action.payload.productDetails.composition,
+                    action.payload.productDetails.category, action.payload.productDetails.season,
+                    action.payload.productDetails.type, action.payload.productDetails.productionCountry,
+                    action.payload.productDetails.care, action.payload.productDetails.style,
+                    action.payload.sellerId);
                 yield put({ type: ADD_PRODUCT_DETAILS_ID, payload: resp.clothesDetailsId });
                 detailsId = resp.clothesDetailsId;
             }

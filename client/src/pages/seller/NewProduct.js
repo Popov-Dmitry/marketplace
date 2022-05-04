@@ -8,13 +8,14 @@ import {saveProduct} from "../../redux/actions";
 const NewProduct = () => {
     const dispatch = useDispatch();
     const product = useSelector(state => state.productReducer);
+    const user = useSelector(state => state.userReducer.user);
     const [step, setStep] = useState(1);
     const [productType, setProductType] = useState("");
 
     useEffect(() => {
         if (Object.keys(product.product).length !== 0) {
             dispatch(saveProduct(productType, product.productDetails,
-                product.detailsId, product.product, product.photos));
+                product.detailsId, product.product, product.photos, user.id));
         }
     }, [product.product]);
 
