@@ -18,4 +18,7 @@ public class ClothesDetailsDto {
     private Category category;
     private Season season;
     private String type;
+    private String productionCountry;
+    private String care;
+    private String style;
 }

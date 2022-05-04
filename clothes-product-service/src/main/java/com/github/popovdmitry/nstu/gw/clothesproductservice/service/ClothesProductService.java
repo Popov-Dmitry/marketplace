@@ -52,7 +52,9 @@ public class ClothesProductService {
         clothes.setColor(clothesProductDto.getColor());
         clothes.setSize(clothesProductDto.getSize());
         clothes.setCount(clothesProductDto.getCount());
+        clothes.setRegularPrice(clothesProductDto.getRegularPrice());
         clothes.setPrice(clothesProductDto.getPrice());
+        clothes.setWeight(clothesProductDto.getWeight());
         if (Objects.nonNull(clothesProductDto.getClothesDetailsId())) {
             clothes.setClothesDetails(findByClothesDetailsId(clothesProductDto.getClothesDetailsId()));
             saveClothesReplyDto.setClothesDetailsId(clothesProductDto.getClothesDetailsId());
@@ -66,6 +68,10 @@ public class ClothesProductService {
             clothesDetails.setCategory(clothesProductDto.getCategory());
             clothesDetails.setSeason(clothesProductDto.getSeason());
             clothesDetails.setType(clothesProductDto.getType());
+            clothesDetails.setProductionCountry(clothesProductDto.getProductionCountry());
+            clothesDetails.setCare(clothesProductDto.getCare());
+            clothesDetails.setStyle(clothesProductDto.getStyle());
+            clothesDetails.setSellerId(clothesProductDto.getSellerId());
             clothes.setClothesDetails(clothesDetailsRepository.save(clothesDetails));
             saveClothesReplyDto.setClothesDetailsId(clothes.getClothesDetails().getId());
         }
@@ -86,8 +92,14 @@ public class ClothesProductService {
         if (Objects.nonNull(clothesDTO.getCount()) && clothesDTO.getCount() >= 0) {
             clothes.setCount(clothesDTO.getCount());
         }
+        if (Objects.nonNull(clothesDTO.getRegularPrice()) && clothesDTO.getRegularPrice() > 0) {
+            clothes.setRegularPrice(clothesDTO.getRegularPrice());
+        }
         if (Objects.nonNull(clothesDTO.getPrice()) && clothesDTO.getPrice() > 0) {
             clothes.setPrice(clothesDTO.getPrice());
+        }
+        if (Objects.nonNull(clothesDTO.getWeight()) && clothesDTO.getWeight() > 0) {
+            clothes.setWeight(clothesDTO.getWeight());
         }
 
         return clothesRepository.save(clothes);
@@ -117,6 +129,15 @@ public class ClothesProductService {
         }
         if (Objects.nonNull(clothesDetailsDto.getType()) && !clothesDetailsDto.getType().equals("")) {
             clothesDetails.setType(clothesDetailsDto.getType());
+        }
+        if (Objects.nonNull(clothesDetailsDto.getProductionCountry()) && !clothesDetailsDto.getProductionCountry().equals("")) {
+            clothesDetails.setProductionCountry(clothesDetailsDto.getProductionCountry());
+        }
+        if (Objects.nonNull(clothesDetailsDto.getCare()) && !clothesDetailsDto.getCare().equals("")) {
+            clothesDetails.setCare(clothesDetailsDto.getCare());
+        }
+        if (Objects.nonNull(clothesDetailsDto.getStyle()) && !clothesDetailsDto.getStyle().equals("")) {
+            clothesDetails.setStyle(clothesDetailsDto.getStyle());
         }
 
         return clothesDetailsRepository.save(clothesDetails);

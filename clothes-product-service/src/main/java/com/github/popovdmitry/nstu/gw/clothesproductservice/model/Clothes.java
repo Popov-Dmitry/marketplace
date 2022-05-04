@@ -36,7 +36,15 @@ public class Clothes {
     @ApiModelProperty(example = "54")
     private Long count;
 
+    @Column(name = "regular_price")
+    @ApiModelProperty(example = "1999")
+    private Long regularPrice;
+
     @Column(name = "price")
     @ApiModelProperty(example = "999")
     private Long price;
+
+    @Column(name = "weight")
+    @ApiModelProperty(example = "356", notes = "in grams")
+    private Long weight;
 }

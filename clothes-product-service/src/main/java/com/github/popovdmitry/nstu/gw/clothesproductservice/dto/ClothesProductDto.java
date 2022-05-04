@@ -15,7 +15,9 @@ public class ClothesProductDto {
     private String color;
     private Size size;
     private Long count;
+    private Long regularPrice;
     private Long price;
+    private Long weight;
 
     private Long clothesDetailsId;
 
@@ -26,4 +28,8 @@ public class ClothesProductDto {
     private Category category;
     private Season season;
     private String type;
+    private String productionCountry;
+    private String care;
+    private String style;
+    private Long sellerId;
 }

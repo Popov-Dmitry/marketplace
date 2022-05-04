@@ -13,7 +13,9 @@ public class ClothesDTO {
     private String color;
     private Size size;
     private Long count;
+    private Long regularPrice;
     private Long price;
+    private Long weight;
 
     private Long clothesDetailsId;
 }
