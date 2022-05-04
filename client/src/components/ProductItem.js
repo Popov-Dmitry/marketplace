@@ -16,7 +16,7 @@ const ProductItem = ({product}) => {
     useEffect(() => dispatch(fetchPhotosNames("CLOTHES", product.id, product.clothes[0].id)), []);
 
     return (
-        <Col md={4}>
+        <Col md={4} className={"d-flex mt-1"}>
             <Card
                 className={"cursor-pointer"}
                 onClick={() => history.push(CLOTHES_ROUTE + "/" + product.id + "/" + product.clothes[0].id)}
@@ -33,8 +33,19 @@ const ProductItem = ({product}) => {
                         <Spinner className={"spinner-main"} animation="border"/>
                     </div>
                 }
-                <div className={"ms-2 fs-5 fw-bold"}>{product.clothes[0].price} &#x20bd;</div>
-                <div className={"ms-2 fs-5"}>{product.title}</div>
+                <div>
+                    {product.clothes[0].price ?
+                        <div className={"d-flex"}>
+                            <div className={"ms-2 fs-5 fw-bold"}>{product.clothes[0].price} &#x20bd;</div>
+                            <div className={"ms-2 mt-1 opacity-75 fw-bold"}><s>{product.clothes[0].regularPrice} &#x20bd;</s></div>
+                        </div>
+                        :
+                        <div className={"ms-2 fs-5 fw-bold"}>{product.clothes[0].regularPrice} &#x20bd;</div>
+                    }
+
+                </div>
+
+                <div className={"ms-2 fs-5"}>{product.title.length < 50 ? product.title : product.title.substring(0, 47) + "..."}</div>
                 <div className={"ms-2 mb-1"}>{colors.map(color =>
                     <span key={color} className={"product-item-param p-1 me-1"}>{color}</span>)}
                 </div>

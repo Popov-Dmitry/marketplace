@@ -27,3 +27,8 @@ export const getSizesByColor = (clothes, color) => {
     }
     return sizes;
 }
+
+export const getCurrentClothes = (clothesArr, id) => {
+    const currentClothes = clothesArr.filter(c => c.id == id);
+    return currentClothes[0] ? currentClothes[0] : {};
+}

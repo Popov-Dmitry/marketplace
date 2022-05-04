@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {useMemo} from 'react';
+import {getCurrentClothes} from "../../utils/productUtils";
+import {useHistory} from "react-router-dom";
 
 const ProductDetails = ({clothes}) => {
+    const history = useHistory();
+    const currentClothes = useMemo(() =>
+        getCurrentClothes(clothes.clothes, history.location.pathname.split("/")[3]), [clothes]);
+
     return (
         <div>
             <div className={"fs-3 fw-bold"}>Состав</div>
@@ -20,7 +26,22 @@ const ProductDetails = ({clothes}) => {
                     clothes.season === "WINTER" && "Зима" ||
                     clothes.season === "SPRING" && "Весна" ||
                     clothes.season === "SUMMER" && "Лето" ||
-                    clothes.season === "AUTUMN" && "Осень"}</div>}
+                    clothes.season === "AUTUMN" && "Осень" ||
+                    clothes.season === "DEMISEASON" && "Демисезон" ||
+                    clothes.season === "ANY" && "Любой" ||
+                    clothes.season === "WINTER_SPRING" && "Зима-Весна" ||
+                    clothes.season === "SPRING_SUMMER" && "Весна-Лето" ||
+                    clothes.season === "SUMMER_AUTUMN" && "Лето-Осень" ||
+                    clothes.season === "AUTUMN_WINTER" && "Осень-Зима" ||
+                    clothes.season === "SPRING_AUTUMN" && "Весна-Осень" ||
+                    clothes.season === "AUTUMN_SPRING" && "Осень-Весна"}</div>}
+                {clothes.care && <div><span className={"fw-light"}>Уход:</span> {clothes.care}</div>}
+                {clothes.style && <div><span className={"fw-light"}>Стиль:</span> {clothes.style}</div>}
+                {clothes.productionCountry &&
+                    <div><span className={"fw-light"}>Страна производитель:</span> {clothes.productionCountry}</div>}
+                {currentClothes.color && <div><span className={"fw-light"}>Цвет:</span> {currentClothes.color}</div>}
+                {currentClothes.size && <div><span className={"fw-light"}>Размер:</span> {currentClothes.size}</div>}
+                {currentClothes.weight && <div><span className={"fw-light"}>Вес:</span> {currentClothes.weight}г</div>}
             </div>
         </div>
     );

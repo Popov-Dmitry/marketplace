@@ -2,17 +2,12 @@ import React, {useEffect, useMemo} from 'react';
 import {Button, Image} from "react-bootstrap";
 import favoriteShaded from "../../assets/heart_shaded.png";
 import favorite from "../../assets/heart.png";
-import {getColorsByDetails, getSizesByColor} from "../../utils/productUtils";
+import {getColorsByDetails, getCurrentClothes, getSizesByColor} from "../../utils/productUtils";
 import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
 import {saveCart} from "../../redux/actions";
 import CountControl from "../CountControl";
-
-const getCurrentClothes = (clothesArr, id) => {
-    const currentClothes = clothesArr.filter(c => c.id == id);
-    return currentClothes[0] ? currentClothes[0] : {};
-}
 
 const ProductInfo = ({clothes}) => {
     const history = useHistory();
@@ -23,6 +18,8 @@ const ProductInfo = ({clothes}) => {
     const cartItem = useSelector(state => state.cartReducer.info);
     const colors = useMemo(() => getColorsByDetails(clothes.clothes), [clothes]);
     const sizes = useMemo(() => getSizesByColor(clothes.clothes, currentClothes.color), [clothes, currentClothes]);
+
+    console.log(currentClothes)
 
     const addToCartClick = () => {
         if (user.isAuth && user.user.id) {
@@ -36,11 +33,17 @@ const ProductInfo = ({clothes}) => {
     useEffect(() => console.log(cartItem.find(c =>
         c.productDetailsId === clothes.id && c.productId === currentClothes.id)), [cartItem])
 
-
     return (
         <div>
             <h3>{clothes.title}</h3>
-            <div className={"fs-4 fw-bold"}>{currentClothes.price} &#x20bd;</div>
+            {currentClothes.price ?
+                <div className={"d-flex"}>
+                    <div className={"fs-4 fw-bold"}>{currentClothes.price} &#x20bd;</div>
+                    <div className={"ms-2 mt-1 fs-5 opacity-75 fw-bold"}><s>{currentClothes.regularPrice} &#x20bd;</s></div>
+                </div>
+                :
+                <div className={"fs-4 fw-bold"}>{currentClothes.regularPrice} &#x20bd;</div>
+            }
             <div>
                 <div className={"fs-5"}>Цвета:</div>
                 <div className={"mt-3"}>
@@ -65,7 +68,8 @@ const ProductInfo = ({clothes}) => {
                             className={`product-item-param product-item-param-border p-2 me-1 fs-6 cursor-pointer
                             ${size === currentClothes.size && "product-item-param-active-border"}`}
                             onClick={e => history.push(CLOTHES_ROUTE + "/" + clothes.id + "/" +
-                                clothes.clothes.find(c => c.size === e.target.textContent).id)}
+                                clothes.clothes.find(c =>
+                                    c.color === currentClothes.color && c.size === e.target.textContent).id)}
                         >
                             {size}
                         </span>)}

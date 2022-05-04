@@ -1,9 +1,12 @@
 import {$authHost, $host} from "./index";
 import {ADD_PHOTO, GET_PHOTO, GET_PHOTOS_NAMES} from "../utils/endpoints";
 
-export const uploadPhoto = async (productType, detailsId, id, multipartFile) => {
-    const {data} = await $authHost.post(ADD_PHOTO, null, {
-        params: { productType, detailsId, id, multipartFile }
+export const uploadPhoto = async (productType, detailsId, id, file) => {
+    const {data} = await $authHost.post(ADD_PHOTO, file, {
+        headers: {
+            "Content-Type": "multipart/form-data; boundary=---------------------------293582696224464"
+        },
+        params: { productType, detailsId, id, file }
     });
     return data;
 }
