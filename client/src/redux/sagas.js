@@ -1,5 +1,6 @@
 import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
+    ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
     DELETE_CART,
     FETCH_CART,
@@ -10,13 +11,13 @@ import {
     REQUEST_ALERT, REQUEST_AUTH, REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
-    REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART,
+    REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
     SAVE_CART, SET_USER_ROLE, SHOW_ALERT, UPDATE_CART
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
-import {fetchSearchPanelInfo, searchClothes} from "../http/clothesProductApi";
-import {fetchPhotosNames} from "../http/photoApi";
+import {fetchSearchPanelInfo, saveClothes, searchClothes} from "../http/clothesProductApi";
+import {fetchPhotosNames, uploadPhoto} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, SELLER} from "../utils/roles";
@@ -36,7 +37,8 @@ export function* watchAll() {
         takeEvery(REQUEST_CART, requestCartWorker),
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
         takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
-        takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker)
+        takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker),
+        takeEvery(REQUEST_SAVE_PRODUCT, requestSaveProductWorker)
     ]);
 }
 
@@ -237,6 +239,46 @@ function* requestPhotosNames(action) {
     }
     catch (e) {
         console.log(e)
+    }
+}
+
+function* requestSaveProductWorker(action) {
+    let detailsId = action.payload.detailsId;
+    let id;
+    try {
+        if (action.payload.productType === "CLOTHES") {
+            let resp;
+            if (action.payload.detailsId) {
+                resp = yield call(saveClothes, action.payload.product.color, action.payload.product.size,
+                    action.payload.product.count, action.payload.product.price, action.payload.detailsId,
+                    null, null, null, null, null, null, null);
+            }
+            else {
+                resp = yield call(saveClothes, action.payload.product.color, action.payload.product.size,
+                    action.payload.product.count, action.payload.product.price, null, action.payload.productDetails.brand,
+                    action.payload.productDetails.title, action.payload.productDetails.description,
+                    action.payload.productDetails.composition, action.payload.productDetails.category,
+                    action.payload.productDetails.season, action.payload.productDetails.type);
+                yield put({ type: ADD_PRODUCT_DETAILS_ID, payload: resp.clothesDetailsId });
+                detailsId = resp.clothesDetailsId;
+            }
+            id = resp.clothesId;
+        }
+        let formData = new FormData();
+        for (let photo in action.payload.photos) {
+            formData.append("file", action.payload.photos[photo]);
+        }
+        yield call(uploadPhoto, action.payload.productType, detailsId, id, formData);
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
     }
 }
 

@@ -37,7 +37,7 @@ const NewClothesProduct = ({clothesDetailsId = null}) => {
         }
         const maxSize = 10 * 1024 * 1024;
         for (const file of event.target.files) {
-            if (file.type !== "image/jpeg" || file.type !== "image/png") {
+            if (file.type !== "image/jpeg" && file.type !== "image/png") {
                 dispatch(showAlert("danger", "Тип файла должен быть png, jpeg или jpg"));
                 event.target.value = "";
                 return;

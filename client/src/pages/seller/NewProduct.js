@@ -1,11 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container, Form} from "react-bootstrap";
 import NewClothesProductDetails from "../../components/product/NewClothesProductDetails";
 import NewClothesProduct from "../../components/product/NewClothesProduct";
+import {useDispatch, useSelector} from "react-redux";
+import {saveProduct} from "../../redux/actions";
 
 const NewProduct = () => {
+    const dispatch = useDispatch();
+    const product = useSelector(state => state.productReducer);
     const [step, setStep] = useState(1);
     const [productType, setProductType] = useState("");
+
+    useEffect(() => {
+        if (Object.keys(product.product).length !== 0) {
+            dispatch(saveProduct(productType, product.productDetails,
+                product.detailsId, product.product, product.photos));
+        }
+    }, [product.product]);
 
     return (
         <Container>

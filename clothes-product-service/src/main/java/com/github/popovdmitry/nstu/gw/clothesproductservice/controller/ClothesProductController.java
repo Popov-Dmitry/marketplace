@@ -64,7 +64,7 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<Clothes> saveClothes(@Parameter(description = "Clothes product dto", required = true)
+    public ResponseEntity<SaveClothesReplyDto> saveClothes(@Parameter(description = "Clothes product dto", required = true)
                                                    @RequestBody ClothesProductDto clothesProductDto) throws NotFoundException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)

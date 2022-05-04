@@ -1,5 +1,5 @@
 import {
-    ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_PHOTOS,
+    ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_DETAILS_ID, ADD_PRODUCT_PHOTOS,
     HIDE_ALERT,
     REMOVE_FILTER,
     REQUEST_ALERT,
@@ -10,11 +10,10 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
-    REQUEST_SAVE_CART,
+    REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES,
     REQUEST_UPDATE_CART,
-    REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTOS,
-    REQUEST_USER_BY_EMAIL,
+    REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
     SELECT_ITEM
 } from "./types";
 
@@ -109,10 +108,10 @@ export function fetchPhotosNames(productType, detailsId, id) {
     }
 }
 
-export function uploadPhotos(photos) {
+export function saveProduct(productType, productDetails, detailsId, product, photos) {
     return {
-        type: REQUEST_UPLOAD_PHOTOS,
-        payload: photos
+        type: REQUEST_SAVE_PRODUCT,
+        payload: { productType, productDetails, detailsId, product, photos }
     }
 }
 
@@ -155,6 +154,13 @@ export function addProductDetails(productDetails) {
     return {
         type: ADD_PRODUCT_DETAILS,
         payload: productDetails
+    }
+}
+
+export function addProductDetailsId(productDetailsId) {
+    return {
+        type: ADD_PRODUCT_DETAILS_ID,
+        payload: productDetailsId
     }
 }
 

@@ -46,7 +46,8 @@ public class ClothesProductService {
         return clothesDetails;
     }
 
-    public Clothes saveClothes(ClothesProductDto clothesProductDto) throws NotFoundException {
+    public SaveClothesReplyDto saveClothes(ClothesProductDto clothesProductDto) throws NotFoundException {
+        SaveClothesReplyDto saveClothesReplyDto = new SaveClothesReplyDto();
         Clothes clothes = new Clothes();
         clothes.setColor(clothesProductDto.getColor());
         clothes.setSize(clothesProductDto.getSize());
@@ -54,6 +55,7 @@ public class ClothesProductService {
         clothes.setPrice(clothesProductDto.getPrice());
         if (Objects.nonNull(clothesProductDto.getClothesDetailsId())) {
             clothes.setClothesDetails(findByClothesDetailsId(clothesProductDto.getClothesDetailsId()));
+            saveClothesReplyDto.setClothesDetailsId(clothesProductDto.getClothesDetailsId());
         }
         else {
             ClothesDetails clothesDetails = new ClothesDetails();
@@ -65,8 +67,10 @@ public class ClothesProductService {
             clothesDetails.setSeason(clothesProductDto.getSeason());
             clothesDetails.setType(clothesProductDto.getType());
             clothes.setClothesDetails(clothesDetailsRepository.save(clothesDetails));
+            saveClothesReplyDto.setClothesDetailsId(clothes.getClothesDetails().getId());
         }
-        return clothesRepository.save(clothes);
+        saveClothesReplyDto.setClothesId(clothesRepository.save(clothes).getId());
+        return saveClothesReplyDto;
     }
 
     public Clothes updateClothes(Long clothesId, ClothesDTO clothesDTO) throws NotFoundException {
