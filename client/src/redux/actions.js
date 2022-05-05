@@ -12,7 +12,7 @@ import {
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES,
-    REQUEST_UPDATE_CART,
+    REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES,
     REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
     SELECT_ITEM
 } from "./types";
@@ -105,6 +105,13 @@ export function fetchClothesBySellerId(sellerId) {
     return {
         type: REQUEST_CLOTHES_BY_SELLER_ID,
         payload: sellerId
+    }
+}
+
+export function updateClothes(clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight) {
+    return {
+        type: REQUEST_UPDATE_CLOTHES,
+        payload: { clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight }
     }
 }
 

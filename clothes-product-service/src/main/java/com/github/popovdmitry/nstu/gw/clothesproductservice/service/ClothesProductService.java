@@ -99,7 +99,7 @@ public class ClothesProductService {
         if (Objects.nonNull(clothesDTO.getRegularPrice()) && clothesDTO.getRegularPrice() > 0) {
             clothes.setRegularPrice(clothesDTO.getRegularPrice());
         }
-        if (Objects.nonNull(clothesDTO.getPrice()) && clothesDTO.getPrice() > 0) {
+        if (Objects.isNull(clothesDTO.getPrice()) || clothesDTO.getPrice() > 0) {
             clothes.setPrice(clothesDTO.getPrice());
         }
         if (Objects.nonNull(clothesDTO.getWeight()) && clothesDTO.getWeight() > 0) {
@@ -134,15 +134,9 @@ public class ClothesProductService {
         if (Objects.nonNull(clothesDetailsDto.getType()) && !clothesDetailsDto.getType().equals("")) {
             clothesDetails.setType(clothesDetailsDto.getType());
         }
-        if (Objects.nonNull(clothesDetailsDto.getProductionCountry()) && !clothesDetailsDto.getProductionCountry().equals("")) {
-            clothesDetails.setProductionCountry(clothesDetailsDto.getProductionCountry());
-        }
-        if (Objects.nonNull(clothesDetailsDto.getCare()) && !clothesDetailsDto.getCare().equals("")) {
-            clothesDetails.setCare(clothesDetailsDto.getCare());
-        }
-        if (Objects.nonNull(clothesDetailsDto.getStyle()) && !clothesDetailsDto.getStyle().equals("")) {
-            clothesDetails.setStyle(clothesDetailsDto.getStyle());
-        }
+        clothesDetails.setProductionCountry(clothesDetailsDto.getProductionCountry());
+        clothesDetails.setCare(clothesDetailsDto.getCare());
+        clothesDetails.setStyle(clothesDetailsDto.getStyle());
 
         return clothesDetailsRepository.save(clothesDetails);
     }

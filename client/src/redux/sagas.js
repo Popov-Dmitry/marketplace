@@ -12,11 +12,17 @@ import {
     REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
-    SAVE_CART, SET_USER_ROLE, SHOW_ALERT, UPDATE_CART
+    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
+    SAVE_CART, SET_USER_ROLE, SHOW_ALERT, UPDATE_CART, UPDATE_CLOTHES
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
-import {fetchClothesBySellerId, fetchSearchPanelInfo, saveClothes, searchClothes} from "../http/clothesProductApi";
+import {
+    fetchClothesBySellerId,
+    fetchSearchPanelInfo,
+    saveClothes,
+    searchClothes,
+    updateClothes
+} from "../http/clothesProductApi";
 import {fetchPhotosNames, uploadPhoto} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
@@ -34,6 +40,7 @@ export function* watchAll() {
         takeEvery(REQUEST_CLOTHES_SEARCH_PANEL_INFO, requestSearchPanelInfoWorker),
         takeEvery(REQUEST_SEARCH_CLOTHES, requestSearchClothesWorker),
         takeEvery(REQUEST_CLOTHES_BY_SELLER_ID, requestClothesBySellerIdWorker),
+        takeEvery(REQUEST_UPDATE_CLOTHES, requestUpdateClothesWorker),
         takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNames),
         takeEvery(REQUEST_CART, requestCartWorker),
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
@@ -232,6 +239,25 @@ function* requestClothesBySellerIdWorker(action) {
     try {
         const resp = yield call(fetchClothesBySellerId, action.payload);
         yield put({ type: FETCH_CLOTHES, payload: resp});
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestUpdateClothesWorker(action) {
+    try {
+        const resp = yield call(updateClothes, action.payload.clothesDetailsId, action.payload.clothesId,
+            action.payload.color, action.payload.size, action.payload.count, action.payload.regularPrice,
+            (action.payload.price !== "" && action.payload.price > 0) ? action.payload.price : null , action.payload.weight);
+        yield put({ type: UPDATE_CLOTHES, payload: { clothesDetailsId: action.payload.clothesDetailsId, clothes: resp }});
     }
     catch (e) {
         console.log(e);
