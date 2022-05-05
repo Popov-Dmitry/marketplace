@@ -19,6 +19,22 @@
     border-color: #25a99a;
 }
 
+.btn-outline-main {
+    color: #127e6d;
+    background-color: white;
+    border-color: #127e6d;
+}
+
+.btn-outline-main:hover {
+    color: #fff;
+    background-color: #25a99a;
+    border-color: #25a99a;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+}
+
 .spinner-main {
     color: var(--main-color);
 }
@@ -103,6 +119,18 @@
 
 .product-item-param {
     background-color: #fafafa;
+    border-radius: 10px;
+    font-size: small;
+}
+
+.product-item-param-hover {
+    background-color: #fafafa;
+    border-radius: 10px;
+    font-size: small;
+}
+
+.product-item-param-hover:hover {
+    background-color: #f6f6f6;
     border-radius: 10px;
     font-size: small;
 }

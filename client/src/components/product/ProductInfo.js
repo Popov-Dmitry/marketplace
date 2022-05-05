@@ -50,7 +50,7 @@ const ProductInfo = ({clothes}) => {
                     {colors.map(color =>
                         <span
                             key={color}
-                            className={`product-item-param product-item-param-border p-2 me-1 fs-6 cursor-pointer
+                            className={`product-item-param-hover product-item-param-border p-2 me-1 fs-6 cursor-pointer
                             ${color === currentClothes.color && "product-item-param-active-border"}`}
                             onClick={e => history.push(CLOTHES_ROUTE + "/" + clothes.id + "/" +
                                 clothes.clothes.find(c => c.color === e.target.textContent).id)}
@@ -65,7 +65,7 @@ const ProductInfo = ({clothes}) => {
                     {sizes.map(item =>
                         <span
                             key={item.size}
-                            className={`product-item-param product-item-param-border p-2 me-1 fs-6 cursor-pointer
+                            className={`product-item-param-hover product-item-param-border p-2 me-1 fs-6 cursor-pointer
                             ${item.size === currentClothes.size && "product-item-param-active-border"} 
                             ${item.count === 0 && "disabled text-black-50"}`}
                             onClick={() =>

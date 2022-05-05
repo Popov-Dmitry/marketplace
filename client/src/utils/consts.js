@@ -21,3 +21,4 @@ export const WISHLIST_ROUTE = "/my/wishlist";
 export const SELLER_SHOP_ROUTE = "/my/shop";
 export const SELLER_PRODUCTS_ROUTE = "/my/products";
 export const SELLER_NEW_PRODUCT_ROUTE = "/my/products/new";
+export const EDIT_PRODUCT_ROUTE = "/edit";
