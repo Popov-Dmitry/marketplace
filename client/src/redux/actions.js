@@ -5,7 +5,7 @@ import {
     REQUEST_ALERT,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
-    REQUEST_CART,
+    REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
     REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES,
@@ -98,6 +98,13 @@ export function fetchSearchClothes(filter) {
             seasons: filter.seasons,
             types: filter.types
         }
+    }
+}
+
+export function fetchClothesBySellerId(sellerId) {
+    return {
+        type: REQUEST_CLOTHES_BY_SELLER_ID,
+        payload: sellerId
     }
 }
 

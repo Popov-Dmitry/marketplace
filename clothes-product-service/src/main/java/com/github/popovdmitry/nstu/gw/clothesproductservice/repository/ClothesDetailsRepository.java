@@ -30,4 +30,6 @@ public interface ClothesDetailsRepository extends JpaRepository<ClothesDetails, 
 
     @Query("SELECT DISTINCT cd.type FROM ClothesDetails cd")
     List<String> findDistinctTypes();
+
+    List<ClothesDetails> findAllBySellerId(Long sellerId);
 }

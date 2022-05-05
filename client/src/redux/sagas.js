@@ -3,20 +3,20 @@ import {
     ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
     DELETE_CART,
-    FETCH_CART,
+    FETCH_CART, FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
     FETCH_PHOTOS_NAMES,
-    FETCH_SEARCH_CLOTHES, FETCH_USER,
+    FETCH_USER,
     HIDE_ALERT,
     REQUEST_ALERT, REQUEST_AUTH, REQUEST_AUTH_AND_FETCH_USER,
-    REQUEST_CART,
+    REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
     REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
     SAVE_CART, SET_USER_ROLE, SHOW_ALERT, UPDATE_CART
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
-import {fetchSearchPanelInfo, saveClothes, searchClothes} from "../http/clothesProductApi";
+import {fetchClothesBySellerId, fetchSearchPanelInfo, saveClothes, searchClothes} from "../http/clothesProductApi";
 import {fetchPhotosNames, uploadPhoto} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
@@ -33,6 +33,7 @@ export function* watchAll() {
         takeEvery(REQUEST_ALERT, requestAlertWorker),
         takeEvery(REQUEST_CLOTHES_SEARCH_PANEL_INFO, requestSearchPanelInfoWorker),
         takeEvery(REQUEST_SEARCH_CLOTHES, requestSearchClothesWorker),
+        takeEvery(REQUEST_CLOTHES_BY_SELLER_ID, requestClothesBySellerIdWorker),
         takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNames),
         takeEvery(REQUEST_CART, requestCartWorker),
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
@@ -220,10 +221,27 @@ function* requestSearchClothesWorker(action) {
     try {
         const payload = yield call(searchClothes, action.payload.colors, action.payload.sizes, action.payload.price,
             action.payload.brands, action.payload.title, action.payload.categories, action.payload.seasons, action.payload.types);
-        yield put({ type: FETCH_SEARCH_CLOTHES, payload });
+        yield put({ type: FETCH_CLOTHES, payload });
     }
     catch (e) {
         console.log(e);
+    }
+}
+
+function* requestClothesBySellerIdWorker(action) {
+    try {
+        const resp = yield call(fetchClothesBySellerId, action.payload);
+        yield put({ type: FETCH_CLOTHES, payload: resp});
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
     }
 }
 

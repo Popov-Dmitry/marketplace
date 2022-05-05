@@ -62,16 +62,16 @@ const ProductInfo = ({clothes}) => {
             <div>
                 <div className={"mt-3 fs-5"}>Размеры:</div>
                 <div className={"mt-3"}>
-                    {sizes.map(size =>
+                    {sizes.map(item =>
                         <span
-                            key={size}
+                            key={item.size}
                             className={`product-item-param product-item-param-border p-2 me-1 fs-6 cursor-pointer
-                            ${size === currentClothes.size && "product-item-param-active-border"}`}
-                            onClick={e => history.push(CLOTHES_ROUTE + "/" + clothes.id + "/" +
-                                clothes.clothes.find(c =>
-                                    c.color === currentClothes.color && c.size === e.target.textContent).id)}
+                            ${item.size === currentClothes.size && "product-item-param-active-border"} 
+                            ${item.count === 0 && "disabled text-black-50"}`}
+                            onClick={() =>
+                                item.count !== 0 && history.push(CLOTHES_ROUTE + "/" + clothes.id + "/" + item.id)}
                         >
-                            {size}
+                            {item.size}
                         </span>)}
                 </div>
             </div>

@@ -46,6 +46,10 @@ public class ClothesProductService {
         return clothesDetails;
     }
 
+    public List<ClothesDetails> findAllBySellerId(Long sellerId) {
+        return clothesDetailsRepository.findAllBySellerId(sellerId);
+    }
+
     public SaveClothesReplyDto saveClothes(ClothesProductDto clothesProductDto) throws NotFoundException {
         SaveClothesReplyDto saveClothesReplyDto = new SaveClothesReplyDto();
         Clothes clothes = new Clothes();

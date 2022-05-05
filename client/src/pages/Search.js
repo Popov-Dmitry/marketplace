@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import ProductsList from "../components/ProductsList";
+import ProductsList from "../components/product/ProductsList";
 import {Col, Container, Row} from "react-bootstrap";
 import SearchPanel from "../components/SearchPanel";
 import {useDispatch} from "react-redux";

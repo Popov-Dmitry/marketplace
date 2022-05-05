@@ -12,6 +12,7 @@ export const DELETE_CART = "/carts/"; //{id}
 
 export const ADD_CLOTHES = "/clothes/";
 export const GET_CLOTHES = "/clothes/"; //{clothesDetailsId}/{clothesId}
+export const GET_CLOTHES_BY_SELLER_ID = "/clothes/seller/"; //{sellerId}
 export const GET_ALL_CLOTHES_BY_CLOTHES_DETAILS = "/clothes/"; //{clothesDetailsId}
 export const UPDATE_CLOTHES = "/clothes/"; //{clothesDetailsId}/{clothesId}
 export const UPDATE_CLOTHES_DETAILS = "/clothes/"; //{clothesDetailsId}

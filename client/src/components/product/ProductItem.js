@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo} from 'react';
 import {Card, Col, Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchPhotosNames} from "../redux/actions";
+import {fetchPhotosNames} from "../../redux/actions";
 import {useHistory} from "react-router-dom";
-import {CLOTHES_ROUTE} from "../utils/consts";
-import {getColorsByDetails, getSizesByDetails} from "../utils/productUtils";
+import {CLOTHES_ROUTE} from "../../utils/consts";
+import {getColorsByDetails, getSizesByDetails} from "../../utils/productUtils";
 
 const ProductItem = ({product}) => {
     const dispatch = useDispatch();

@@ -22,7 +22,7 @@ export const getSizesByColor = (clothes, color) => {
     let sizes = [];
     for (let c of clothes) {
         if (c.color === color && !sizes.includes(c.size)) {
-            sizes.push(c.size);
+            sizes.push({ id: c.id, size: c.size, count: c.count });
         }
     }
     return sizes;

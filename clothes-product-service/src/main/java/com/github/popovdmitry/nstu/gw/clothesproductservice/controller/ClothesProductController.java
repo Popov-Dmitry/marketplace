@@ -56,6 +56,19 @@ public class ClothesProductController {
         return ResponseEntity.ok(clothesProductService.findByClothesDetailsId(clothesDetailsId));
     }
 
+    @GetMapping(value = "/seller/{sellerId}", produces = "application/json")
+    @Operation(summary = "Get clothes by clothesDetailsId")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
+    })
+    public ResponseEntity<List<ClothesDetails>> getAllBySellerId(@Parameter(description = "Clothes details id", required = true, example = "123")
+                                                 @PathVariable Long sellerId) {
+        return ResponseEntity.ok(clothesProductService.findAllBySellerId(sellerId));
+    }
+
     @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
     @Operation(summary = "Create clothes")
     @ApiResponses({

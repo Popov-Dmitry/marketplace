@@ -2,7 +2,7 @@ import {$authHost, $host} from "./index";
 import {
     ADD_CLOTHES,
     DELETE_CLOTHES,
-    GET_CLOTHES,
+    GET_CLOTHES, GET_CLOTHES_BY_SELLER_ID,
     SEARCH_CLOTHES,
     SEARCH_CLOTHES_PANEL_INFO,
     UPDATE_CLOTHES
@@ -15,6 +15,11 @@ export const fetchClothes = async (clothesDetailsId, clothesId) => {
 
 export const fetchAllClothesByClothesDetailsId = async (clothesDetailsId) => {
     const {data} = await $host.get(GET_CLOTHES + clothesDetailsId);
+    return data;
+}
+
+export const fetchClothesBySellerId = async (sellerId) => {
+    const {data} = await $host.get(GET_CLOTHES_BY_SELLER_ID + sellerId);
     return data;
 }
 
