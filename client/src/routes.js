@@ -3,8 +3,8 @@ import {
     ACCOUNT_CARDS_ROUTE,
     ACCOUNT_PERSONAL_ROUTE,
     ACCOUNT_ROUTE,
-    ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE, LOGIN_ROUTE,
-    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE, SELLER_NEW_PRODUCT_ROUTE, SELLER_SHOP_ROUTE
+    ACCOUNT_SECURITY_ROUTE, CART_ROUTE, CLOTHES_ROUTE, EDIT_PRODUCT_ROUTE, LOGIN_ROUTE,
+    MAIN_ROUTE, REGISTRATION_ROUTE, SEARCH_ROUTE, SELLER_NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE, SELLER_SHOP_ROUTE
 } from "./utils/consts";
 import Main from "./pages/Main";
 import Account from "./pages/Account";
@@ -15,6 +15,8 @@ import Landing from "./pages/seller/Landing";
 import Registration from "./pages/seller/Registration";
 import Login from "./pages/seller/Login";
 import NewProduct from "./pages/seller/NewProduct";
+import Products from "./pages/seller/Products";
+import ProductEdit from "./pages/seller/ProductEdit";
 
 export const publicCustomerRoutes = [
     {
@@ -97,5 +99,17 @@ export const authSellerRoutes = [
     {
         path: SELLER_NEW_PRODUCT_ROUTE,
         Component: NewProduct
+    },
+    {
+        path: SELLER_PRODUCTS_ROUTE,
+        Component: Products
+    },
+    {
+        path: SELLER_PRODUCTS_ROUTE + "/:detailsId" + EDIT_PRODUCT_ROUTE,
+        Component: ProductEdit
+    },
+    {
+        path: SELLER_PRODUCTS_ROUTE + "/:detailsId" + "/:id" + EDIT_PRODUCT_ROUTE,
+        Component: ProductEdit
     }
 ];
