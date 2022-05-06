@@ -1,21 +1,22 @@
 import React, {useState} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {useDispatch} from "react-redux";
-import {addProductDetails} from "../../redux/actions";
+import {addProductDetails, updateClothesDetails} from "../../redux/actions";
 import {blink} from "../../utils/uiUtils";
 
-const NewClothesProductDetails = ({step, setStep}) => {
+const ClothesProductDetailsEdit = ({step, setStep, product}) => {
     const dispatch = useDispatch();
-    const [brand, setBrand] = useState("");
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [composition, setComposition] = useState("");
-    const [category, setCategory] = useState("");
-    const [season, setSeason] = useState("");
-    const [type, setType] = useState("");
-    const [productionCountry, setProductionCountry] = useState("");
-    const [care, setCare] = useState("");
-    const [style, setStyle] = useState("");
+    const [brand, setBrand] = useState((product && product.brand) ? product.brand : "");
+    const [title, setTitle] = useState((product && product.title) ? product.title : "");
+    const [description, setDescription] = useState((product && product.description) ? product.description : "");
+    const [composition, setComposition] = useState((product && product.composition) ? product.composition : "");
+    const [category, setCategory] = useState((product && product.category) ? product.category : "");
+    const [season, setSeason] = useState((product && product.season) ? product.season : "");
+    const [type, setType] = useState((product && product.type) ? product.type : "");
+    const [productionCountry, setProductionCountry] =
+        useState((product && product.productionCountry) ? product.productionCountry : "");
+    const [care, setCare] = useState((product && product.care) ? product.care : "");
+    const [style, setStyle] = useState((product && product.style) ? product.style : "");
 
     const validation = () => {
         let errors = 0;
@@ -158,16 +159,22 @@ const NewClothesProductDetails = ({step, setStep}) => {
                     if (!validation()) {
                         return;
                     }
-                    const productDetails = { brand, title, description, composition, category,
-                        season, type, productionCountry, care, style }
-                    dispatch(addProductDetails(productDetails));
-                    setStep(step + 1);
+                    if (product) {
+                        dispatch(updateClothesDetails(product.id, brand, title, description, composition, category,
+                            season, type, productionCountry, care, style, null));
+                    }
+                    else {
+                        const productDetails = { brand, title, description, composition, category,
+                            season, type, productionCountry, care, style }
+                        dispatch(addProductDetails(productDetails));
+                        setStep(step + 1);
+                    }
                 }}
             >
-                Продолжить
+                {product ? "Сохранить" : "Продолжить"}
             </Button>
         </div>
     );
 };
 
-export default NewClothesProductDetails;
+export default ClothesProductDetailsEdit;

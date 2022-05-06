@@ -7,13 +7,13 @@ import {
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART,
+    REQUEST_DELETE_CART, REQUEST_DELETE_PHOTO,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES,
-    REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
+    REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO, REQUEST_USER_BY_EMAIL,
     SELECT_ITEM
 } from "./types";
 
@@ -115,10 +115,33 @@ export function updateClothes(clothesDetailsId, clothesId, color, size, count, r
     }
 }
 
+export function updateClothesDetails(clothesDetailsId, brand, title, description, composition, category,
+                                     season, type, productionCountry, care, style, sellerId) {
+    return {
+        type: REQUEST_UPDATE_CLOTHES_DETAILS,
+        payload: { clothesDetailsId, brand, title, description, composition, category,
+            season, type, productionCountry, care, style, sellerId }
+    }
+}
+
+export function uploadPhotos(productType, detailsId, id, photos) {
+    return {
+        type: REQUEST_UPLOAD_PHOTO,
+        payload: { productType, detailsId, id, photos }
+    }
+}
+
 export function fetchPhotosNames(productType, detailsId, id) {
     return {
         type: REQUEST_PHOTOS_NAMES,
         payload: { productType, detailsId, id }
+    }
+}
+
+export function deletePhoto(productType, detailsId, id, name) {
+    return {
+        type: REQUEST_DELETE_PHOTO,
+        payload: { productType, detailsId, id, name }
     }
 }
 

@@ -211,3 +211,13 @@ img {
 .resize-none {
     resize: none;
 }
+
+.remove-image-btn {
+    position: relative;
+    left:18px;
+    top: 3px;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}

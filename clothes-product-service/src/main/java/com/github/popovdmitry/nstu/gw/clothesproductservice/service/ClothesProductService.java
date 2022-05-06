@@ -72,9 +72,24 @@ public class ClothesProductService {
             clothesDetails.setCategory(clothesProductDto.getCategory());
             clothesDetails.setSeason(clothesProductDto.getSeason());
             clothesDetails.setType(clothesProductDto.getType());
-            clothesDetails.setProductionCountry(clothesProductDto.getProductionCountry());
-            clothesDetails.setCare(clothesProductDto.getCare());
-            clothesDetails.setStyle(clothesProductDto.getStyle());
+            if (clothesProductDto.getProductionCountry().equals("")) {
+                clothesDetails.setProductionCountry(null);
+            }
+            else {
+                clothesDetails.setProductionCountry(clothesProductDto.getProductionCountry());
+            }
+            if (clothesProductDto.getCare().equals("")) {
+                clothesDetails.setCare(null);
+            }
+            else {
+                clothesDetails.setCare(clothesProductDto.getCare());
+            }
+            if (clothesProductDto.getStyle().equals("")) {
+                clothesDetails.setStyle(null);
+            }
+            else {
+                clothesDetails.setStyle(clothesProductDto.getStyle());
+            }
             clothesDetails.setSellerId(clothesProductDto.getSellerId());
             clothes.setClothesDetails(clothesDetailsRepository.save(clothesDetails));
             saveClothesReplyDto.setClothesDetailsId(clothes.getClothesDetails().getId());
@@ -134,9 +149,24 @@ public class ClothesProductService {
         if (Objects.nonNull(clothesDetailsDto.getType()) && !clothesDetailsDto.getType().equals("")) {
             clothesDetails.setType(clothesDetailsDto.getType());
         }
-        clothesDetails.setProductionCountry(clothesDetailsDto.getProductionCountry());
-        clothesDetails.setCare(clothesDetailsDto.getCare());
-        clothesDetails.setStyle(clothesDetailsDto.getStyle());
+        if (clothesDetailsDto.getProductionCountry().equals("")) {
+            clothesDetails.setProductionCountry(null);
+        }
+        else {
+            clothesDetails.setProductionCountry(clothesDetailsDto.getProductionCountry());
+        }
+        if (clothesDetailsDto.getCare().equals("")) {
+            clothesDetails.setCare(null);
+        }
+        else {
+            clothesDetails.setCare(clothesDetailsDto.getCare());
+        }
+        if (clothesDetailsDto.getStyle().equals("")) {
+            clothesDetails.setStyle(null);
+        }
+        else {
+            clothesDetails.setStyle(clothesDetailsDto.getStyle());
+        }
 
         return clothesDetailsRepository.save(clothesDetails);
     }

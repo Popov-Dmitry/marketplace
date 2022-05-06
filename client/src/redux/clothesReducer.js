@@ -1,4 +1,11 @@
-import {ADD_FILTER, FETCH_CLOTHES, FETCH_CLOTHES_SEARCH_PANEL_INFO, REMOVE_FILTER, UPDATE_CLOTHES} from "./types";
+import {
+    ADD_FILTER,
+    FETCH_CLOTHES,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO,
+    REMOVE_FILTER,
+    UPDATE_CLOTHES,
+    UPDATE_CLOTHES_DETAILS
+} from "./types";
 
 const initialState = {
     searchPanelInfo: null,
@@ -50,7 +57,10 @@ export const clothesReducer = (state = initialState, action) => {
             return { ...state, clothes: action.payload };
         case UPDATE_CLOTHES:
             return { ...state, clothes: state.clothes.map(cd => cd.id === action.payload.clothesDetailsId ?
-                    { ...cd, clothes: cd.clothes.map(c => c.id === action.payload.clothes.id ? action.payload.clothes : c) } : cd ) }
+                    { ...cd, clothes: cd.clothes.map(c => c.id === action.payload.clothes.id ? action.payload.clothes : c) } : cd ) };
+        case UPDATE_CLOTHES_DETAILS:
+            return { ...state,
+                clothes: state.clothes.map(cd=> cd.id === action.payload.clothesDetailsId ? action.payload.clothes : cd) };
         default:
             return state;
     }

@@ -2,18 +2,36 @@ import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
     ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
-    DELETE_CART,
-    FETCH_CART, FETCH_CLOTHES,
+    DELETE_CART, DELETE_PHOTO,
+    FETCH_CART,
+    FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
     FETCH_PHOTOS_NAMES,
     FETCH_USER,
     HIDE_ALERT,
-    REQUEST_ALERT, REQUEST_AUTH, REQUEST_AUTH_AND_FETCH_USER,
-    REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_DELETE_CART,
-    REQUEST_PHOTOS_NAMES, REQUEST_REGISTRATION_USER, REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES, REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_USER, REQUEST_USER_BY_EMAIL,
-    SAVE_CART, SET_USER_ROLE, SHOW_ALERT, UPDATE_CART, UPDATE_CLOTHES
+    REQUEST_ALERT,
+    REQUEST_AUTH,
+    REQUEST_AUTH_AND_FETCH_USER,
+    REQUEST_CART,
+    REQUEST_CLOTHES_BY_SELLER_ID,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
+    REQUEST_DELETE_CART, REQUEST_DELETE_PHOTO,
+    REQUEST_PHOTOS_NAMES,
+    REQUEST_REGISTRATION_USER,
+    REQUEST_SAVE_CART,
+    REQUEST_SAVE_PRODUCT,
+    REQUEST_SEARCH_CLOTHES,
+    REQUEST_UPDATE_CART,
+    REQUEST_UPDATE_CLOTHES,
+    REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO,
+    REQUEST_USER_BY_EMAIL,
+    SAVE_CART,
+    SET_USER_ROLE,
+    SHOW_ALERT,
+    UPDATE_CART,
+    UPDATE_CLOTHES,
+    UPDATE_CLOTHES_DETAILS
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
@@ -21,9 +39,9 @@ import {
     fetchSearchPanelInfo,
     saveClothes,
     searchClothes,
-    updateClothes
+    updateClothes, updateClothesDetails
 } from "../http/clothesProductApi";
-import {fetchPhotosNames, uploadPhoto} from "../http/photoApi";
+import {deletePhoto, fetchPhotosNames, uploadPhoto} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, SELLER} from "../utils/roles";
@@ -35,13 +53,16 @@ export function* watchAll() {
         takeEvery(REQUEST_USER_BY_EMAIL, requestUserByEmailWorker),
         takeEvery(REQUEST_AUTH_AND_FETCH_USER, requestAuthAndFetchUserWorker),
         takeEvery(REQUEST_REGISTRATION_USER, requestRegistrationUserWorker),
-        takeEvery(REQUEST_UPDATE_USER, requestUpdateUser),
+        takeEvery(REQUEST_UPDATE_USER, requestUpdateUserWorker),
         takeEvery(REQUEST_ALERT, requestAlertWorker),
         takeEvery(REQUEST_CLOTHES_SEARCH_PANEL_INFO, requestSearchPanelInfoWorker),
         takeEvery(REQUEST_SEARCH_CLOTHES, requestSearchClothesWorker),
         takeEvery(REQUEST_CLOTHES_BY_SELLER_ID, requestClothesBySellerIdWorker),
         takeEvery(REQUEST_UPDATE_CLOTHES, requestUpdateClothesWorker),
-        takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNames),
+        takeEvery(REQUEST_UPDATE_CLOTHES_DETAILS, requestUpdateClothesDetailsWorker),
+        takeEvery(REQUEST_UPLOAD_PHOTO, requestUploadPhotoWorker),
+        takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNamesWorker),
+        takeEvery(REQUEST_DELETE_PHOTO, requestDeletePhotoWorker),
         takeEvery(REQUEST_CART, requestCartWorker),
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
         takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
@@ -170,7 +191,7 @@ function* requestRegistrationUserWorker(action) {
     }
 }
 
-function* requestUpdateUser(action) {
+function* requestUpdateUserWorker(action) {
     try {
         let payload;
         if (action.payload.userRole === CUSTOMER) {
@@ -258,6 +279,13 @@ function* requestUpdateClothesWorker(action) {
             action.payload.color, action.payload.size, action.payload.count, action.payload.regularPrice,
             (action.payload.price !== "" && action.payload.price > 0) ? action.payload.price : null , action.payload.weight);
         yield put({ type: UPDATE_CLOTHES, payload: { clothesDetailsId: action.payload.clothesDetailsId, clothes: resp }});
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно обновлены"
+            }
+        });
     }
     catch (e) {
         console.log(e);
@@ -271,7 +299,35 @@ function* requestUpdateClothesWorker(action) {
     }
 }
 
-function* requestPhotosNames(action) {
+function* requestUpdateClothesDetailsWorker(action) {
+    try {
+        const resp = yield call(updateClothesDetails, action.payload.clothesDetailsId, action.payload.brand,
+            action.payload.title, action.payload.description, action.payload.composition, action.payload.category,
+            action.payload.season, action.payload.type, action.payload.productionCountry, action.payload.care,
+            action.payload.style, null);
+        yield put({ type: UPDATE_CLOTHES_DETAILS, payload: { clothesDetailsId: action.payload.clothesDetailsId, clothes: resp }});
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно обновлены"
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestPhotosNamesWorker(action) {
     try {
         const photosNames = yield call(fetchPhotosNames, action.payload.productType, action.payload.detailsId, action.payload.id);
         const payload = {
@@ -282,7 +338,51 @@ function* requestPhotosNames(action) {
         yield put({ type: FETCH_PHOTOS_NAMES, payload });
     }
     catch (e) {
-        console.log(e)
+        console.log(e);
+    }
+}
+
+function* requestDeletePhotoWorker(action) {
+    try {
+        yield call(deletePhoto, action.payload.productType, action.payload.detailsId, action.payload.id, action.payload.name);
+        yield put({ type: DELETE_PHOTO, payload: { detailsId: action.payload.detailsId, name: action.payload.name } });
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestUploadPhotoWorker(action) {
+    try {
+        let formData = new FormData();
+        for (let photo in action.payload.photos) {
+            formData.append("file", action.payload.photos[photo]);
+        }
+        yield call(uploadPhoto, action.payload.productType, action.payload.detailsId, action.payload.id, formData);
+        const photosNames = yield call(fetchPhotosNames, action.payload.productType, action.payload.detailsId, action.payload.id);
+        const payload = {
+            detailsId: action.payload.detailsId,
+            id: action.payload.id,
+            photosNames
+        };
+        yield put({ type: FETCH_PHOTOS_NAMES, payload });
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
     }
 }
 
@@ -317,6 +417,13 @@ function* requestSaveProductWorker(action) {
             formData.append("file", action.payload.photos[photo]);
         }
         yield call(uploadPhoto, action.payload.productType, detailsId, id, formData);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Информация успешно сахранена"
+            }
+        });
     }
     catch (e) {
         console.log(e);
