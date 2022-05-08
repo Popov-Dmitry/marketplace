@@ -2,7 +2,7 @@ import {
     ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_DETAILS_ID, ADD_PRODUCT_PHOTOS, CLEAR_PHOTO_STORE,
     HIDE_ALERT,
     REMOVE_FILTER,
-    REQUEST_ALERT,
+    REQUEST_ALERT, REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
@@ -245,5 +245,11 @@ export function addProductPhotos(photos) {
 export function fetchSellersInfoCount() {
     return {
         type: REQUEST_SELLERS_INFO_COUNT
+    }
+}
+
+export function fetchAllSellersInfo() {
+    return {
+        type: REQUEST_ALL_SELLERS_INFO
     }
 }

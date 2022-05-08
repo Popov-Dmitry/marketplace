@@ -2,14 +2,14 @@ import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
     ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
-    DELETE_CART, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS, DELETE_PHOTO,
+    DELETE_CART, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS, DELETE_PHOTO, FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
     FETCH_PHOTOS_NAMES, FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
     HIDE_ALERT,
-    REQUEST_ALERT,
+    REQUEST_ALERT, REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
@@ -54,7 +54,7 @@ import {login} from "../http/authApi";
 import {CUSTOMER, MODER, SELLER} from "../utils/roles";
 import {fetchSellerByEmail, registrationSeller, updateSeller} from "../http/sellerApi";
 import {fetchModerByEmail} from "../http/moderApi";
-import {fetchSellersInfoCount} from "../http/verificationApi";
+import {fetchAllSellersInfo, fetchSellersInfoCount} from "../http/verificationApi";
 
 export function* watchAll() {
     yield all([
@@ -79,7 +79,8 @@ export function* watchAll() {
         takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
         takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker),
         takeEvery(REQUEST_SAVE_PRODUCT, requestSaveProductWorker),
-        takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker)
+        takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker),
+        takeEvery(REQUEST_ALL_SELLERS_INFO, requestAllSellersInfoWorker)
     ]);
 }
 
@@ -576,6 +577,23 @@ function* requestSellersInfoCountWorker() {
     try {
         const payload = yield call(fetchSellersInfoCount);
         yield put({ type: FETCH_SELLERS_INFO_COUNT, payload: payload});
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestAllSellersInfoWorker() {
+    try {
+        const payload = yield call(fetchAllSellersInfo);
+        yield put({ type: FETCH_ALL_SELLERS_INFO, payload: payload});
     }
     catch (e) {
         console.log(e);
