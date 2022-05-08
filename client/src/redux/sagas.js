@@ -51,8 +51,9 @@ import {
 } from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
-import {CUSTOMER, SELLER} from "../utils/roles";
+import {CUSTOMER, MODER, SELLER} from "../utils/roles";
 import {fetchSellerByEmail, registrationSeller, updateSeller} from "../http/sellerApi";
+import {fetchModerByEmail} from "../http/moderApi";
 
 export function* watchAll() {
     yield all([
@@ -139,6 +140,9 @@ function* requestAuthAndFetchUserWorker(action) {
         }
         if (action.payload.userRole === SELLER) {
             payload2 = yield call(fetchSellerByEmail, action.payload.email);
+        }
+        if (action.payload.userRole === MODER) {
+            payload2 = yield call(fetchModerByEmail, action.payload.email);
         }
         yield put({ type: FETCH_USER , payload: payload2 });
         yield put({ type: SET_USER_ROLE , payload: action.payload.userRole });

@@ -14,7 +14,7 @@ import {
     REQUEST_SEARCH_CLOTHES,
     REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_CLOTHES_DETAILS,
     REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO, REQUEST_USER_BY_EMAIL,
-    SELECT_ITEM
+    SELECT_ITEM, SET_USER_ROLE
 } from "./types";
 
 export function authUser(email, password, userRole) {
@@ -49,6 +49,13 @@ export function updateUser(user, userRole) {
     return {
         type: REQUEST_UPDATE_USER,
         payload: { user, userRole }
+    }
+}
+
+export function setUserRole(userRole) {
+    return {
+        type: SET_USER_ROLE,
+        payload: userRole
     }
 }
 

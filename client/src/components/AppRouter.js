@@ -1,28 +1,45 @@
 import React from 'react';
 import {Redirect, Route, Switch} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {authCustomerRoutes, authSellerRoutes, publicCustomerRoutes, publicSellerRoutes} from "../routes";
-import {MAIN_ROUTE} from "../utils/consts";
-import {CUSTOMER, SELLER} from "../utils/roles";
+import {
+    authCustomerRoutes,
+    authModerRoutes,
+    authSellerRoutes,
+    publicCustomerRoutes, publicModerRoutes,
+    publicSellerRoutes
+} from "../routes";
+import {LOGIN_ROUTE, MAIN_ROUTE} from "../utils/consts";
+import {ADMIN, CUSTOMER, MODER, SELLER} from "../utils/roles";
 
-const AppRouter = ({userRole}) => {
-    const isAuth = useSelector(state => state.userReducer.isAuth);
+const AppRouter = () => {
+    const userReducer = useSelector(state => state.userReducer);
 
     return (
         <Switch>
-            {userRole === CUSTOMER && isAuth && authCustomerRoutes.map(({path, Component}) =>
+            {userReducer.userRole === CUSTOMER && userReducer.isAuth && authCustomerRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
-            {userRole === CUSTOMER && publicCustomerRoutes.map(({path, Component}) =>
+            {userReducer.userRole === CUSTOMER && publicCustomerRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
-            {userRole === SELLER && isAuth && authSellerRoutes.map(({path, Component}) =>
+            {userReducer.userRole === SELLER && userReducer.isAuth && authSellerRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
-            {userRole === SELLER && publicSellerRoutes.map(({path, Component}) =>
+            {userReducer.userRole === SELLER && publicSellerRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} component={Component} exact/>
             )}
-            <Redirect to={MAIN_ROUTE}/>
+            {userReducer.userRole === MODER && userReducer.isAuth && authModerRoutes.map(({path, Component}) =>
+                <Route key={path} path={path} component={Component} exact/>
+            )}
+            {userReducer.userRole === MODER && publicModerRoutes.map(({path, Component}) =>
+                <Route key={path} path={path} component={Component} exact/>
+            )}
+            {userReducer.userRole === MODER || userReducer.userRole === ADMIN ?
+                <Redirect to={LOGIN_ROUTE}/>
+                :
+                <Redirect to={MAIN_ROUTE}/>
+            }
+
         </Switch>
     );
 };

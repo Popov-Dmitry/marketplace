@@ -1,17 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Container, Form} from "react-bootstrap";
-import {useDispatch} from "react-redux";
-import {blink} from "../../utils/uiUtils";
-import {authAndFetchUser} from "../../redux/actions";
-import {SELLER} from "../../utils/roles";
+import {useDispatch, useSelector} from "react-redux";
+import {blink} from "../utils/uiUtils";
+import {authAndFetchUser} from "../redux/actions";
 import {useHistory} from "react-router-dom";
-import {ACCOUNT_PERSONAL_ROUTE} from "../../utils/consts";
+import {MAIN_ROUTE, SELLER_PRODUCTS_ROUTE} from "../utils/consts";
+import {MODER, SELLER} from "../utils/roles";
 
 const Login = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const userReducer = useSelector(state => state.userReducer);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        if (userReducer.userRole === SELLER && userReducer.isAuth) {
+            history.push(SELLER_PRODUCTS_ROUTE);
+        }
+        if (userReducer.userRole === MODER && userReducer.isAuth) {
+            history.push(MAIN_ROUTE);
+        }
+    }, [userReducer.isAuth]);
 
     const click = async () => {
         let errors = 0;
@@ -24,17 +34,16 @@ const Login = () => {
             errors++;
         }
         if (errors === 0) {
-            dispatch(authAndFetchUser(email, password, SELLER));
-            history.push(ACCOUNT_PERSONAL_ROUTE);
+            dispatch(authAndFetchUser(email, password, userReducer.userRole));
         }
-    }
+    };
 
     return (
         <Container>
             <Form className={"d-flex mt-5 justify-content-center"}>
                 <div>
                     <div className={"mt-5 nav-title fs-3 text-uppercase text-center"}>
-                        КЛАДОВКА <span className={"text-black opacity-95 text-lowercase"}>seller</span>
+                        КЛАДОВКА <span className={"text-black opacity-95 text-lowercase"}>{userReducer.userRole.toLowerCase()}</span>
                     </div>
                     <Card className={"border-radius-50 mt-3 p-5"} style={{width: "460px"}}>
                         <Card.Title>Вход</Card.Title>

@@ -23,7 +23,7 @@ import Product from "./pages/customer/Product";
 import Cart from "./pages/customer/Cart";
 import Landing from "./pages/seller/Landing";
 import Registration from "./pages/seller/Registration";
-import Login from "./pages/seller/Login";
+import Login from "./pages/Login";
 import NewProduct from "./pages/seller/NewProduct";
 import Products from "./pages/seller/Products";
 import ProductEdit from "./pages/seller/ProductEdit";
@@ -126,4 +126,18 @@ export const authSellerRoutes = [
         path: SELLER_PRODUCTS_ROUTE + "/:detailsId" + NEW_PRODUCT_ROUTE,
         Component: ProductEdit
     }
+];
+
+export const publicModerRoutes = [
+    {
+        path: LOGIN_ROUTE,
+        Component: Login
+    }
+];
+
+export const authModerRoutes = [
+    {
+        path: LOGIN_ROUTE,
+        Component: Login
+    },
 ];
