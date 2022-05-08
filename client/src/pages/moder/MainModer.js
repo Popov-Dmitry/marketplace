@@ -28,7 +28,20 @@ const MainModer = () => {
                             Верификация
                         </div>
                         <div className={"text-center fs-4"}>
-                            {sellersInfoCount} новых заявок
+                            {sellersInfoCount} нов
+                            {(sellersInfoCount % 10 === 0 || sellersInfoCount % 10 === 5 ||
+                                sellersInfoCount % 10 === 6 || sellersInfoCount % 10 === 7 || sellersInfoCount % 10 === 8 ||
+                                sellersInfoCount % 10 === 9 || (sellersInfoCount >= 10 && sellersInfoCount <= 20)) && "ых "}
+                            {sellersInfoCount % 10 === 1 && (sellersInfoCount < 10 || sellersInfoCount > 20) && "ая "}
+                            {(sellersInfoCount % 10 === 2 || sellersInfoCount % 10 === 3 || sellersInfoCount % 10 === 4) &&
+                                (sellersInfoCount < 10 || sellersInfoCount > 20) && "ые "}
+                            заяв
+                            {(sellersInfoCount % 10 === 0 || sellersInfoCount % 10 === 5 ||
+                                sellersInfoCount % 10 === 6 || sellersInfoCount % 10 === 7 || sellersInfoCount % 10 === 8 ||
+                                sellersInfoCount % 10 === 9 || (sellersInfoCount >= 10 && sellersInfoCount <= 20)) && "ок"}
+                            {sellersInfoCount % 10 === 1 && (sellersInfoCount < 10 || sellersInfoCount > 20) && "ка"}
+                            {(sellersInfoCount % 10 === 2 || sellersInfoCount % 10 === 3 || sellersInfoCount % 10 === 4) &&
+                                (sellersInfoCount < 10 || sellersInfoCount > 20) && "ки"}
                         </div>
                     </Card>
                 </Col>
