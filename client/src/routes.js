@@ -14,13 +14,13 @@ import {
     SEARCH_ROUTE,
     SELLER_NEW_PRODUCT_ROUTE,
     SELLER_PRODUCTS_ROUTE,
-    SELLER_SHOP_ROUTE
+    SELLER_SHOP_ROUTE, VERIFICATION_ROUTE
 } from "./utils/consts";
-import Main from "./pages/Main";
+import MainCustomer from "./pages/customer/MainCustomer";
 import Account from "./pages/Account";
-import Search from "./pages/Search";
-import Product from "./pages/Product";
-import Cart from "./pages/Cart";
+import Search from "./pages/customer/Search";
+import Product from "./pages/customer/Product";
+import Cart from "./pages/customer/Cart";
 import Landing from "./pages/seller/Landing";
 import Registration from "./pages/seller/Registration";
 import Login from "./pages/seller/Login";
@@ -31,7 +31,7 @@ import ProductEdit from "./pages/seller/ProductEdit";
 export const publicCustomerRoutes = [
     {
         path: MAIN_ROUTE,
-        Component: Main
+        Component: MainCustomer
     },
     {
         path: SEARCH_ROUTE,

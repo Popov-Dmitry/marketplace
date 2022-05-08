@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-import ProductsList from "../components/product/ProductsList";
+import ProductsList from "../../components/product/ProductsList";
 import {Col, Container, Row} from "react-bootstrap";
-import SearchPanel from "../components/SearchPanel";
+import SearchPanel from "../../components/SearchPanel";
 import {useDispatch} from "react-redux";
-import {fetchSearchPanelInfo} from "../redux/actions";
+import {fetchSearchPanelInfo} from "../../redux/actions";
 
 const Search = () => {
     const dispatch = useDispatch();

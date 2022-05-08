@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {fetchAllClothesByClothesDetailsId} from "../http/clothesProductApi";
-import {showAlert} from "../redux/actions";
-import {fetchPhotosNames} from "../http/photoApi";
+import {fetchAllClothesByClothesDetailsId} from "../../http/clothesProductApi";
+import {showAlert} from "../../redux/actions";
+import {fetchPhotosNames} from "../../http/photoApi";
 import {Col, Container, Image, Row, Spinner} from "react-bootstrap";
-import ProductDetails from "../components/product/ProductDetails";
-import ProductInfo from "../components/product/ProductInfo";
+import ProductDetails from "../../components/product/ProductDetails";
+import ProductInfo from "../../components/product/ProductInfo";
 
 let detailsId;
 let id;

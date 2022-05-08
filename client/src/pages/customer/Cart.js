@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Container, Row} from "react-bootstrap";
 import {useSelector} from "react-redux";
-import {fetchClothes} from "../http/clothesProductApi";
-import {fetchPhotosNames} from "../http/photoApi";
-import Summary from "../components/cart/Summary";
-import CartItem from "../components/cart/CartItem";
-import EmptyCart from "../components/cart/EmptyCart";
-import TopControls from "../components/cart/TopControls";
+import {fetchClothes} from "../../http/clothesProductApi";
+import {fetchPhotosNames} from "../../http/photoApi";
+import Summary from "../../components/cart/Summary";
+import CartItem from "../../components/cart/CartItem";
+import EmptyCart from "../../components/cart/EmptyCart";
+import TopControls from "../../components/cart/TopControls";
 
 const Cart = () => {
     const cart = useSelector(state => state.cartReducer.info);
