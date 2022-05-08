@@ -3,7 +3,7 @@ import {Card, Col, Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPhotosNames} from "../../redux/actions";
 import {useHistory} from "react-router-dom";
-import {CLOTHES_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
+import {CLOTHES_ROUTE, SEARCH_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
 import {getColorsByDetails, getSizesByDetails} from "../../utils/productUtils";
 import {CUSTOMER, SELLER} from "../../utils/roles";
 import ChooseEdit from "../modals/ChooseEdit";
@@ -29,7 +29,7 @@ const ProductItem = ({product}) => {
     };
 
     return (
-        <Col md={4} className={"d-flex mt-1"}>
+        <Col md={history.location.pathname === SEARCH_ROUTE ? 4 : 3} className={"d-flex mt-1"}>
             <Card
                 className={"cursor-pointer"}
                 onClick={onItemClick}
