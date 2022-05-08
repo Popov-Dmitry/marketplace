@@ -27,6 +27,7 @@ import Login from "./pages/Login";
 import NewProduct from "./pages/seller/NewProduct";
 import Products from "./pages/seller/Products";
 import ProductEdit from "./pages/seller/ProductEdit";
+import MainModer from "./pages/moder/MainModer";
 
 export const publicCustomerRoutes = [
     {
@@ -140,4 +141,8 @@ export const authModerRoutes = [
         path: LOGIN_ROUTE,
         Component: Login
     },
+    {
+        path: MAIN_ROUTE,
+        Component: MainModer
+    }
 ];
