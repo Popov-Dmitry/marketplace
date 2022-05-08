@@ -9,7 +9,7 @@ const VerificationsList = () => {
     return (
         <Row className={"mt-4"}>
             {sellersInfo.map(info =>
-                <Col md={4}>
+                <Col key={info.id} md={4}>
                     <VerificationItem info={info}/>
                 </Col>
             )}

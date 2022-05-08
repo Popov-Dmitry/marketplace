@@ -29,6 +29,7 @@ import Products from "./pages/seller/Products";
 import ProductEdit from "./pages/seller/ProductEdit";
 import MainModer from "./pages/moder/MainModer";
 import Verifications from "./pages/moder/Verifications";
+import Verification from "./pages/moder/Verification";
 
 export const publicCustomerRoutes = [
     {
@@ -149,5 +150,9 @@ export const authModerRoutes = [
     {
         path: VERIFICATION_ROUTE,
         Component: Verifications
+    },
+    {
+        path: VERIFICATION_ROUTE + "/:id",
+        Component: Verification
     }
 ];

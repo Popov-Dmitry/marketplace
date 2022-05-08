@@ -11,8 +11,8 @@ import {
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES, REQUEST_SELLERS_INFO_COUNT,
-    REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER_INFO, REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO, REQUEST_USER_BY_EMAIL,
     SELECT_ITEM, SET_USER_ROLE
 } from "./types";
@@ -251,5 +251,19 @@ export function fetchSellersInfoCount() {
 export function fetchAllSellersInfo() {
     return {
         type: REQUEST_ALL_SELLERS_INFO
+    }
+}
+
+export function fetchSellerInfo(id) {
+    return {
+        type: REQUEST_SELLER_INFO,
+        payload: id
+    }
+}
+
+export function updateSellerInfo(id, verificationStatus, message) {
+    return {
+        type: REQUEST_UPDATE_SELLER_INFO,
+        payload: { id, verificationStatus, message }
     }
 }
