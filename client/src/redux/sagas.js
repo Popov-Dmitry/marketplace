@@ -6,7 +6,7 @@ import {
     FETCH_CART,
     FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
-    FETCH_PHOTOS_NAMES,
+    FETCH_PHOTOS_NAMES, FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
     HIDE_ALERT,
     REQUEST_ALERT,
@@ -20,7 +20,7 @@ import {
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART,
     REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES,
+    REQUEST_SEARCH_CLOTHES, REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
     REQUEST_UPDATE_CLOTHES_DETAILS,
@@ -54,6 +54,7 @@ import {login} from "../http/authApi";
 import {CUSTOMER, MODER, SELLER} from "../utils/roles";
 import {fetchSellerByEmail, registrationSeller, updateSeller} from "../http/sellerApi";
 import {fetchModerByEmail} from "../http/moderApi";
+import {fetchSellersInfoCount} from "../http/verificationApi";
 
 export function* watchAll() {
     yield all([
@@ -77,7 +78,8 @@ export function* watchAll() {
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
         takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
         takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker),
-        takeEvery(REQUEST_SAVE_PRODUCT, requestSaveProductWorker)
+        takeEvery(REQUEST_SAVE_PRODUCT, requestSaveProductWorker),
+        takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker)
     ]);
 }
 
@@ -557,6 +559,23 @@ function* requestSaveCartWorker(action) {
         const payload = yield call(saveCart, action.payload.customerId, action.payload.productType,
             action.payload.productDetailsId, action.payload.productId, action.payload.count);
         yield put({ type: SAVE_CART, payload: payload});
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSellersInfoCountWorker() {
+    try {
+        const payload = yield call(fetchSellersInfoCount);
+        yield put({ type: FETCH_SELLERS_INFO_COUNT, payload: payload});
     }
     catch (e) {
         console.log(e);

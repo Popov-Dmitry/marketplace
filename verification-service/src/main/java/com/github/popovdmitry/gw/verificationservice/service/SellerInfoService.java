@@ -1,5 +1,6 @@
 package com.github.popovdmitry.gw.verificationservice.service;
 
+import com.github.popovdmitry.gw.verificationservice.dto.CountDto;
 import com.github.popovdmitry.gw.verificationservice.dto.VerificationVerdictDto;
 import com.github.popovdmitry.gw.verificationservice.model.SellerInfo;
 import com.github.popovdmitry.gw.verificationservice.model.VerificationStatusMessage;
@@ -33,6 +34,10 @@ public class SellerInfoService {
 
     public List<SellerInfo> getAll() {
         return sellerInfoRepository.findAll();
+    }
+
+    public CountDto getCount() {
+        return new CountDto(sellerInfoRepository.count());
     }
 
     public SellerInfo saveSellerInfo(SellerInfo sellerInfo) {

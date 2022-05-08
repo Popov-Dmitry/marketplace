@@ -133,7 +133,7 @@ public class SellerController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<Seller> getCustomerByEmail(@Parameter(description = "Seller email", required = true, example = "ivan@company.com")
+    public ResponseEntity<Seller> getSellerByEmail(@Parameter(description = "Seller email", required = true, example = "ivan@company.com")
                                                        @RequestParam("e") String email) throws NotFoundException {
         return ResponseEntity.ok(sellerService.findByEmail(email));
     }

@@ -46,4 +46,5 @@ export const SEARCH_SELLER = "/sellers/search";
 
 export const GET_ALL_SELLERS_INFO = "/verification/";
 export const GET_SELLER_INFO = "/verification/"; //{id}
+export const GET_SELLER_INFO_COUNT = "/verification/count/";
 export const UPDATE_SELLER_INFO = "/verification/"; //{id}
