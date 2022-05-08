@@ -2,7 +2,7 @@ import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
     ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
-    DELETE_CART, DELETE_PHOTO,
+    DELETE_CART, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS, DELETE_PHOTO,
     FETCH_CART,
     FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
@@ -15,7 +15,7 @@ import {
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART, REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART,
@@ -35,13 +35,20 @@ import {
 } from "./types";
 import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
+    deleteClothes, deleteClothesDetails,
     fetchClothesBySellerId,
     fetchSearchPanelInfo,
     saveClothes,
     searchClothes,
     updateClothes, updateClothesDetails
 } from "../http/clothesProductApi";
-import {deletePhoto, fetchPhotosNames, uploadPhoto} from "../http/photoApi";
+import {
+    deleteAllPhotosByDetailsId,
+    deleteAllPhotosById,
+    deletePhoto,
+    fetchPhotosNames,
+    uploadPhoto
+} from "../http/photoApi";
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, SELLER} from "../utils/roles";
@@ -60,6 +67,8 @@ export function* watchAll() {
         takeEvery(REQUEST_CLOTHES_BY_SELLER_ID, requestClothesBySellerIdWorker),
         takeEvery(REQUEST_UPDATE_CLOTHES, requestUpdateClothesWorker),
         takeEvery(REQUEST_UPDATE_CLOTHES_DETAILS, requestUpdateClothesDetailsWorker),
+        takeEvery(REQUEST_DELETE_CLOTHES, requestDeleteClothesWorker),
+        takeEvery(REQUEST_DELETE_CLOTHES_DETAILS, requestDeleteClothesDetailsWorker),
         takeEvery(REQUEST_UPLOAD_PHOTO, requestUploadPhotoWorker),
         takeEvery(REQUEST_PHOTOS_NAMES, requestPhotosNamesWorker),
         takeEvery(REQUEST_DELETE_PHOTO, requestDeletePhotoWorker),
@@ -235,7 +244,7 @@ function* requestAlertWorker(action) {
     yield put({ type: HIDE_ALERT });
 }
 
-function* requestSearchPanelInfoWorker(action) {
+function* requestSearchPanelInfoWorker() {
     try {
         const payload = yield call(fetchSearchPanelInfo);
         yield put({ type: FETCH_CLOTHES_SEARCH_PANEL_INFO, payload });
@@ -311,6 +320,64 @@ function* requestUpdateClothesDetailsWorker(action) {
             payload: {
                 variant: "success",
                 text: "Данные успешно обновлены"
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestDeleteClothesWorker(action) {
+    try {
+        yield call(deleteClothes, action.payload.clothesDetailsId, action.payload.clothesId);
+        yield call(deleteAllPhotosById, "CLOTHES", action.payload.clothesDetailsId, action.payload.clothesId);
+        yield put({
+            type: DELETE_CLOTHES,
+            payload: {
+                clothesDetailsId: action.payload.clothesDetailsId,
+                clothesId: action.payload.clothesId
+            }
+        });
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно удалены"
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestDeleteClothesDetailsWorker(action) {
+    try {
+        yield call(deleteClothesDetails, action.payload);
+        yield call(deleteAllPhotosByDetailsId, "CLOTHES", action.payload);
+        yield put({ type: DELETE_CLOTHES_DETAILS, payload: action.payload });
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно удалены"
             }
         });
     }
@@ -421,7 +488,7 @@ function* requestSaveProductWorker(action) {
             type: REQUEST_ALERT,
             payload: {
                 variant: "success",
-                text: "Информация успешно сахранена"
+                text: "Информация успешно сохранена"
             }
         });
     }

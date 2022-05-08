@@ -1,7 +1,7 @@
 import {$authHost, $host} from "./index";
 import {
     ADD_CLOTHES,
-    DELETE_CLOTHES,
+    DELETE_CLOTHES, DELETE_CLOTHES_DETAILS,
     GET_CLOTHES, GET_CLOTHES_BY_SELLER_ID,
     SEARCH_CLOTHES,
     SEARCH_CLOTHES_PANEL_INFO,
@@ -44,12 +44,12 @@ export const updateClothesDetails = async (clothesDetailsId, brand, title, descr
     return data;
 }
 
-export const deleteClothes = async (clothesDetailsId) => {
-    const {data} = await $authHost.delete(DELETE_CLOTHES + clothesDetailsId);
+export const deleteClothesDetails = async (clothesDetailsId) => {
+    const {data} = await $authHost.delete(DELETE_CLOTHES_DETAILS + clothesDetailsId);
     return data;
 }
 
-export const deleteClothesDetails = async (clothesDetailsId, clothesId) => {
+export const deleteClothes = async (clothesDetailsId, clothesId) => {
     const {data} = await $authHost.delete(DELETE_CLOTHES + clothesDetailsId + "/" + clothesId);
     return data;
 }

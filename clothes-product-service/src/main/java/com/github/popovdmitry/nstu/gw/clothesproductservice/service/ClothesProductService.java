@@ -171,10 +171,15 @@ public class ClothesProductService {
         return clothesDetailsRepository.save(clothesDetails);
     }
 
-    public void deleteClothes(Long clothesId) throws NotFoundException {
+    public void deleteClothes(Long clothesDetailsId, Long clothesId) throws NotFoundException {
         Clothes clothes = clothesRepository.findById(clothesId).orElseThrow(() ->
                 new NotFoundException(String.format("Clothes with id %d is not found", clothesId)));
-        clothesRepository.delete(clothes);
+        System.out.println(clothes.toString());
+        ClothesDetails clothesDetails = clothesDetailsRepository.findById(clothesDetailsId).orElseThrow(() ->
+                new NotFoundException(String.format("ClothesDetails with id %d is not found", clothesDetailsId)));
+        clothesDetails.getClothes().removeIf(c -> c.getId() == clothesId);
+        clothesDetailsRepository.save(clothesDetails);
+        clothesRepository.deleteById(clothesId);
     }
 
     public void deleteClothesDetails(Long clothesDetailsId) throws NotFoundException {

@@ -1,16 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Col, Form, Image, Row} from "react-bootstrap";
-import {addProduct, addProductPhotos, deletePhoto, showAlert, updateClothes, uploadPhotos} from "../../redux/actions";
+import {
+    addProduct,
+    addProductPhotos,
+    deletePhoto,
+    saveProduct,
+    showAlert,
+    updateClothes,
+    uploadPhotos
+} from "../../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {blink} from "../../utils/uiUtils";
 import {useHistory} from "react-router-dom";
 import remove from "../../assets/remove.png";
 import Confirmation from "../modals/Confirmation";
-import {SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
+import {SELLER_NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
 
 const ClothesProductEdit = ({clothes, setIsDone}) => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const user = useSelector(state => state.userReducer.user);
     const [color, setColor] = useState((clothes && clothes.color) ? clothes.color : "");
     const [size, setSize] = useState((clothes && clothes.size) ? clothes.size : "");
     const [count, setCount] = useState((clothes && clothes.count) ? clothes.count : 0);
@@ -183,9 +192,17 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                             if (!validation()) {
                                 return;
                             }
-                            const product = {color, size, count, regularPrice, weight};
-                            dispatch(addProduct(product));
-                            dispatch(addProductPhotos({...photos}));
+                            if (!clothes) {
+                                if (history.location.pathname === SELLER_NEW_PRODUCT_ROUTE) {
+                                    const product = {color, size, count, regularPrice, weight};
+                                    dispatch(addProduct(product));
+                                    dispatch(addProductPhotos({...photos}));
+                                }
+                                else {
+                                    const product = { color, size, count, regularPrice, weight };
+                                    dispatch(saveProduct("CLOTHES", null, detailsId, product, {...photos}, user.id));
+                                }
+                            }
                             setColor("");
                             setSize("");
                             setCount(0);
@@ -215,10 +232,17 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                             }
                         }
                         else {
-                            const product = { color, size, count, regularPrice, weight };
-                            dispatch(addProduct(product));
-                            dispatch(addProductPhotos({...photos}));
-                            setIsDone(true);
+                            if (history.location.pathname === SELLER_NEW_PRODUCT_ROUTE) {
+                                const product = { color, size, count, regularPrice, weight };
+                                dispatch(addProduct(product));
+                                dispatch(addProductPhotos({...photos}));
+                                setIsDone(true);
+                            }
+                            else {
+                                const product = { color, size, count, regularPrice, weight };
+                                dispatch(saveProduct("CLOTHES", null, detailsId, product, {...photos}, user.id));
+                                history.push(SELLER_PRODUCTS_ROUTE);
+                            }
                         }
                     }}
                 >

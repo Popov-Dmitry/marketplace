@@ -1,5 +1,5 @@
 import {
-    ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_DETAILS_ID, ADD_PRODUCT_PHOTOS,
+    ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_DETAILS_ID, ADD_PRODUCT_PHOTOS, CLEAR_PHOTO_STORE,
     HIDE_ALERT,
     REMOVE_FILTER,
     REQUEST_ALERT,
@@ -7,7 +7,7 @@ import {
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART, REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
@@ -124,10 +124,30 @@ export function updateClothesDetails(clothesDetailsId, brand, title, description
     }
 }
 
+export function deleteClothes(clothesDetailsId, clothesId) {
+    return {
+        type: REQUEST_DELETE_CLOTHES,
+        payload: { clothesDetailsId, clothesId }
+    }
+}
+
+export function deleteClothesDetails(clothesDetailsId) {
+    return {
+        type: REQUEST_DELETE_CLOTHES_DETAILS,
+        payload: clothesDetailsId
+    }
+}
+
 export function uploadPhotos(productType, detailsId, id, photos) {
     return {
         type: REQUEST_UPLOAD_PHOTO,
         payload: { productType, detailsId, id, photos }
+    }
+}
+
+export function clearPhotoStore() {
+    return {
+        type: CLEAR_PHOTO_STORE
     }
 }
 

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
-import {EDIT_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
+import {EDIT_PRODUCT_ROUTE, NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
 import {useDispatch} from "react-redux";
-import {updateClothes} from "../../redux/actions";
+import {clearPhotoStore, deleteClothes, deleteClothesDetails, updateClothes} from "../../redux/actions";
 
 const ChooseEdit = ({show, onHide, product}) => {
     const history = useHistory();
@@ -28,6 +28,12 @@ const ChooseEdit = ({show, onHide, product}) => {
             dispatch(updateClothes(product.id, id, null, null,
                 null, regularPrice, price, null));
         }
+        if (choice === "productDeletion") {
+            dispatch(deleteClothes(product.id, id));
+        }
+        if (choice === "detailsDeletion") {
+            dispatch(deleteClothesDetails(product.id));
+        }
         setStep(1);
         setChoice("");
         setId(0);
@@ -47,9 +53,11 @@ const ChooseEdit = ({show, onHide, product}) => {
             <Modal.Header closeButton>
                 <Modal.Title>
                     {step === 1 && "Выберите действие"}
-                    {step === 2 && "Выберите вариант товара"}
+                    {step === 2 && choice !== "detailsDeletion" && "Выберите вариант товара"}
+                    {step === 2 && choice === "detailsDeletion" && "Вы уверены?"}
                     {step === 3 && choice === "count" && "Количество товара"}
                     {step === 3 && choice === "price" && "Цена товара"}
+                    {step === 3 && choice === "productDeletion" && "Вы уверены?"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -92,9 +100,42 @@ const ChooseEdit = ({show, onHide, product}) => {
                         >
                             Редактировать информацию о варианте товара
                         </Button>
+                        <Button
+                            variant={"outline-main"}
+                            className={"text-start w-100 mt-2"}
+                            onClick={() => {
+                                dispatch(clearPhotoStore());
+                                history.push(SELLER_PRODUCTS_ROUTE + "/" + product.id + NEW_PRODUCT_ROUTE);
+                            }}
+                        >
+                            Добавить новый вариант товара
+                        </Button>
+                        <hr/>
+                        {product.clothes.length > 1 &&
+                            <Button
+                                variant={"outline-danger"}
+                                className={"text-start w-100"}
+                                onClick={() => {
+                                    setStep(step + 1);
+                                    setChoice("productDeletion");
+                                }}
+                            >
+                                Удалить вариант товара
+                            </Button>
+                        }
+                        <Button
+                            variant={"outline-danger"}
+                            className={`text-start w-100 ${product.clothes.length > 1 && "mt-2"}`}
+                            onClick={() => {
+                                setStep(step + 1);
+                                setChoice("detailsDeletion");
+                            }}
+                        >
+                            Удалить полностью
+                        </Button>
                     </div>
                 }
-                {step === 2 &&
+                {step === 2 && choice !== "detailsDeletion" &&
                     <div>
                         <div className={"d-flex flex-wrap"}>
                             {product.clothes.map(item => <div
@@ -104,7 +145,7 @@ const ChooseEdit = ({show, onHide, product}) => {
                                         if (choice === "info") {
                                             history.push(SELLER_PRODUCTS_ROUTE + "/" + product.id + "/" + item.id + EDIT_PRODUCT_ROUTE);
                                         }
-                                        if (choice === "count" || choice === "price") {
+                                        if (choice === "count" || choice === "price" || choice === "productDeletion") {
                                             setStep(step + 1);
                                             setId(item.id);
                                             if (choice === "count") {
@@ -121,6 +162,11 @@ const ChooseEdit = ({show, onHide, product}) => {
                                 </div>
                             )}
                         </div>
+                    </div>
+                }
+                {step === 2 && choice === "detailsDeletion" &&
+                    <div className={"fs-5 text-center mb-3"}>
+                        Полностью удалить товар "{product.title}"?
                     </div>
                 }
                 {step === 3 && choice === "count" &&
@@ -210,6 +256,11 @@ const ChooseEdit = ({show, onHide, product}) => {
                         </Button>
                     </div>
                 }
+                {step === 3 && choice === "productDeletion" &&
+                    <div className={"fs-5 text-center mb-3"}>
+                        Удалить товар "{product.title}" {product.clothes.find(c => c.id === id).color}, {product.clothes.find(c => c.id === id).size}?
+                    </div>
+                }
                 {step > 1 &&
                     <div className={"d-flex justify-content-between"}>
                         <Button
@@ -217,15 +268,17 @@ const ChooseEdit = ({show, onHide, product}) => {
                             className={"mt-3 mb-1"}
                             onClick={() => setStep(step - 1)}
                         >
-                            Назад
+                            {((choice === "productDeletion" && step === 3) || (choice === "detailsDeletion" && step === 2)) ?
+                                "Отменить" : "Назад"}
                         </Button>
-                        {step === 3 &&
+                        {(step === 3 || (choice === "detailsDeletion" && step === 2)) &&
                             <Button
                                 variant={"main"}
                                 className={"mt-3 mb-1"}
                                 onClick={onSaveClick}
                             >
-                                Сохранить
+                                {((choice === "productDeletion" && step === 3) || (choice === "detailsDeletion" && step === 2)) ?
+                                    "Подтвердить" : "Сохранить"}
                             </Button>
                         }
                     </div>

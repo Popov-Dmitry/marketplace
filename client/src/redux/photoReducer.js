@@ -1,4 +1,4 @@
-import {DELETE_PHOTO, FETCH_PHOTOS_NAMES} from "./types";
+import {CLEAR_PHOTO_STORE, DELETE_PHOTO, FETCH_PHOTOS_NAMES} from "./types";
 
 const initialState = {
     photosNames: []
@@ -14,7 +14,9 @@ export const photoReducer = (state = initialState, action) => {
             return { ...state,
                 photosNames: { ...state.photosNames,
                     [action.payload.detailsId]: { ...state.photosNames[action.payload.detailsId],
-                        photosNames: state.photosNames[action.payload.detailsId].photosNames.filter(p => p !== action.payload.name) } } }
+                        photosNames: state.photosNames[action.payload.detailsId].photosNames.filter(p => p !== action.payload.name) } } };
+        case CLEAR_PHOTO_STORE:
+            return initialState;
         default:
             return state;
     }

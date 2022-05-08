@@ -1,5 +1,5 @@
 import {
-    ADD_FILTER,
+    ADD_FILTER, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS,
     FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO,
     REMOVE_FILTER,
@@ -61,6 +61,14 @@ export const clothesReducer = (state = initialState, action) => {
         case UPDATE_CLOTHES_DETAILS:
             return { ...state,
                 clothes: state.clothes.map(cd=> cd.id === action.payload.clothesDetailsId ? action.payload.clothes : cd) };
+        case DELETE_CLOTHES:
+            const clothesDetails = [ ...state.clothes ].find(cd => cd.id === action.payload.clothesDetailsId);
+            const newClothes = clothesDetails.clothes.filter(c => c.id !== action.payload.clothesId);
+            return { ...state, clothes: state.clothes.map(cd => cd.id === action.payload.clothesDetailsId ?
+                    { ...clothesDetails, clothes: newClothes } : cd ) };
+        case DELETE_CLOTHES_DETAILS:
+            return { ...state,
+                clothes: state.clothes.filter(cd => cd.id !== action.payload) };
         default:
             return state;
     }

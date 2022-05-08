@@ -130,7 +130,9 @@ public class ClothesProductController {
                                            @Parameter(description = "Clothes id", required = true, example = "10")
                                                @PathVariable Long clothesId)
             throws NotFoundException {
-        clothesProductService.deleteClothes(clothesId);
+        System.out.println(clothesDetailsId);
+        System.out.println(clothesId);
+        clothesProductService.deleteClothes(clothesDetailsId, clothesId);
         return ResponseEntity.ok().build();
     }
 
