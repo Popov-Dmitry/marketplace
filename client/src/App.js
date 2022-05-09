@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import MyAlert from "./components/MyAlert";
 import {CUSTOMER} from "./utils/roles";
 import {setUserRole} from "./redux/actions";
+import NavBarSeller from "./components/NavBarSeller";
 
 function App() {
     const dispatch = useDispatch();
@@ -18,15 +19,13 @@ function App() {
         <BrowserRouter>
             {domainArr.length > 1 ?
                 <div>
-                    {domainArr[0] === "seller" && <AppRouter/>}
-                    {domainArr[0] === "moder" && <AppRouter/>}
+                    {domainArr[0] === "seller" && <NavBarSeller/>}
+                    {/*{domainArr[0] === "moder" && <AppRouter/>}*/}
                 </div>
                 :
-                <div>
-                    <NavBar/>
-                    <AppRouter/>
-                </div>
+                <NavBar/>
             }
+            <AppRouter/>
             {alert && <MyAlert variant={alert.variant} text={alert.text}/>}
         </BrowserRouter>
     );

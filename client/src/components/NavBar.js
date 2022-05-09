@@ -7,6 +7,7 @@ import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, WISHLIST_ROUTE} from "../utils/co
 import catalog from "../assets/catalog.png";
 import search from "../assets/search.png";
 import account from "../assets/user.png";
+import login from "../assets/login.png";
 import cart from "../assets/bag.png";
 import favorite from "../assets/heart.png";
 import "../styles/App.css";
@@ -92,7 +93,7 @@ const NavBar = () => {
                         </NavLink>
                         :
                         <Image
-                            src={account}
+                            src={login}
                             width="32px"
                             height="32px"
                             className={"cursor-pointer"}
