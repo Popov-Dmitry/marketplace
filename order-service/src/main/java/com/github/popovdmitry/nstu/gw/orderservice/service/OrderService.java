@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class OrderService {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     public List<Order> findAllByCustomerId(Long customerId) {
         return orderRepository.findAllByCustomerId(customerId);
