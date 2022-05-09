@@ -1,0 +1,227 @@
+:root {
+    --main-color: #41B3A3
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-main {
+    color: #fff;
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.btn-main:hover {
+    color: #fff;
+    background-color: #25a99a;
+    border-color: #25a99a;
+}
+
+.btn-outline-main {
+    color: #127e6d;
+    background-color: white;
+    border-color: #127e6d;
+}
+
+.btn-outline-main:hover {
+    color: #fff;
+    background-color: #25a99a;
+    border-color: #25a99a;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+}
+
+.spinner-main {
+    color: var(--main-color);
+}
+
+.form-control:focus{
+    border-color: #25a99a;
+    box-shadow: 0 0 0 0.1rem var(--main-color);
+}
+
+.form-select:focus{
+    border-color: #25a99a;
+    box-shadow: 0 0 0 0.1rem var(--main-color);
+}
+
+.form-control-error{
+    border-color: #d50000;
+    box-shadow: 0 0 0 0.1rem #d50000;
+}
+
+.form-control-error:focus{
+    border-color: #d50000;
+    box-shadow: 0 0 0 0.1rem #d50000;
+}
+
+.my-alert {
+    position: absolute;
+    width: 22%;
+    bottom: 2px;
+    right: 10px;
+}
+
+.opacity-95 {
+    opacity: 95%
+}
+
+.border-radius-10 {
+    border-radius: 10px;
+}
+
+.border-radius-50 {
+    border-radius: 50px;
+}
+
+.black-to-main {
+    filter: invert(61%) sepia(10%) saturate(2330%) hue-rotate(122deg) brightness(100%) contrast(82%);
+}
+
+.main-color {
+    color: var(--main-color);
+}
+
+.main-color:hover {
+    color: var(--main-color);
+}
+
+.green-color {
+    color: #127e6d;
+}
+
+.green-color:hover {
+    color: #1da28d;
+}
+
+.panel-scroll {
+    overflow-y: scroll;
+    height: 105px;
+}
+
+.panel-scroll::-webkit-scrollbar {
+    width: 0.6rem;
+}
+
+.panel-scroll::-webkit-scrollbar-thumb {
+    background-color: lightgray;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px;  /* creates padding around scroll thumb */
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.product-item-param {
+    background-color: #fafafa;
+    border-radius: 10px;
+    font-size: small;
+}
+
+.product-item-param-hover {
+    background-color: #fafafa;
+    border-radius: 10px;
+    font-size: small;
+}
+
+.product-item-param-hover:hover {
+    background-color: #f6f6f6;
+    border-radius: 10px;
+    font-size: small;
+}
+
+.product-item-param-border {
+    border: 1px solid lightgray;
+}
+
+.product-item-param-active-border {
+    border: 2px solid #41B3A3;
+}
+
+img {
+    max-width: 100%;
+}
+
+.ratio-3x4 {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+}
+
+.background-light {
+    background-color: rgba(248,249,250);
+}
+
+.background-white {
+    background-color: white;
+}
+
+
+.custom-checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.custom-checkbox+label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+.custom-checkbox+label::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
+.custom-checkbox:checked+label::before {
+    border-color: var(--main-color);
+    background-color: var(--main-color);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+/* стили при наведении курсора на checkbox */
+.custom-checkbox:not(:disabled):not(:checked)+label:hover::before {
+    border-color: #b4e3dd;
+}
+/* стили для активного состояния чекбокса (при нажатии на него) */
+.custom-checkbox:not(:disabled):active+label::before {
+    background-color: #b4d7d2;
+    border-color: #84c7be;
+}
+
+/* стили для чекбокса, находящегося в состоянии disabled */
+.custom-checkbox:disabled+label::before {
+    background-color: #e9ecef;
+}
+
+.resize-none {
+    resize: none;
+}
+
+.remove-image-btn {
+    position: relative;
+    left:18px;
+    top: 3px;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.grey-hover:hover {
+    background-color: #fdfdfd;
+}

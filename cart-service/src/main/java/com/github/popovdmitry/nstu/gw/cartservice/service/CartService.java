@@ -42,6 +42,7 @@ public class CartService {
         Cart cart = new Cart();
         cart.setCustomerId(cartDto.getCustomerId());
         cart.setProductType(cartDto.getProductType());
+        cart.setProductDetailsId(cartDto.getProductDetailsId());
         cart.setProductId(cartDto.getProductId());
         cart.setCount(cartDto.getCount());
         return cartRepository.save(cart);

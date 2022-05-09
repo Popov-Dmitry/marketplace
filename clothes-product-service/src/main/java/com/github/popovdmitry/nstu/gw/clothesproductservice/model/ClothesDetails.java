@@ -49,6 +49,22 @@ public class ClothesDetails {
     @ApiModelProperty(example = "Куртка")
     private String type;
 
+    @Column(name = "production_country")
+    @ApiModelProperty(example = "Россия")
+    private String productionCountry;
+
+    @Column(name = "care")
+    @ApiModelProperty(example = "Бережная стирка при 30 градусах")
+    private String care;
+
+    @Column(name = "style")
+    @ApiModelProperty(example = "Спортивный")
+    private String style;
+
+    @Column(name = "seller_id")
+    @ApiModelProperty(example = "1542")
+    private Long sellerId;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "clothesDetails",
             cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

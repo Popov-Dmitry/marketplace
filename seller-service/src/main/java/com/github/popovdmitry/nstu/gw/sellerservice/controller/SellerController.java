@@ -125,6 +125,19 @@ public class SellerController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping(produces = "application/json")
+    @Operation(summary = "Get seller by email")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
+    })
+    public ResponseEntity<Seller> getSellerByEmail(@Parameter(description = "Seller email", required = true, example = "ivan@company.com")
+                                                       @RequestParam("e") String email) throws NotFoundException {
+        return ResponseEntity.ok(sellerService.findByEmail(email));
+    }
+
     @GetMapping
     @ApiIgnore
     public ResponseEntity<EncodedPasswordDto> getEncodedPasswordByEmail(@RequestParam("email") String email) {

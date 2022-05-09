@@ -54,6 +54,19 @@ public class ModerController {
         return ResponseEntity.ok(moderService.findById(id));
     }
 
+    @GetMapping(produces = "application/json")
+    @Operation(summary = "Get moder by email")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
+    })
+    public ResponseEntity<Moder> getSellerByEmail(@Parameter(description = "Moder email", required = true, example = "ivan@company.com")
+                                                   @RequestParam("e") String email) throws NotFoundException {
+        return ResponseEntity.ok(moderService.findByEmail(email));
+    }
+
     @PatchMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
     @Operation(summary = "Update moder by id")
     @ApiResponses({

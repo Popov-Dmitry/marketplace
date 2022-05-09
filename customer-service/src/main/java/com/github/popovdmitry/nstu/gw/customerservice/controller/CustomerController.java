@@ -46,7 +46,8 @@ public class CustomerController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED")
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
     })
     public ResponseEntity<Customer> getCustomer(@Parameter(description = "Customer id", required = true, example = "123")
                                                     @PathVariable Long id) throws NotFoundException {
@@ -58,7 +59,8 @@ public class CustomerController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED")
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
     })
     public ResponseEntity<Customer> updateCustomer(@Parameter(description = "Customer id", required = true, example = "123")
                                                        @PathVariable Long id,
@@ -73,12 +75,26 @@ public class CustomerController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "BAD REQUEST"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED")
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
     })
     public ResponseEntity<?> deleteCustomer(@Parameter(description = "Customer id", required = true, example = "123")
                                                 @PathVariable Long id) throws NotFoundException {
         customerService.deleteCustomer(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(produces = "application/json")
+    @Operation(summary = "Get customer by email")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
+    })
+    public ResponseEntity<Customer> getCustomerByEmail(@Parameter(description = "Customer email", required = true, example = "ivan@company.com")
+                                                           @RequestParam("e") String email) throws NotFoundException {
+        return ResponseEntity.ok(customerService.findByEmail(email));
     }
 
     @GetMapping

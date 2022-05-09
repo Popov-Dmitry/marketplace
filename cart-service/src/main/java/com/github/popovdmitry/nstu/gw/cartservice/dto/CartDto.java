@@ -17,9 +17,12 @@ public class CartDto {
     @ApiModelProperty(example = "CLOTHES", position = 1)
     private ProductType productType;
 
-    @ApiModelProperty(example = "5421", position = 2)
+    @ApiModelProperty(example = "12345", position = 2)
+    private Long productDetailsId;
+
+    @ApiModelProperty(example = "5421", position = 3)
     private Long productId;
 
-    @ApiModelProperty(example = "2", position = 3)
+    @ApiModelProperty(example = "2", position = 4)
     private Integer count;
 }

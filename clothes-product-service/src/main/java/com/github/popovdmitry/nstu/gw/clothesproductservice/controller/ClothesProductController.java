@@ -35,12 +35,12 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<Clothes> getClothes(@Parameter(description = "Clothes details id", required = true, example = "123")
+    public ResponseEntity<ClothesDetails> getClothes(@Parameter(description = "Clothes details id", required = true, example = "123")
                                                   @PathVariable Long clothesDetailsId,
                                               @Parameter(description = "Clothes id", required = true, example = "10")
                                                   @PathVariable Long clothesId)
             throws NotFoundException {
-        return ResponseEntity.ok(clothesProductService.findByClothesId(clothesId));
+        return ResponseEntity.ok(clothesProductService.findByClothesDetailsIdAndClothesId(clothesDetailsId, clothesId));
     }
 
     @GetMapping(value = "/{clothesDetailsId}", produces = "application/json")
@@ -51,9 +51,22 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<List<Clothes>> getAll(@Parameter(description = "Clothes details id", required = true, example = "123")
+    public ResponseEntity<ClothesDetails> getAll(@Parameter(description = "Clothes details id", required = true, example = "123")
                                                     @PathVariable Long clothesDetailsId) throws NotFoundException {
-        return ResponseEntity.ok(clothesProductService.findAllByClothesDetailsId(clothesDetailsId));
+        return ResponseEntity.ok(clothesProductService.findByClothesDetailsId(clothesDetailsId));
+    }
+
+    @GetMapping(value = "/seller/{sellerId}", produces = "application/json")
+    @Operation(summary = "Get clothes by clothesDetailsId")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
+    })
+    public ResponseEntity<List<ClothesDetails>> getAllBySellerId(@Parameter(description = "Clothes details id", required = true, example = "123")
+                                                 @PathVariable Long sellerId) {
+        return ResponseEntity.ok(clothesProductService.findAllBySellerId(sellerId));
     }
 
     @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
@@ -64,7 +77,7 @@ public class ClothesProductController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED"),
             @ApiResponse(code = 404, message = "NOT FOUND")
     })
-    public ResponseEntity<Clothes> saveClothes(@Parameter(description = "Clothes product dto", required = true)
+    public ResponseEntity<SaveClothesReplyDto> saveClothes(@Parameter(description = "Clothes product dto", required = true)
                                                    @RequestBody ClothesProductDto clothesProductDto) throws NotFoundException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -117,7 +130,9 @@ public class ClothesProductController {
                                            @Parameter(description = "Clothes id", required = true, example = "10")
                                                @PathVariable Long clothesId)
             throws NotFoundException {
-        clothesProductService.deleteClothes(clothesId);
+        System.out.println(clothesDetailsId);
+        System.out.println(clothesId);
+        clothesProductService.deleteClothes(clothesDetailsId, clothesId);
         return ResponseEntity.ok().build();
     }
 
@@ -140,11 +155,21 @@ public class ClothesProductController {
     @Operation(summary = "Search clothes by filter")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 400, message = "BAD REQUEST")
     })
-    public ResponseEntity<List<SearchClothesProductReplyDto>> searchAll(@Parameter(description = "Search clothes product dto", required = true)
+    public ResponseEntity<List<ClothesDetails>> searchAll(@Parameter(description = "Search clothes product dto", required = true)
                                                                             @RequestBody SearchClothesProductDto searchClothesProductDto) {
         log.debug(searchClothesProductDto.toString());
         return ResponseEntity.ok(clothesProductService.findBySearchClothesProductDto(searchClothesProductDto));
+    }
+
+    @GetMapping(value = "/search/info", produces = "application/json")
+    @Operation(summary = "Get distinct brands colors and types")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST")
+    })
+    public ResponseEntity<BrandsColorsTypesDistinctDto> getBrandsColorsTypesDistinct() {
+        return ResponseEntity.ok(clothesProductService.findBrandsColorsTypesDistinct());
     }
 }

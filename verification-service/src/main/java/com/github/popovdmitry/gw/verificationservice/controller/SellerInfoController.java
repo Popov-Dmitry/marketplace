@@ -1,6 +1,7 @@
 package com.github.popovdmitry.gw.verificationservice.controller;
 
 import com.github.popovdmitry.gw.verificationservice.config.Swagger2Config;
+import com.github.popovdmitry.gw.verificationservice.dto.CountDto;
 import com.github.popovdmitry.gw.verificationservice.dto.VerificationVerdictDto;
 import com.github.popovdmitry.gw.verificationservice.model.SellerInfo;
 import com.github.popovdmitry.gw.verificationservice.service.SellerInfoService;
@@ -47,6 +48,17 @@ public class SellerInfoController {
     public ResponseEntity<SellerInfo> getSellerInfo(@Parameter(description = "Seller sellerInfo id", required = true, example = "123")
                                                         @PathVariable Long id) throws NotFoundException {
         return ResponseEntity.ok(sellerInfoService.findById(id));
+    }
+
+    @GetMapping(value = "/count", produces = "application/json")
+    @Operation(summary = "Get sellers info count")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+    })
+    public ResponseEntity<CountDto> getSellersInfoCount() {
+        return ResponseEntity.ok(sellerInfoService.getCount());
     }
 
     @PostMapping(value = "/{id}", consumes = "application/json", produces = "application/json")

@@ -5,6 +5,8 @@ import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Season;
 import com.github.popovdmitry.nstu.gw.clothesproductservice.model.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,13 +14,13 @@ import lombok.*;
 @ToString
 public class SearchClothesProductDto {
 
-    private String color;
-    private Size size;
+    private List<String> colors;
+    private List<Size> sizes;
     private Long price;
 
-    private String brand;
+    private List<String> brands;
     private String title;
-    private Category category;
-    private Season season;
-    private String type;
+    private List<Category> categories;
+    private List<Season> seasons;
+    private List<String> types;
 }
