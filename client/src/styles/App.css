@@ -221,3 +221,7 @@ img {
 .pointer-events-none {
     pointer-events: none;
 }
+
+.grey-hover:hover {
+    background-color: #fdfdfd;
+}

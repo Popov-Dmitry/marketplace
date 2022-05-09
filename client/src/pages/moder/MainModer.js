@@ -17,7 +17,7 @@ const MainModer = () => {
             <Row className={"mt-4"}>
                 <Col md={6}>
                     <Card
-                        className={"border-radius-10 p-3 cursor-pointer"}
+                        className={"border-radius-10 p-3 cursor-pointer grey-hover"}
                         onClick={() => {
                             if (sellersInfoCount > 0) {
                                 history.push(VERIFICATION_ROUTE);
@@ -46,12 +46,12 @@ const MainModer = () => {
                     </Card>
                 </Col>
                 <Col md={6}>
-                    <Card className={"border-radius-10 p-3 cursor-pointer"}>
+                    <Card className={"border-radius-10 p-3 cursor-pointer grey-hover"}>
                         <div className={"text-center fs-3 fw-bold"}>
                             Поддержка
                         </div>
                         <div className={"text-center fs-4"}>
-                            N новых обращений
+                            0 новых обращений
                         </div>
                     </Card>
                 </Col>

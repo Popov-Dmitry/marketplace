@@ -8,7 +8,7 @@ const VerificationItem = ({info}) => {
 
     return (
         <Card
-            className={"border-radius-10 product-item-param-border p-3 cursor-pointer"}
+            className={"border-radius-10 product-item-param-border p-3 cursor-pointer grey-hover"}
             onClick={() => history.push(VERIFICATION_ROUTE + "/" + info.id)}
         >
             <div className={"d-flex justify-content-between"}>

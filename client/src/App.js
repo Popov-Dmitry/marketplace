@@ -7,6 +7,7 @@ import MyAlert from "./components/MyAlert";
 import {CUSTOMER} from "./utils/roles";
 import {setUserRole} from "./redux/actions";
 import NavBarSeller from "./components/navBar/NavBarSeller";
+import NavBarModer from "./components/navBar/NavBarModer";
 
 function App() {
     const dispatch = useDispatch();
@@ -20,7 +21,7 @@ function App() {
             {domainArr.length > 1 ?
                 <div>
                     {domainArr[0] === "seller" && <NavBarSeller/>}
-                    {/*{domainArr[0] === "moder" && <AppRouter/>}*/}
+                    {domainArr[0] === "moder" && <NavBarModer/>}
                 </div>
                 :
                 <NavBarCustomer/>

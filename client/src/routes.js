@@ -148,6 +148,18 @@ export const authModerRoutes = [
         Component: MainModer
     },
     {
+        path: ACCOUNT_ROUTE,
+        Component: Account
+    },
+    {
+        path: ACCOUNT_PERSONAL_ROUTE,
+        Component: Account
+    },
+    {
+        path: ACCOUNT_SECURITY_ROUTE,
+        Component: Account
+    },
+    {
         path: VERIFICATION_ROUTE,
         Component: Verifications
     },

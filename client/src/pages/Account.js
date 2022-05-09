@@ -57,21 +57,23 @@ const Account = () => {
                             Безопасность и вход
                         </Button>
                     </div>
-                    <div>
-                        <Button
-                            variant={"light"}
-                            className={`w-100 text-start ps-3 ${location.pathname === ACCOUNT_CARDS_ROUTE && "main-color"}`}
-                            onClick={() => history.push(ACCOUNT_CARDS_ROUTE)}
-                        >
-                            <Image
-                                src={purse}
-                                width="25px"
-                                height="25px"
-                                className={`me-2 ${location.pathname === ACCOUNT_CARDS_ROUTE && "black-to-main"}`}
-                            />
-                            Кошелёк
-                        </Button>
-                    </div>
+                    {(userRole === CUSTOMER || userRole === SELLER) &&
+                        <div>
+                            <Button
+                                variant={"light"}
+                                className={`w-100 text-start ps-3 ${location.pathname === ACCOUNT_CARDS_ROUTE && "main-color"}`}
+                                onClick={() => history.push(ACCOUNT_CARDS_ROUTE)}
+                            >
+                                <Image
+                                    src={purse}
+                                    width="25px"
+                                    height="25px"
+                                    className={`me-2 ${location.pathname === ACCOUNT_CARDS_ROUTE && "black-to-main"}`}
+                                />
+                                Кошелёк
+                            </Button>
+                        </div>
+                    }
                     {userRole === CUSTOMER &&
                         <div>
                             <Button
