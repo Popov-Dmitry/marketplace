@@ -55,4 +55,12 @@ public class Order {
     @Column(name = "product_type")
     @ApiModelProperty(example = "CLOTHES", position = 10)
     private ProductType productType;
+
+    @Column(name = "regular_price")
+    @ApiModelProperty(example = "1999", position = 11)
+    private Long regularPrice;
+
+    @Column(name = "price")
+    @ApiModelProperty(example = "999", position = 12)
+    private Long price;
 }

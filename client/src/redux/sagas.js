@@ -18,7 +18,7 @@ import {
     REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
-    REQUEST_SAVE_CART,
+    REQUEST_SAVE_CART, REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER_INFO, REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
@@ -60,6 +60,7 @@ import {
     fetchSellersInfoCount,
     updateSellerInfoById
 } from "../http/verificationApi";
+import {saveOrder} from "../http/orderApi";
 
 export function* watchAll() {
     yield all([
@@ -87,7 +88,8 @@ export function* watchAll() {
         takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker),
         takeEvery(REQUEST_ALL_SELLERS_INFO, requestAllSellersInfoWorker),
         takeEvery(REQUEST_SELLER_INFO, requestSellerInfoWorker),
-        takeEvery(REQUEST_UPDATE_SELLER_INFO, requestUpdateSellerInfoWorker)
+        takeEvery(REQUEST_UPDATE_SELLER_INFO, requestUpdateSellerInfoWorker),
+        takeEvery(REQUEST_SAVE_ORDER, requestSaveOrderWorker)
     ]);
 }
 
@@ -634,6 +636,25 @@ function* requestSellerInfoWorker(action) {
 function* requestUpdateSellerInfoWorker(action) {
     try {
         yield call(updateSellerInfoById, action.payload.id, action.payload.verificationStatus, action.payload.message);
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSaveOrderWorker(action) {
+    try {
+        yield call(saveOrder, action.payload.productDetailsId, action.payload.productId, action.payload.count,
+            action.payload.customerId, action.payload.address, action.payload.sellerId, action.payload.productType,
+            action.payload.regularPrice, action.payload.price);
+        yield call(deleteCart, action.payload.cartId)
     }
     catch (e) {
         console.log(e);

@@ -1,20 +1,41 @@
 import {
-    ADD_FILTER, ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_DETAILS_ID, ADD_PRODUCT_PHOTOS, CLEAR_PHOTO_STORE,
+    ADD_FILTER,
+    ADD_PRODUCT,
+    ADD_PRODUCT_DETAILS,
+    ADD_PRODUCT_DETAILS_ID,
+    ADD_PRODUCT_PHOTOS,
+    CLEAR_PHOTO_STORE,
+    CLEAR_SELECTED_ITEMS,
     HIDE_ALERT,
     REMOVE_FILTER,
-    REQUEST_ALERT, REQUEST_ALL_SELLERS_INFO,
+    REQUEST_ALERT,
+    REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
-    REQUEST_CART, REQUEST_CLOTHES_BY_SELLER_ID,
+    REQUEST_CART,
+    REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_CART,
+    REQUEST_DELETE_CLOTHES,
+    REQUEST_DELETE_CLOTHES_DETAILS,
+    REQUEST_DELETE_PHOTO,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
-    REQUEST_SAVE_CART, REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER_INFO, REQUEST_SELLERS_INFO_COUNT,
-    REQUEST_UPDATE_CART, REQUEST_UPDATE_CLOTHES, REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_SELLER_INFO,
-    REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO, REQUEST_USER_BY_EMAIL,
-    SELECT_ITEM, SET_USER_ROLE
+    REQUEST_SAVE_CART,
+    REQUEST_SAVE_ORDER,
+    REQUEST_SAVE_PRODUCT,
+    REQUEST_SEARCH_CLOTHES,
+    REQUEST_SELLER_INFO,
+    REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_UPDATE_CART,
+    REQUEST_UPDATE_CLOTHES,
+    REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_SELLER_INFO,
+    REQUEST_UPDATE_USER,
+    REQUEST_UPLOAD_PHOTO,
+    REQUEST_USER_BY_EMAIL,
+    SELECT_ITEM,
+    SET_USER_ROLE
 } from "./types";
 
 export function authUser(email, password, userRole) {
@@ -207,6 +228,12 @@ export function selectItemCart(cartId, checked) {
     }
 }
 
+export function clearSelectedItemsCart() {
+    return {
+        type: CLEAR_SELECTED_ITEMS
+    }
+}
+
 export function saveCart(customerId, productType, productDetailsId, productId, count) {
     return {
         type: REQUEST_SAVE_CART,
@@ -265,5 +292,12 @@ export function updateSellerInfo(id, verificationStatus, message) {
     return {
         type: REQUEST_UPDATE_SELLER_INFO,
         payload: { id, verificationStatus, message }
+    }
+}
+
+export function saveOrder(productDetailsId, productId, count, customerId, address, sellerId, productType, regularPrice, price, cartId) {
+    return {
+        type: REQUEST_SAVE_ORDER,
+        payload: { productDetailsId, productId, count, customerId, address, sellerId, productType, regularPrice, price, cartId }
     }
 }

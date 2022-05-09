@@ -7,9 +7,9 @@ import {
     GET_ORDER_BY_SELLER_ID, UPDATE_ORDER_STATUS
 } from "../utils/endpoints";
 
-export const saveOrder = async (productDetailsId, productId, count, customerId, address, sellerId, productType) => {
+export const saveOrder = async (productDetailsId, productId, count, customerId, address, sellerId, productType, regularPrice, price) => {
     const {data} = await $authHost.post(ADD_ORDER,
-        { productDetailsId, productId, count, customerId, address, sellerId, productType });
+        { productDetailsId, productId, count, customerId, address, sellerId, productType, regularPrice, price });
     return data;
 }
 

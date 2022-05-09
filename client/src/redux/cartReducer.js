@@ -1,4 +1,4 @@
-import {DELETE_CART, FETCH_CART, SAVE_CART, SELECT_ITEM, UPDATE_CART} from "./types";
+import {CLEAR_SELECTED_ITEMS, DELETE_CART, FETCH_CART, SAVE_CART, SELECT_ITEM, UPDATE_CART} from "./types";
 
 const initialState = {
     info: [],
@@ -19,8 +19,6 @@ export const cartReducer = (state = initialState, action) => {
             return { ...state, info: state.info.map(i =>
                     action.payload.id === i.id ? { ...i, count: action.payload.count} : i)};
         case SELECT_ITEM:
-            console.log(action.payload)
-
             if (action.payload.checked === true) {
                 const newSelected = [ ...state.selected ];
                 newSelected.push(action.payload.cartId);
@@ -29,6 +27,8 @@ export const cartReducer = (state = initialState, action) => {
             else {
                 return { ...state, selected: [ ...state.selected ].filter(item => item !== action.payload.cartId) };
             }
+        case CLEAR_SELECTED_ITEMS:
+            return { ...state, selected: [] };
         default:
             return state;
     }

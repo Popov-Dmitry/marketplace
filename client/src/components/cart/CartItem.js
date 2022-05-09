@@ -49,11 +49,20 @@ const CartItem = ({item}) => {
                 </div>
                 <div className={"text-black-50"}>
                     <span className={"text-lowercase"}>цвет {item.product.clothes[0].color},</span>
-                    <span> размер {item.product.clothes[0].size}</span>
+                    <span> размер {item.product.clothes[0].size}, {item.product.clothes[0].weight}г</span>
                 </div>
             </Col>
             <Col md={2} className={"text-center"}>
-                <div className={"fs-5 fw-bold"}>{item.product.clothes[0].price} &#x20bd;</div>
+                {item.product.clothes[0].price ?
+                    <div>
+                        <div className={"fs-5 fw-bold"}>{item.product.clothes[0].price} &#x20bd;</div>
+                        <div className={"fw-bold opacity-75"}>
+                            <s>{item.product.clothes[0].regularPrice} &#x20bd;</s>
+                        </div>
+                    </div>
+                    :
+                    <div className={"fs-5 fw-bold"}>{item.product.clothes[0].regularPrice} &#x20bd;</div>
+                }
             </Col>
             <Col md={2} className={"text-center"}>
                 <CountControl item={item}/>

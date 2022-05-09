@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Container, Row} from "react-bootstrap";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchClothes} from "../../http/clothesProductApi";
 import {fetchPhotosNames} from "../../http/photoApi";
 import Summary from "../../components/cart/Summary";
 import CartItem from "../../components/cart/CartItem";
 import EmptyCart from "../../components/cart/EmptyCart";
 import TopControls from "../../components/cart/TopControls";
+import {clearSelectedItemsCart} from "../../redux/actions";
 
 const Cart = () => {
+    const dispatch = useDispatch();
     const cart = useSelector(state => state.cartReducer.info);
     const [isRequestsDone, setIsRequestsDone] = useState(false);
 
@@ -30,6 +32,8 @@ const Cart = () => {
             }
         }
     }, [cart]);
+
+    useEffect(() => dispatch(clearSelectedItemsCart()), []);
 
     return (
         <div className={"background-light"}>
