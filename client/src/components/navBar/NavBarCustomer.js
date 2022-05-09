@@ -3,22 +3,22 @@ import {Button, Container, Dropdown, Form, Image, Nav, Navbar} from "react-boots
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, WISHLIST_ROUTE} from "../utils/consts";
-import catalog from "../assets/catalog.png";
-import search from "../assets/search.png";
-import account from "../assets/user.png";
-import login from "../assets/login.png";
-import cart from "../assets/bag.png";
-import favorite from "../assets/heart.png";
-import "../styles/App.css";
-import "../styles/NavBar.css";
+import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, WISHLIST_ROUTE} from "../../utils/consts";
+import catalog from "../../assets/catalog.png";
+import search from "../../assets/search.png";
+import account from "../../assets/user.png";
+import login from "../../assets/login.png";
+import cart from "../../assets/bag.png";
+import favorite from "../../assets/heart.png";
+import "../../styles/App.css";
+import "../../styles/NavBar.css";
 import NavBarCategoriesList from "./NavBarCategoriesList";
-import {boys, girls, men, women} from "../utils/categories";
+import {boys, girls, men, women} from "../../utils/categories";
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
-import Auth from "./modals/Auth";
+import Auth from "../modals/Auth";
 
-const NavBar = () => {
+const NavBarCustomer = () => {
     const user = useSelector(state => state.userReducer);
     const [authVisible, setAuthVisible] = useState(false);
 
@@ -107,4 +107,4 @@ const NavBar = () => {
     );
 };
 
-export default NavBar;
+export default NavBarCustomer;

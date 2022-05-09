@@ -1,17 +1,12 @@
 import React from 'react';
 import {Container, Image, Nav, Navbar} from "react-bootstrap";
-import {NavLink, useHistory} from "react-router-dom";
-import {ACCOUNT_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, SELLER_NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../utils/consts";
-import {useSelector} from "react-redux";
-import account from "../assets/user.png";
-import login from "../assets/login.png";
-import products from "../assets/products.png";
-import addProduct from "../assets/add-product.png";
+import {NavLink} from "react-router-dom";
+import {MAIN_ROUTE, SELLER_NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
+import products from "../../assets/products.png";
+import addProduct from "../../assets/add-product.png";
+import AccountNav from "./AccountNav";
 
 const NavBarSeller = () => {
-    const history = useHistory();
-    const userReducer = useSelector(state => state.userReducer);
-
     return (
         <Navbar bg={"light"} variant={"light"}>
             <Container>
@@ -29,19 +24,7 @@ const NavBarSeller = () => {
                     <NavLink to={SELLER_PRODUCTS_ROUTE}>
                         <Image src={products} width="32px" height="32px" className={"me-3"}/>
                     </NavLink>
-                    {userReducer.isAuth ?
-                        <NavLink to={ACCOUNT_ROUTE}>
-                            <Image src={account} width="32px" height="32px"/>
-                        </NavLink>
-                        :
-                        <Image
-                            src={login}
-                            width="32px"
-                            height="32px"
-                            className={"cursor-pointer"}
-                            onClick={() => history.push(LOGIN_ROUTE)}
-                        />
-                    }
+                    <AccountNav/>
                 </Nav>
             </Container>
         </Navbar>

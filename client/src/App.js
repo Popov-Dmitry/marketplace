@@ -1,12 +1,12 @@
 import React from 'react';
 import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
-import NavBar from "./components/NavBar";
+import NavBarCustomer from "./components/navBar/NavBarCustomer";
 import {useDispatch, useSelector} from "react-redux";
 import MyAlert from "./components/MyAlert";
 import {CUSTOMER} from "./utils/roles";
 import {setUserRole} from "./redux/actions";
-import NavBarSeller from "./components/NavBarSeller";
+import NavBarSeller from "./components/navBar/NavBarSeller";
 
 function App() {
     const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function App() {
                     {/*{domainArr[0] === "moder" && <AppRouter/>}*/}
                 </div>
                 :
-                <NavBar/>
+                <NavBarCustomer/>
             }
             <AppRouter/>
             {alert && <MyAlert variant={alert.variant} text={alert.text}/>}
