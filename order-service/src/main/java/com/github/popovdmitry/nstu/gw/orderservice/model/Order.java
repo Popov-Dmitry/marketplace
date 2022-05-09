@@ -3,6 +3,7 @@ package com.github.popovdmitry.nstu.gw.orderservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "orders")
@@ -37,4 +38,7 @@ public class Order {
 
     @Column(name = "status")
     private Status status;
+
+    @Column(name = "order_date")
+    private Date orderDate;
 }

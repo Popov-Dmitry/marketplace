@@ -6,5 +6,6 @@ public enum Status {
     DELIVERY,
     WAITING,
     DELIVERED,
-    RETURN
+    RETURN,
+    CANCELED
 }
