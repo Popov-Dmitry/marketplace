@@ -171,6 +171,13 @@ public class ClothesProductService {
         return clothesDetailsRepository.save(clothesDetails);
     }
 
+    public Clothes updateClothesCount(KafkaOrderDto kafkaOrderDto) throws NotFoundException {
+        Clothes clothes = clothesRepository.findById(kafkaOrderDto.getProductId()).orElseThrow(() ->
+                new NotFoundException(String.format("Clothes with id %d is not found", kafkaOrderDto.getProductId())));
+        clothes.setCount(clothes.getCount() - kafkaOrderDto.getCount());
+        return clothesRepository.save(clothes);
+    }
+
     public void deleteClothes(Long clothesDetailsId, Long clothesId) throws NotFoundException {
         Clothes clothes = clothesRepository.findById(clothesId).orElseThrow(() ->
                 new NotFoundException(String.format("Clothes with id %d is not found", clothesId)));
