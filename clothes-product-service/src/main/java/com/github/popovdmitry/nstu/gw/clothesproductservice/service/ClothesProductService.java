@@ -218,7 +218,9 @@ public class ClothesProductService {
                         clothesDetails.getClothes().stream()
                                 .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
                                         searchClothesProductDto.getSizes().contains(c.getSize()) &&
-                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                        (Objects.isNull(c.getPrice()) ?
+                                                searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                                : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }
@@ -240,7 +242,9 @@ public class ClothesProductService {
                 clothesDetails.setClothes(
                         clothesDetails.getClothes().stream()
                                 .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
-                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                        (Objects.isNull(c.getPrice()) ?
+                                                searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                                : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }
@@ -251,7 +255,9 @@ public class ClothesProductService {
                 clothesDetails.setClothes(
                         clothesDetails.getClothes().stream()
                                 .filter(c -> searchClothesProductDto.getSizes().contains(c.getSize()) &&
-                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                        (Objects.isNull(c.getPrice()) ?
+                                                searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                                : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }
@@ -281,7 +287,9 @@ public class ClothesProductService {
             for (ClothesDetails clothesDetails : clothesDetailsList) {
                 clothesDetails.setClothes(
                         clothesDetails.getClothes().stream()
-                                .filter(c -> searchClothesProductDto.getPrice() <= c.getPrice())
+                                .filter(c -> (Objects.isNull(c.getPrice()) ?
+                                        searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                        : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }

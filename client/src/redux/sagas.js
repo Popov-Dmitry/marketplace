@@ -272,8 +272,9 @@ function* requestSearchPanelInfoWorker() {
 
 function* requestSearchClothesWorker(action) {
     try {
-        const payload = yield call(searchClothes, action.payload.colors, action.payload.sizes, action.payload.price,
-            action.payload.brands, action.payload.title, action.payload.categories, action.payload.seasons, action.payload.types);
+        const payload = yield call(searchClothes, action.payload.colors, action.payload.sizes,
+            action.payload.price ? action.payload.price.trim() : null, action.payload.brands,
+            action.payload.title, action.payload.categories, action.payload.seasons, action.payload.types);
         yield put({ type: FETCH_CLOTHES, payload });
     }
     catch (e) {
