@@ -225,3 +225,7 @@ img {
 .grey-hover:hover {
     background-color: #fdfdfd;
 }
+
+.mt-6 {
+    margin-top: 5rem;
+}
