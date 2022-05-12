@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../../utils/consts";
 import {useDispatch} from "react-redux";
 import {selectItemCart} from "../../redux/actions";
+import Checkbox from "../Checkbox";
 
 const CartItem = ({item}) => {
     const history = useHistory();
@@ -17,15 +18,10 @@ const CartItem = ({item}) => {
     return (
         <Row>
             <Col md={1} className={"d-flex align-items-center"} style={{width: "40px"}}>
-                <input
-                    type="checkbox"
-                    className="custom-checkbox"
-                    id={item.id}
+                <Checkbox
                     name={item.id}
-                    value={item.id}
                     onChange={event => dispatch(selectItemCart(parseInt(event.target.id), event.target.checked))}
                 />
-                <label htmlFor={item.id}/>
             </Col>
             <Col md={2}>
                 <Image

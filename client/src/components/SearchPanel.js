@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Form, Row} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {addFilter, fetchSearchClothes, removeFilter} from "../redux/actions";
+import Checkbox from "./Checkbox";
 
 let typingTimer;
 let doneTypingInterval = 1000;
@@ -46,14 +47,21 @@ const SearchPanel = () => {
                         <Form.Label className={"fw-bold"}>Категория</Form.Label>
                         <div className={`${searchPanelInfo.types.length > 4 && "panel-scroll"}`}>
                         {searchPanelInfo.types.map(type =>
-                            <Form.Check
-                                key={type}
-                                type={"checkbox"}
-                                value={type}
-                                label={type}
-                                name={"types"}
-                                onChange={onChange}
-                            />
+                            <div key={type}>
+                                <Checkbox
+                                    value={type}
+                                    name={type}
+                                    text={type}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            dispatch(addFilter("types", e.target.value));
+                                        }
+                                        else {
+                                            dispatch(removeFilter("types", e.target.value));
+                                        }
+                                    }}
+                                />
+                            </div>
                         )}
                         </div>
                     </div>
