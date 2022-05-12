@@ -32,3 +32,9 @@ export const getCurrentClothes = (clothesArr, id) => {
     const currentClothes = clothesArr.filter(c => c.id == id);
     return currentClothes[0] ? currentClothes[0] : {};
 }
+
+export const positiveNumber = (event) => {
+    if (event.target.value < 0) {
+        event.target.value = event.target.value * -1;
+    }
+}
