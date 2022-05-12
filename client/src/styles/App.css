@@ -229,3 +229,46 @@ img {
 .mt-6 {
     margin-top: 5rem;
 }
+
+
+.custom-switch{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.custom-switch-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 60px;
+    height: 30px;
+    background: grey;
+    display: block;
+    border-radius: 50px;
+    position: relative;
+}
+
+.custom-switch-label:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background: #fff;
+    border-radius: 22px;
+    transition: 0.3s;
+}
+
+.custom-switch:checked + label {
+    background: var(--main-color);
+}
+
+.custom-switch:checked + label:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+.custom-switch-label:active:after {
+    width: 32px;
+}
