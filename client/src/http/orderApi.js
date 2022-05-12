@@ -18,22 +18,22 @@ export const fetchOrderById = async (id) => {
     return data;
 }
 
-export const fetchOrderByCustomerId = async (id) => {
+export const fetchOrdersByCustomerId = async (id) => {
     const {data} = await $authHost.get(GET_ORDER_BY_CUSTOMER_ID + id);
     return data;
 }
 
-export const fetchOrderBySellerId = async (id) => {
+export const fetchOrdersBySellerId = async (id) => {
     const {data} = await $authHost.get(GET_ORDER_BY_SELLER_ID + id);
     return data;
 }
 
-export const fetchOrderByProductId = async (detailsId, id) => {
+export const fetchOrdersByProductId = async (detailsId, id) => {
     const {data} = await $authHost.get(GET_ORDER_BY_PRODUCT_ID + detailsId + "/" + id);
     return data;
 }
 
-export const fetchOrderByProductDetailsId = async (detailsId) => {
+export const fetchOrdersByProductDetailsId = async (detailsId) => {
     const {data} = await $authHost.get(GET_ORDER_BY_PRODUCT_DETAILS_ID + detailsId);
     return data;
 }

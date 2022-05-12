@@ -5,7 +5,7 @@ import {
     DELETE_CART, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS, DELETE_PHOTO, FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
-    FETCH_CLOTHES_SEARCH_PANEL_INFO,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_ORDERS,
     FETCH_PHOTOS_NAMES, FETCH_SELLER_INFO, FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
     HIDE_ALERT,
@@ -15,7 +15,7 @@ import {
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_ORDER,
@@ -60,7 +60,13 @@ import {
     fetchSellersInfoCount,
     updateSellerInfoById
 } from "../http/verificationApi";
-import {saveOrder} from "../http/orderApi";
+import {
+    fetchOrderByCustomerId,
+    fetchOrdersByCustomerId,
+    fetchOrdersByProductDetailsId,
+    fetchOrdersByProductId,
+    saveOrder
+} from "../http/orderApi";
 
 export function* watchAll() {
     yield all([
@@ -89,7 +95,8 @@ export function* watchAll() {
         takeEvery(REQUEST_ALL_SELLERS_INFO, requestAllSellersInfoWorker),
         takeEvery(REQUEST_SELLER_INFO, requestSellerInfoWorker),
         takeEvery(REQUEST_UPDATE_SELLER_INFO, requestUpdateSellerInfoWorker),
-        takeEvery(REQUEST_SAVE_ORDER, requestSaveOrderWorker)
+        takeEvery(REQUEST_SAVE_ORDER, requestSaveOrderWorker),
+        takeEvery(REQUEST_ORDERS, requestFetchOrdersWorker)
     ]);
 }
 
@@ -656,6 +663,35 @@ function* requestSaveOrderWorker(action) {
             action.payload.customerId, action.payload.address, action.payload.sellerId, action.payload.productType,
             action.payload.regularPrice, action.payload.price);
         yield call(deleteCart, action.payload.cartId)
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchOrdersWorker(action) {
+    try {
+        let payload;
+        if (action.payload.fetchBy === CUSTOMER) {
+            payload = yield call(fetchOrdersByCustomerId, action.payload.id);
+        }
+        if (action.payload.fetchBy === SELLER) {
+            payload = yield call(fetchOrdersByCustomerId, action.payload.id);
+        }
+        if (action.payload.fetchBy === "productId") {
+            payload = yield call(fetchOrdersByProductId, action.payload.id);
+        }
+        if (action.payload.fetchBy === "productDetails") {
+            payload = yield call(fetchOrdersByProductDetailsId, action.payload.id);
+        }
+        yield put({ type: FETCH_ORDERS, payload })
     }
     catch (e) {
         console.log(e);

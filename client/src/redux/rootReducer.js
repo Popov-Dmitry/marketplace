@@ -6,6 +6,7 @@ import {photoReducer} from "./photoReducer";
 import {cartReducer} from "./cartReducer";
 import {productReducer} from "./productReducer";
 import {moderReducer} from "./moderReducer";
+import {orderReducer} from "./orderReducer";
 
 export const rootReducer = combineReducers({
     appReducer,
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
     photoReducer,
     cartReducer,
     productReducer,
-    moderReducer
+    moderReducer,
+    orderReducer
 })

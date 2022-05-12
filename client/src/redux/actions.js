@@ -18,7 +18,7 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_PHOTO, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART,
@@ -299,5 +299,12 @@ export function saveOrder(productDetailsId, productId, count, customerId, addres
     return {
         type: REQUEST_SAVE_ORDER,
         payload: { productDetailsId, productId, count, customerId, address, sellerId, productType, regularPrice, price, cartId }
+    }
+}
+
+export function fetchOrders(fetchBy, id) {
+    return {
+        type: REQUEST_ORDERS,
+        payload: { fetchBy, id }
     }
 }
