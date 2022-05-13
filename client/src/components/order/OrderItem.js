@@ -3,6 +3,7 @@ import {ORDERS_ROUTE} from "../../utils/consts";
 import {Card, Col, Image, Row} from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
+import OrderStatus from "./OrderStatus";
 
 const OrderItem = ({order}) => {
     const history = useHistory();
@@ -18,20 +19,7 @@ const OrderItem = ({order}) => {
                     <div>Номер заказа: {order.id}</div>
                     <div>Дата заказа: {new Date(order.orderDate).toLocaleDateString()}</div>
                 </div>
-                <div className={`d-flex align-items-center p-1 ps-2 pe-2 border-radius-50 text-center text-light
-                            ${(order.status === "DELIVERED" || order.status === "RETURNED" || order.status === "CANCELED") ?
-                    "background-gray" : "background-main"}`}>
-                    <div>
-                        {order.status === "CREATED" && "Создан"}
-                        {order.status === "ACCEPTED" && "Принят"}
-                        {order.status === "DELIVERY" && "Доставляется"}
-                        {order.status === "WAITING" && "Ожидает в точке выдачи"}
-                        {order.status === "DELIVERED" && "Доставлен"}
-                        {order.status === "RETURN" && "Возврат"}
-                        {order.status === "RETURNED" && "Возвращен"}
-                        {order.status === "CANCELED" && "Отменен"}
-                    </div>
-                </div>
+                <OrderStatus status={order.status}/>
             </div>
             <Row>
                 <Col md={2}>

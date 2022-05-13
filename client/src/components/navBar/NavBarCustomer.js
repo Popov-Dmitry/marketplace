@@ -3,13 +3,14 @@ import {Button, Container, Dropdown, Form, Image, Nav, Navbar} from "react-boots
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, SEARCH_ROUTE, WISHLIST_ROUTE} from "../../utils/consts";
+import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, ORDERS_ROUTE, SEARCH_ROUTE, WISHLIST_ROUTE} from "../../utils/consts";
 import catalog from "../../assets/catalog.png";
 import search from "../../assets/search.png";
 import account from "../../assets/user.png";
 import login from "../../assets/login.png";
 import cart from "../../assets/bag.png";
 import favorite from "../../assets/heart.png";
+import products from "../../assets/products.png";
 import "../../styles/App.css";
 import "../../styles/NavBar.css";
 import NavBarCategoriesList from "./NavBarCategoriesList";
@@ -96,16 +97,21 @@ const NavBarCustomer = () => {
                 </Form>
 
                 <Nav>
-                    <NavLink to={CART_ROUTE}>
-                        <Image src={cart} width="36px" height="36px" className={"me-3"}/>
-                    </NavLink>
-                    <NavLink to={WISHLIST_ROUTE}>
-                        <Image src={favorite} width="35px" height="35px" className={"me-3"}/>
-                    </NavLink>
                     {user.isAuth ?
-                        <NavLink to={ACCOUNT_ROUTE}>
-                            <Image src={account} width="32px" height="32px"/>
-                        </NavLink>
+                        <div>
+                            <NavLink to={CART_ROUTE}>
+                                <Image src={cart} width="32px" height="32px" className={"me-3"}/>
+                            </NavLink>
+                            <NavLink to={WISHLIST_ROUTE}>
+                                <Image src={favorite} width="32px" height="32px" className={"me-3"}/>
+                            </NavLink>
+                            <NavLink to={ORDERS_ROUTE}>
+                                <Image src={products} width="32px" height="32px" className={"me-3"}/>
+                            </NavLink>
+                            <NavLink to={ACCOUNT_ROUTE}>
+                                <Image src={account} width="32px" height="32px"/>
+                            </NavLink>
+                        </div>
                         :
                         <Image
                             src={login}
