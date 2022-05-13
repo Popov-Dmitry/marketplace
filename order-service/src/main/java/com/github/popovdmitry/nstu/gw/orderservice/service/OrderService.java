@@ -59,6 +59,8 @@ public class OrderService {
         order.setProductType(orderDto.getProductType());
         order.setRegularPrice(orderDto.getRegularPrice());
         order.setPrice(orderDto.getPrice());
+        order.setTitle(orderDto.getTitle());
+        order.setVariant(orderDto.getVariant());
         try {
             Order savedOrder = orderRepository.save(order);
             if (savedOrder.getProductType() == ProductType.CLOTHES) {

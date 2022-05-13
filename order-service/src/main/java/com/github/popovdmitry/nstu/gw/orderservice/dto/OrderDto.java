@@ -37,4 +37,10 @@ public class OrderDto {
 
     @ApiModelProperty(example = "999", position = 8)
     private Long price;
+
+    @ApiModelProperty(example = "Джемпер O'STIN", position = 9)
+    private String title;
+
+    @ApiModelProperty(example = "Синий, XXL", position = 10)
+    private String variant;
 }

@@ -63,4 +63,12 @@ public class Order {
     @Column(name = "price")
     @ApiModelProperty(example = "999", position = 12)
     private Long price;
+
+    @Column(name = "title")
+    @ApiModelProperty(example = "Джемпер O'STIN", position = 13)
+    private String title;
+
+    @Column(name = "variant")
+    @ApiModelProperty(example = "Синий, XXL", position = 14)
+    private String variant;
 }

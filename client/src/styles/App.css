@@ -160,6 +160,14 @@ img {
     background-color: white;
 }
 
+.background-main {
+    background-color: var(--main-color);
+}
+
+.background-gray {
+    background-color: #9dabab;
+}
+
 
 .custom-checkbox {
     position: absolute;
