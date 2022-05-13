@@ -9,7 +9,7 @@ import {
     EDIT_PRODUCT_ROUTE,
     LOGIN_ROUTE,
     MAIN_ROUTE,
-    NEW_PRODUCT_ROUTE,
+    NEW_PRODUCT_ROUTE, ORDERS_ROUTE,
     REGISTRATION_ROUTE,
     SEARCH_ROUTE,
     SELLER_NEW_PRODUCT_ROUTE,
@@ -30,6 +30,7 @@ import ProductEdit from "./pages/seller/ProductEdit";
 import MainModer from "./pages/moder/MainModer";
 import Verifications from "./pages/moder/Verifications";
 import Verification from "./pages/moder/Verification";
+import Orders from "./pages/customer/Orders";
 
 export const publicCustomerRoutes = [
     {
@@ -70,6 +71,10 @@ export const authCustomerRoutes = [
     {
         path: CART_ROUTE,
         Component: Cart
+    },
+    {
+        path: ORDERS_ROUTE,
+        Component: Orders
     }
 ];
 
