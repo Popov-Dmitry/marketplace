@@ -8,7 +8,7 @@ import {productReducer} from "./productReducer";
 import {moderReducer} from "./moderReducer";
 import {orderReducer} from "./orderReducer";
 import {sellerReducer} from "./sellerReducer";
-import {deliveryReducer} from "./deliveryRedicer";
+import {deliveryReducer} from "./deliveryReducer";
 
 export const rootReducer = combineReducers({
     appReducer,
