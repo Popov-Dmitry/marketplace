@@ -71,4 +71,7 @@ public class Order {
     @Column(name = "variant")
     @ApiModelProperty(example = "Синий, XXL", position = 14)
     private String variant;
+
+    @OneToOne(mappedBy = "order")
+    private Return aReturn;
 }
