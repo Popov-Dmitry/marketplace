@@ -29,8 +29,10 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, jwtConfig.getAuthUri()).permitAll()
                 .antMatchers(HttpMethod.POST, "/customers/").permitAll()
+                .antMatchers(HttpMethod.GET, "/customers/**").hasAnyRole("CUSTOMER", "SELLER", "ADMIN")
                 .antMatchers("/customers/**").hasAnyRole("CUSTOMER", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/sellers/").permitAll()
+                .antMatchers(HttpMethod.GET, "/sellers/**").permitAll()
                 .antMatchers("/sellers/**").hasAnyRole("SELLER", "ADMIN")
                 .antMatchers("/verification/**").hasAnyRole("MODER", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/moders/").hasRole("ADMIN")
@@ -45,6 +47,11 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/photos/**").hasAnyRole("SELLER", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/photos/**").permitAll()
                 .antMatchers("/carts/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/orders/**").hasAnyRole("SELLER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/orders/customers/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/orders/sellers/**", "/orders/products/**").hasAnyRole("SELLER", "ADMIN")
+                .antMatchers("/orders/**").hasAnyRole("CUSTOMER", "SELLER", "ADMIN")
                 .anyRequest().authenticated();
     }
 }

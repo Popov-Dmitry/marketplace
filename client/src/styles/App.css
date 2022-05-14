@@ -160,6 +160,14 @@ img {
     background-color: white;
 }
 
+.background-main {
+    background-color: var(--main-color);
+}
+
+.background-gray {
+    background-color: #9dabab;
+}
+
 
 .custom-checkbox {
     position: absolute;
@@ -224,4 +232,79 @@ img {
 
 .grey-hover:hover {
     background-color: #fdfdfd;
+}
+
+.mt-6 {
+    margin-top: 5rem;
+}
+
+
+.custom-switch{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.custom-switch-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 60px;
+    height: 30px;
+    background: grey;
+    display: block;
+    border-radius: 50px;
+    position: relative;
+}
+
+.custom-switch-label:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background: #fff;
+    border-radius: 22px;
+    transition: 0.3s;
+}
+
+.custom-switch:checked + label {
+    background: var(--main-color);
+}
+
+.custom-switch:checked + label:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+.custom-switch-label:active:after {
+    width: 32px;
+}
+
+.chart-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 10px solid var(--main-color);
+    padding-top: 15px;
+    margin-top: 55px;
+}
+
+.chart-active{
+    background-color: #fff !important;
+    color: var(--main-color) !important;
+}
+
+.chart-container div {
+    background-color: var(--main-color);
+    font-weight: bold;
+    color: #fcfffe;
+    border: 2px solid var(--main-color);
+    margin-top: -45px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 50%;
+    z-index: 99;
 }

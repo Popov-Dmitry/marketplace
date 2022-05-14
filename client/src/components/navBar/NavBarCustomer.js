@@ -3,24 +3,29 @@ import {Button, Container, Dropdown, Form, Image, Nav, Navbar} from "react-boots
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, WISHLIST_ROUTE} from "../../utils/consts";
+import {ACCOUNT_ROUTE, CART_ROUTE, MAIN_ROUTE, ORDERS_ROUTE, SEARCH_ROUTE, WISHLIST_ROUTE} from "../../utils/consts";
 import catalog from "../../assets/catalog.png";
 import search from "../../assets/search.png";
 import account from "../../assets/user.png";
 import login from "../../assets/login.png";
 import cart from "../../assets/bag.png";
 import favorite from "../../assets/heart.png";
+import products from "../../assets/products.png";
 import "../../styles/App.css";
 import "../../styles/NavBar.css";
 import NavBarCategoriesList from "./NavBarCategoriesList";
 import {boys, girls, men, women} from "../../utils/categories";
-import {NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {NavLink, useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import Auth from "../modals/Auth";
+import {addFilter} from "../../redux/actions";
 
 const NavBarCustomer = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
     const user = useSelector(state => state.userReducer);
     const [authVisible, setAuthVisible] = useState(false);
+    const [searchTitle, setSearchTitle] = useState("");
 
     return (
         <Navbar bg={"light"} variant={"light"}>
@@ -74,23 +79,39 @@ const NavBarCustomer = () => {
                         type={"search"}
                         placeholder={"Искать в Кладовке"}
                         className={"nav-search shadow-none"}
+                        value={searchTitle}
+                        onChange={e => setSearchTitle(e.target.value)}
                     />
-                    <Button variant={"main"} className={"nav-search-btn"}>
+                    <Button
+                        variant={"main"}
+                        className={"nav-search-btn"}
+                        onClick={() => {
+                            dispatch(addFilter("title", searchTitle));
+                            if (history.location.pathname !== SEARCH_ROUTE) {
+                                history.push(SEARCH_ROUTE);
+                            }
+                        }}
+                    >
                         <Image src={search} width="25px" height="25px"/>
                     </Button>
                 </Form>
 
                 <Nav>
-                    <NavLink to={CART_ROUTE}>
-                        <Image src={cart} width="36px" height="36px" className={"me-3"}/>
-                    </NavLink>
-                    <NavLink to={WISHLIST_ROUTE}>
-                        <Image src={favorite} width="35px" height="35px" className={"me-3"}/>
-                    </NavLink>
                     {user.isAuth ?
-                        <NavLink to={ACCOUNT_ROUTE}>
-                            <Image src={account} width="32px" height="32px"/>
-                        </NavLink>
+                        <div>
+                            <NavLink to={CART_ROUTE}>
+                                <Image src={cart} width="32px" height="32px" className={"me-3"}/>
+                            </NavLink>
+                            <NavLink to={WISHLIST_ROUTE}>
+                                <Image src={favorite} width="32px" height="32px" className={"me-3"}/>
+                            </NavLink>
+                            <NavLink to={ORDERS_ROUTE}>
+                                <Image src={products} width="32px" height="32px" className={"me-3"}/>
+                            </NavLink>
+                            <NavLink to={ACCOUNT_ROUTE}>
+                                <Image src={account} width="32px" height="32px"/>
+                            </NavLink>
+                        </div>
                         :
                         <Image
                             src={login}

@@ -17,7 +17,7 @@ const ProductItem = ({product}) => {
     const sizes = useMemo(() => getSizesByDetails(product.clothes), [product]);
     const [editProductVisible, setEditProductVisible] = useState(false);
 
-    useEffect(() => dispatch(fetchPhotosNames("CLOTHES", product.id, product.clothes[0].id)), []);
+    useEffect(() => dispatch(fetchPhotosNames("CLOTHES", product.id, product.clothes[0].id)), [product]);
 
     const onItemClick = () => {
         if (!userReducer.isAuth || userReducer.userRole === CUSTOMER) {

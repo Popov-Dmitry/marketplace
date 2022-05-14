@@ -171,6 +171,13 @@ public class ClothesProductService {
         return clothesDetailsRepository.save(clothesDetails);
     }
 
+    public Clothes updateClothesCount(KafkaOrderDto kafkaOrderDto) throws NotFoundException {
+        Clothes clothes = clothesRepository.findById(kafkaOrderDto.getProductId()).orElseThrow(() ->
+                new NotFoundException(String.format("Clothes with id %d is not found", kafkaOrderDto.getProductId())));
+        clothes.setCount(clothes.getCount() - kafkaOrderDto.getCount());
+        return clothesRepository.save(clothes);
+    }
+
     public void deleteClothes(Long clothesDetailsId, Long clothesId) throws NotFoundException {
         Clothes clothes = clothesRepository.findById(clothesId).orElseThrow(() ->
                 new NotFoundException(String.format("Clothes with id %d is not found", clothesId)));
@@ -211,7 +218,9 @@ public class ClothesProductService {
                         clothesDetails.getClothes().stream()
                                 .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
                                         searchClothesProductDto.getSizes().contains(c.getSize()) &&
-                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                        (Objects.isNull(c.getPrice()) ?
+                                                searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                                : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }
@@ -233,7 +242,9 @@ public class ClothesProductService {
                 clothesDetails.setClothes(
                         clothesDetails.getClothes().stream()
                                 .filter(c -> searchClothesProductDto.getColors().contains(c.getColor()) &&
-                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                        (Objects.isNull(c.getPrice()) ?
+                                                searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                                : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }
@@ -244,7 +255,9 @@ public class ClothesProductService {
                 clothesDetails.setClothes(
                         clothesDetails.getClothes().stream()
                                 .filter(c -> searchClothesProductDto.getSizes().contains(c.getSize()) &&
-                                        searchClothesProductDto.getPrice() <= c.getPrice())
+                                        (Objects.isNull(c.getPrice()) ?
+                                                searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                                : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }
@@ -274,7 +287,9 @@ public class ClothesProductService {
             for (ClothesDetails clothesDetails : clothesDetailsList) {
                 clothesDetails.setClothes(
                         clothesDetails.getClothes().stream()
-                                .filter(c -> searchClothesProductDto.getPrice() <= c.getPrice())
+                                .filter(c -> (Objects.isNull(c.getPrice()) ?
+                                        searchClothesProductDto.getPrice() >= c.getRegularPrice()
+                                        : searchClothesProductDto.getPrice() >= c.getPrice()))
                                 .toList());
             }
         }

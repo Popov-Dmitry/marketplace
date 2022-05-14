@@ -1,6 +1,7 @@
 import React from 'react';
 import {deleteCart, selectItemCart} from "../../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
+import Checkbox from "../Checkbox";
 
 const TopControls = ({cart}) => {
     const dispatch = useDispatch();
@@ -24,16 +25,12 @@ const TopControls = ({cart}) => {
 
     return (
         <div>
-            <input
-                type="checkbox"
-                className="custom-checkbox"
-                id={"all"}
+            <Checkbox
                 name={"all"}
-                value={"all"}
                 checked={cart.length === selected.length}
                 onChange={selectAll}
+                text={"Выбрать все"}
             />
-            <label htmlFor={"all"}>Выбрать все</label>
             <span
                 className={"text-danger float-end cursor-pointer"}
                 onClick={deleteSelected}

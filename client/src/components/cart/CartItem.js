@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../../utils/consts";
 import {useDispatch} from "react-redux";
 import {selectItemCart} from "../../redux/actions";
+import Checkbox from "../Checkbox";
 
 const CartItem = ({item}) => {
     const history = useHistory();
@@ -17,15 +18,10 @@ const CartItem = ({item}) => {
     return (
         <Row>
             <Col md={1} className={"d-flex align-items-center"} style={{width: "40px"}}>
-                <input
-                    type="checkbox"
-                    className="custom-checkbox"
-                    id={item.id}
+                <Checkbox
                     name={item.id}
-                    value={item.id}
                     onChange={event => dispatch(selectItemCart(parseInt(event.target.id), event.target.checked))}
                 />
-                <label htmlFor={item.id}/>
             </Col>
             <Col md={2}>
                 <Image
@@ -49,11 +45,20 @@ const CartItem = ({item}) => {
                 </div>
                 <div className={"text-black-50"}>
                     <span className={"text-lowercase"}>цвет {item.product.clothes[0].color},</span>
-                    <span> размер {item.product.clothes[0].size}</span>
+                    <span> размер {item.product.clothes[0].size}, {item.product.clothes[0].weight}г</span>
                 </div>
             </Col>
             <Col md={2} className={"text-center"}>
-                <div className={"fs-5 fw-bold"}>{item.product.clothes[0].price} &#x20bd;</div>
+                {item.product.clothes[0].price ?
+                    <div>
+                        <div className={"fs-5 fw-bold"}>{item.product.clothes[0].price} &#x20bd;</div>
+                        <div className={"fw-bold opacity-75"}>
+                            <s>{item.product.clothes[0].regularPrice} &#x20bd;</s>
+                        </div>
+                    </div>
+                    :
+                    <div className={"fs-5 fw-bold"}>{item.product.clothes[0].regularPrice} &#x20bd;</div>
+                }
             </Col>
             <Col md={2} className={"text-center"}>
                 <CountControl item={item}/>

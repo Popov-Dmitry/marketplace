@@ -2,29 +2,48 @@ import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
     ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
-    DELETE_CART, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS, DELETE_PHOTO, FETCH_ALL_SELLERS_INFO,
+    DELETE_CART,
+    DELETE_CLOTHES,
+    DELETE_CLOTHES_DETAILS,
+    DELETE_PHOTO,
+    FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
-    FETCH_CLOTHES_SEARCH_PANEL_INFO,
-    FETCH_PHOTOS_NAMES, FETCH_SELLER_INFO, FETCH_SELLERS_INFO_COUNT,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER,
+    FETCH_ORDER,
+    FETCH_ORDERS,
+    FETCH_PHOTOS_NAMES, FETCH_SELLER,
+    FETCH_SELLER_INFO,
+    FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
     HIDE_ALERT,
-    REQUEST_ALERT, REQUEST_ALL_SELLERS_INFO,
+    REQUEST_ALERT,
+    REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER,
+    REQUEST_DELETE_CART,
+    REQUEST_DELETE_CLOTHES,
+    REQUEST_DELETE_CLOTHES_DETAILS,
+    REQUEST_DELETE_PHOTO,
+    REQUEST_ORDER,
+    REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART,
+    REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER_INFO, REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
+    REQUEST_SELLER_INFO,
+    REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_SELLER_INFO,
-    REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO,
+    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_ORDER_STATUS,
+    REQUEST_UPDATE_SELLER_INFO,
+    REQUEST_UPDATE_USER,
+    REQUEST_UPLOAD_PHOTO,
     REQUEST_USER_BY_EMAIL,
     SAVE_CART,
     SET_USER_ROLE,
@@ -33,7 +52,7 @@ import {
     UPDATE_CLOTHES,
     UPDATE_CLOTHES_DETAILS
 } from "./types";
-import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
+import {fetchCustomerByEmail, fetchCustomerById, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
     deleteClothes, deleteClothesDetails,
     fetchClothesBySellerId,
@@ -52,7 +71,7 @@ import {
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, MODER, SELLER} from "../utils/roles";
-import {fetchSellerByEmail, registrationSeller, updateSeller} from "../http/sellerApi";
+import {fetchSellerByEmail, fetchSellerById, registrationSeller, updateSeller} from "../http/sellerApi";
 import {fetchModerByEmail} from "../http/moderApi";
 import {
     fetchAllSellersInfo,
@@ -60,6 +79,13 @@ import {
     fetchSellersInfoCount,
     updateSellerInfoById
 } from "../http/verificationApi";
+import {
+    fetchOrderById,
+    fetchOrdersByCustomerId,
+    fetchOrdersByProductDetailsId,
+    fetchOrdersByProductId, fetchOrdersBySellerId,
+    saveOrder, updateOrderStatus
+} from "../http/orderApi";
 
 export function* watchAll() {
     yield all([
@@ -87,7 +113,13 @@ export function* watchAll() {
         takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker),
         takeEvery(REQUEST_ALL_SELLERS_INFO, requestAllSellersInfoWorker),
         takeEvery(REQUEST_SELLER_INFO, requestSellerInfoWorker),
-        takeEvery(REQUEST_UPDATE_SELLER_INFO, requestUpdateSellerInfoWorker)
+        takeEvery(REQUEST_UPDATE_SELLER_INFO, requestUpdateSellerInfoWorker),
+        takeEvery(REQUEST_SAVE_ORDER, requestSaveOrderWorker),
+        takeEvery(REQUEST_ORDERS, requestFetchOrdersWorker),
+        takeEvery(REQUEST_ORDER, requestFetchOrderWorker),
+        takeEvery(REQUEST_SELLER, requestSellerWorker),
+        takeEvery(REQUEST_CUSTOMER, requestCustomerWorker),
+        takeEvery(REQUEST_UPDATE_ORDER_STATUS, requestUpdateOrderStatusWorker)
     ]);
 }
 
@@ -270,8 +302,9 @@ function* requestSearchPanelInfoWorker() {
 
 function* requestSearchClothesWorker(action) {
     try {
-        const payload = yield call(searchClothes, action.payload.colors, action.payload.sizes, action.payload.price,
-            action.payload.brands, action.payload.title, action.payload.categories, action.payload.seasons, action.payload.types);
+        const payload = yield call(searchClothes, action.payload.colors, action.payload.sizes,
+            action.payload.price ? action.payload.price.trim() : null, action.payload.brands,
+            action.payload.title, action.payload.categories, action.payload.seasons, action.payload.types);
         yield put({ type: FETCH_CLOTHES, payload });
     }
     catch (e) {
@@ -637,6 +670,122 @@ function* requestUpdateSellerInfoWorker(action) {
     }
     catch (e) {
         console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSaveOrderWorker(action) {
+    try {
+        yield call(saveOrder, action.payload.productDetailsId, action.payload.productId, action.payload.count,
+            action.payload.customerId, action.payload.address, action.payload.sellerId, action.payload.productType,
+            action.payload.regularPrice, action.payload.price);
+        yield call(deleteCart, action.payload.cartId)
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchOrdersWorker(action) {
+    try {
+        let payload;
+        if (action.payload.fetchBy === CUSTOMER) {
+            payload = yield call(fetchOrdersByCustomerId, action.payload.id);
+        }
+        if (action.payload.fetchBy === SELLER) {
+            payload = yield call(fetchOrdersBySellerId, action.payload.id);
+        }
+        if (action.payload.fetchBy === "productId") {
+            payload = yield call(fetchOrdersByProductId, action.payload.id);
+        }
+        if (action.payload.fetchBy === "productDetails") {
+            payload = yield call(fetchOrdersByProductDetailsId, action.payload.id);
+        }
+        yield put({ type: FETCH_ORDERS, payload })
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchOrderWorker(action) {
+    try {
+        const payload = yield call(fetchOrderById, action.payload);
+        yield put({ type: FETCH_ORDER, payload })
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSellerWorker(action) {
+    try {
+        const payload = yield call(fetchSellerById, action.payload);
+        yield put({ type: FETCH_SELLER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestCustomerWorker(action) {
+    try {
+        const payload = yield call(fetchCustomerById, action.payload);
+        yield put({ type: FETCH_CUSTOMER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestUpdateOrderStatusWorker(action) {
+    try {
+        const payload = yield call(updateOrderStatus, action.payload.id, action.payload.newStatus);
+        yield put({ type: FETCH_ORDER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
         yield put({
             type: REQUEST_ALERT,
             payload: {

@@ -8,11 +8,11 @@ import {useSelector} from "react-redux";
 
 const AccountNav = () => {
     const history = useHistory();
-    const userReducer = useSelector(state => state.userReducer);
+    const isAuth = useSelector(state => state.userReducer.isAuth);
 
     return (
         <div>
-            {userReducer.isAuth ?
+            {isAuth ?
                 <NavLink to={ACCOUNT_ROUTE}>
                     <Image src={account} width="32px" height="32px"/>
                 </NavLink>
