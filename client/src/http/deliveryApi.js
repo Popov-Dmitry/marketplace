@@ -21,7 +21,7 @@ export const fetchDeliveriesBySellerId = async (id) => {
 
 export const updateDelivery = async (id, deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
                                      departureIndex, returnIndex, packVariant, service, sellerId) => {
-    const {data} = await $authHost.post(UPDATE_DELIVERY + id,
+    const {data} = await $authHost.patch(UPDATE_DELIVERY + id,
         { deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
             departureIndex, returnIndex, packVariant, service, sellerId });
     return data;

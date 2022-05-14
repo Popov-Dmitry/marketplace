@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Card} from "react-bootstrap";
 import Delivery from "../modals/Delivery";
-import {fetchDeliveries} from "../../redux/actions";
+import {fetchDeliveries, setCurrentDelivery} from "../../redux/actions";
 
 const DeliveryData = () => {
     const dispatch = useDispatch();
@@ -25,12 +25,20 @@ const DeliveryData = () => {
             </div>
             <div className={"mt-3"}>
                 {deliveries.map(delivery =>
-                    <Card key={delivery.id} className={"mt-2 border-radius-10 shadow-sm p-2 fs-5 cursor-pointer"}>
+                    <Card
+                        key={delivery.id}
+                        id={delivery.id}
+                        className={"mt-2 border-radius-10 shadow-sm p-2 fs-5 cursor-pointer"}
+                        onClick={e => {
+                            dispatch(setCurrentDelivery(deliveries.find(d => d.id == e.currentTarget.id)));
+                            setIsDeliveryEditVisible(true);
+                        }}
+                    >
                         {delivery.deliveryVariant === "MY" &&
                             <div>
                                 <div className={"fw-bold"}>Моя</div>
                                 <div>
-                                    {delivery.deliveryPriceIncluded ? "Включена в стоимость" : delivery.deliveryPrice}
+                                    {delivery.deliveryPriceIncluded ? "Включена в стоимость" : <span>{delivery.deliveryPrice} &#x20bd;</span>}
                                 </div>
                             </div>
 

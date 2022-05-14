@@ -2,7 +2,7 @@ import {FETCH_DELIVERIES, FETCH_DELIVERY, SAVE_DELIVERY, UPDATE_DELIVERY} from "
 
 const initialState = {
     deliveries: [],
-    currentDelivery: {}
+    currentDelivery: null
 }
 
 export const deliveryReducer = (state = initialState, action) => {

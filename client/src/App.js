@@ -4,8 +4,8 @@ import AppRouter from "./components/AppRouter";
 import NavBarCustomer from "./components/navBar/NavBarCustomer";
 import {useDispatch, useSelector} from "react-redux";
 import MyAlert from "./components/MyAlert";
-import {CUSTOMER} from "./utils/roles";
-import {setUserRole} from "./redux/actions";
+import {CUSTOMER, MODER, SELLER} from "./utils/roles";
+import {fetchUserById, setUserRole} from "./redux/actions";
 import NavBarSeller from "./components/navBar/NavBarSeller";
 import NavBarModer from "./components/navBar/NavBarModer";
 
@@ -14,18 +14,18 @@ function App() {
     const alert = useSelector(state => state.appReducer.alert);
 
     const domainArr = window.location.host.split(".");
-    dispatch(setUserRole(domainArr.length > 1 ? domainArr[0].toUpperCase() : CUSTOMER))
+    const userRole = domainArr.length > 1 ? domainArr[0].toUpperCase() : CUSTOMER;
+    dispatch(setUserRole(userRole));
+
+    if (localStorage.getItem("userId") && localStorage.getItem("token")) {
+        dispatch(fetchUserById(userRole, localStorage.getItem("userId")));
+    }
 
     return (
         <BrowserRouter>
-            {domainArr.length > 1 ?
-                <div>
-                    {domainArr[0] === "seller" && <NavBarSeller/>}
-                    {domainArr[0] === "moder" && <NavBarModer/>}
-                </div>
-                :
-                <NavBarCustomer/>
-            }
+            {userRole === CUSTOMER && <NavBarCustomer/>}
+            {userRole === SELLER && <NavBarSeller/>}
+            {userRole === MODER && <NavBarModer/>}
             <AppRouter/>
             {alert && <MyAlert variant={alert.variant} text={alert.text}/>}
         </BrowserRouter>

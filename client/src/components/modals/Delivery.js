@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import ToggleSwitch from "../ToggleSwitch";
 import {positiveNumber} from "../../utils/productUtils";
 import Checkbox from "../Checkbox";
 import {useDispatch, useSelector} from "react-redux";
-import {saveDelivery} from "../../redux/actions";
+import {saveDelivery, setCurrentDelivery, updateDelivery} from "../../redux/actions";
 
 const Delivery = ({show, onHide}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.userReducer.user);
+    const currentDelivery = useSelector(state => state.deliveryReducer.currentDelivery);
     const [deliveryVariant, setDeliveryVariant] = useState("");
     const [deliveryPriceIncluded, setDeliveryPriceIncluded] = useState(true);
     const [deliveryPrice, setDeliveryPrice] = useState(0);
@@ -18,6 +19,18 @@ const Delivery = ({show, onHide}) => {
     const [packVariant, setPackVariant] = useState("");
     const [smsToSender, setSmsToSender] = useState(false);
     const [smsToRecipient, setSmsToRecipient] = useState(false);
+
+    useEffect(() => {
+        setDeliveryVariant(currentDelivery !== null ? currentDelivery.deliveryVariant : "");
+        setDeliveryPriceIncluded(currentDelivery !== null ? currentDelivery.deliveryPriceIncluded : true);
+        setDeliveryPrice(currentDelivery !== null ? currentDelivery.deliveryPrice : 0);
+        setDeliveryPriceVariant(currentDelivery !== null && currentDelivery.deliveryPriceVariant ? currentDelivery.deliveryPriceVariant : "");
+        setDepartureIndex(currentDelivery !== null && currentDelivery.departureIndex ? currentDelivery.departureIndex : "");
+        setReturnIndex(currentDelivery !== null && currentDelivery.returnIndex ? currentDelivery.returnIndex : "");
+        setPackVariant(currentDelivery !== null && currentDelivery.packVariant ? currentDelivery.packVariant : "");
+        setSmsToSender(currentDelivery !== null && currentDelivery.service && currentDelivery.service.includes("41"));
+        setSmsToRecipient(currentDelivery !== null && currentDelivery.service && currentDelivery.service.includes("42"));
+    }, [currentDelivery])
 
     const onSaveClick = () => {
         let service = "";
@@ -30,8 +43,14 @@ const Delivery = ({show, onHide}) => {
         if (smsToSender && smsToRecipient) {
             service = "41,42"
         }
-        dispatch(saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice,
-            deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id));
+        if (currentDelivery !== null) {
+            dispatch(updateDelivery(currentDelivery.id, deliveryVariant, deliveryPriceIncluded, deliveryPrice,
+                deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id))
+        }
+        else {
+            dispatch(saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice,
+                deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id));
+        }
         setDeliveryVariant("");
         setDeliveryPriceIncluded(true);
         setDeliveryPrice(0);
@@ -47,7 +66,12 @@ const Delivery = ({show, onHide}) => {
     return (
         <Modal
             show={show}
-            onHide={onHide}
+            onHide={() => {
+                if (currentDelivery !== null) {
+                    setTimeout(() => dispatch(setCurrentDelivery(null)), 300);
+                }
+                onHide();
+            }}
             centered
         >
             <Modal.Header closeButton>
@@ -57,14 +81,14 @@ const Delivery = ({show, onHide}) => {
             </Modal.Header>
             <Modal.Body>
                 <div>
-                    <Form.Label className={"mt-2 opacity-95"}>Доставка <span className={"text-danger"}>*</span></Form.Label>
+                    <Form.Label className={"mt-2 opacity-95"}>Вариант доставки <span className={"text-danger"}>*</span></Form.Label>
                     <Form.Select
                         id={"delivery-variant"}
                         className={"border-radius-10 w-75"}
                         value={deliveryVariant}
                         onChange={e => setDeliveryVariant(e.target.value)}
                     >
-                        <option hidden>Доставка</option>
+                        <option hidden>Вариант доставки</option>
                         <option value="MY">Моя</option>
                         <option value="RUSSIAN_POST">Почта России</option>
                     </Form.Select>

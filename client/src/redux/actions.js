@@ -5,7 +5,7 @@ import {
     ADD_PRODUCT_DETAILS_ID,
     ADD_PRODUCT_PHOTOS,
     CLEAR_PHOTO_STORE,
-    CLEAR_SELECTED_ITEMS,
+    CLEAR_SELECTED_ITEMS, FETCH_DELIVERY,
     HIDE_ALERT,
     REMOVE_FILTER,
     REQUEST_ALERT,
@@ -373,5 +373,12 @@ export function updateDelivery(id, deliveryVariant, deliveryPriceIncluded, deliv
         type: REQUEST_UPDATE_DELIVERY,
         payload: { id, deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
             departureIndex, returnIndex, packVariant, service, sellerId }
+    }
+}
+
+export function setCurrentDelivery(delivery) {
+    return {
+        type: FETCH_DELIVERY,
+        payload: delivery
     }
 }
