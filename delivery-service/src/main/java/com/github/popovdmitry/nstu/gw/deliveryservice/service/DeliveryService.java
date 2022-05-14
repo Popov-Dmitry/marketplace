@@ -22,8 +22,8 @@ public class DeliveryService {
                 new NotFoundException(String.format("Delivery with id %d is not found", id)));
     }
 
-    public List<Delivery> findBySellerId(Long sellerId) {
-        return deliveryRepository.findAllBySellerId(sellerId);
+    public List<Delivery> findBySellerId(Long id) {
+        return deliveryRepository.findAllBySellerId(id);
     }
 
     public Delivery saveDelivery(DeliveryDto deliveryDto) {
