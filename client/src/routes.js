@@ -31,6 +31,7 @@ import MainModer from "./pages/moder/MainModer";
 import Verifications from "./pages/moder/Verifications";
 import Verification from "./pages/moder/Verification";
 import Orders from "./pages/customer/Orders";
+import Order from "./pages/customer/Order";
 
 export const publicCustomerRoutes = [
     {
@@ -75,6 +76,10 @@ export const authCustomerRoutes = [
     {
         path: ORDERS_ROUTE,
         Component: Orders
+    },
+    {
+        path: ORDERS_ROUTE + "/:id",
+        Component: Order
     }
 ];
 
