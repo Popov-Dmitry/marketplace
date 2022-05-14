@@ -280,3 +280,31 @@ img {
 .custom-switch-label:active:after {
     width: 32px;
 }
+
+.chart-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 10px solid var(--main-color);
+    padding-top: 15px;
+    margin-top: 55px;
+}
+
+.chart-active{
+    background-color: #fff !important;
+    color: var(--main-color) !important;
+}
+
+.chart-container div {
+    background-color: var(--main-color);
+    font-weight: bold;
+    color: #fcfffe;
+    border: 2px solid var(--main-color);
+    margin-top: -45px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 50%;
+    z-index: 99;
+}

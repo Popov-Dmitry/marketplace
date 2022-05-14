@@ -27,7 +27,9 @@ const OrderItem = ({order}) => {
                         <Image
                             src={process.env.REACT_APP_API_URL + "photos/" + order.productType + "/" + order.productDetailsId + "/"
                                 + order.productId + "/" + photos[order.productDetailsId].photosNames[0]}
-                            className={"ratio-3x4 text-black-50 cursor-pointer m-auto"}/>
+                            className={"ratio-3x4 text-black-50 cursor-pointer m-auto"}
+                            onClick={() => history.push(ORDERS_ROUTE + "/" + order.id)}
+                        />
                     }
                 </Col>
                 <Col>
