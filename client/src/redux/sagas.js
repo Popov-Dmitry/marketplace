@@ -9,7 +9,7 @@ import {
     FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
-    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER, FETCH_DELIVERIES, FETCH_DELIVERY,
     FETCH_ORDER,
     FETCH_ORDERS,
     FETCH_PHOTOS_NAMES, FETCH_SELLER,
@@ -27,12 +27,12 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY,
     REQUEST_ORDER,
     REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
-    REQUEST_SAVE_CART,
+    REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
@@ -40,17 +40,17 @@ import {
     REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_ORDER_STATUS,
+    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_DELIVERY, REQUEST_UPDATE_ORDER_STATUS,
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
-    REQUEST_USER_BY_EMAIL,
-    SAVE_CART,
+    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID,
+    SAVE_CART, SAVE_DELIVERY,
     SET_USER_ROLE,
     SHOW_ALERT,
     UPDATE_CART,
     UPDATE_CLOTHES,
-    UPDATE_CLOTHES_DETAILS
+    UPDATE_CLOTHES_DETAILS, UPDATE_DELIVERY
 } from "./types";
 import {fetchCustomerByEmail, fetchCustomerById, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
@@ -86,11 +86,13 @@ import {
     fetchOrdersByProductId, fetchOrdersBySellerId,
     saveOrder, updateOrderStatus
 } from "../http/orderApi";
+import {fetchDeliveriesBySellerId, fetchDeliveryById, saveDelivery, updateDelivery} from "../http/deliveryApi";
 
 export function* watchAll() {
     yield all([
         takeEvery(REQUEST_AUTH, requestAuthWorker),
         takeEvery(REQUEST_USER_BY_EMAIL, requestUserByEmailWorker),
+        takeEvery(REQUEST_USER_BY_ID, requestUserByIdWorker),
         takeEvery(REQUEST_AUTH_AND_FETCH_USER, requestAuthAndFetchUserWorker),
         takeEvery(REQUEST_REGISTRATION_USER, requestRegistrationUserWorker),
         takeEvery(REQUEST_UPDATE_USER, requestUpdateUserWorker),
@@ -119,7 +121,11 @@ export function* watchAll() {
         takeEvery(REQUEST_ORDER, requestFetchOrderWorker),
         takeEvery(REQUEST_SELLER, requestSellerWorker),
         takeEvery(REQUEST_CUSTOMER, requestCustomerWorker),
-        takeEvery(REQUEST_UPDATE_ORDER_STATUS, requestUpdateOrderStatusWorker)
+        takeEvery(REQUEST_UPDATE_ORDER_STATUS, requestUpdateOrderStatusWorker),
+        takeEvery(REQUEST_SAVE_DELIVERY, requestSaveDeliveryWorker),
+        takeEvery(REQUEST_DELIVERY, requestDeliveryByIdWorker),
+        takeEvery(REQUEST_DELIVERIES, requestDeliveriesBySellerIdWorker),
+        takeEvery(REQUEST_UPDATE_DELIVERY, requestUpdateDeliveryWorker)
     ]);
 }
 
@@ -171,6 +177,17 @@ function* requestUserByEmailWorker(action) {
     }
 }
 
+function* requestUserByIdWorker(action) {
+    try {
+        const payload = yield call(fetchCustomerById, action.payload);
+        yield put({ type: FETCH_USER , payload });
+        yield put({ type: AUTH_USER , payload: true });
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
 function* requestAuthAndFetchUserWorker(action) {
     try {
         const payload1 = yield call(login, action.payload.email, action.payload.password, action.payload.userRole);
@@ -186,6 +203,7 @@ function* requestAuthAndFetchUserWorker(action) {
         if (action.payload.userRole === MODER) {
             payload2 = yield call(fetchModerByEmail, action.payload.email);
         }
+        localStorage.setItem("userId", payload2.id);
         yield put({ type: FETCH_USER , payload: payload2 });
         yield put({ type: SET_USER_ROLE , payload: action.payload.userRole });
     }
@@ -783,6 +801,84 @@ function* requestUpdateOrderStatusWorker(action) {
     try {
         const payload = yield call(updateOrderStatus, action.payload.id, action.payload.newStatus);
         yield put({ type: FETCH_ORDER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSaveDeliveryWorker(action) {
+    try {
+        const payload = yield call(saveDelivery, action.payload.deliveryVariant, action.payload.deliveryPriceIncluded,
+            action.payload.deliveryPrice, action.payload.deliveryPriceVariant.length > 0 ? action.payload.deliveryPriceVariant : null,
+            action.payload.departureIndex.length > 0 ? action.payload.departureIndex : null,
+            action.payload.returnIndex.length > 0 ? action.payload.returnIndex : null,
+            action.payload.packVariant.length > 0 ? action.payload.packVariant : null,
+            action.payload.service.length > 0 ? action.payload.service : null, action.payload.sellerId);
+        yield put({ type: SAVE_DELIVERY, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestDeliveryByIdWorker(action) {
+    try {
+        const payload = yield call(fetchDeliveryById, action.payload);
+        yield put({ type: FETCH_DELIVERY, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestDeliveriesBySellerIdWorker(action) {
+    try {
+        const payload = yield call(fetchDeliveriesBySellerId, action.payload);
+        yield put({ type: FETCH_DELIVERIES, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestUpdateDeliveryWorker(action) {
+    try {
+        const payload = yield call(updateDelivery, action.payload.id, action.payload.deliveryVariant, action.payload.deliveryPriceIncluded,
+            action.payload.deliveryPrice, action.payload.deliveryPriceVariant.length > 0 ? action.payload.deliveryPriceVariant : null,
+            action.payload.departureIndex.length > 0 ? action.payload.departureIndex : null,
+            action.payload.returnIndex.length > 0 ? action.payload.returnIndex : null,
+            action.payload.packVariant.length > 0 ? action.payload.packVariant : null,
+            action.payload.service.length > 0 ? action.payload.service : null, action.payload.sellerId);
+        yield put({ type: UPDATE_DELIVERY, payload })
     }
     catch (e) {
         console.log(e.response.request.response);

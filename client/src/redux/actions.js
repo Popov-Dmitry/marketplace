@@ -18,10 +18,10 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO, REQUEST_ORDER, REQUEST_ORDERS,
+    REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY, REQUEST_ORDER, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
-    REQUEST_SAVE_CART,
+    REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
@@ -29,11 +29,11 @@ import {
     REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_ORDER_STATUS,
+    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_DELIVERY, REQUEST_UPDATE_ORDER_STATUS,
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
-    REQUEST_USER_BY_EMAIL,
+    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID,
     SELECT_ITEM,
     SET_USER_ROLE
 } from "./types";
@@ -42,6 +42,13 @@ export function authUser(email, password, userRole) {
     return {
         type: REQUEST_AUTH,
         payload: { email, password, userRole }
+    }
+}
+
+export function fetchUserById(id) {
+    return {
+        type: REQUEST_USER_BY_ID,
+        payload: id
     }
 }
 
@@ -334,5 +341,37 @@ export function updateOrderStatus(id, newStatus) {
     return {
         type: REQUEST_UPDATE_ORDER_STATUS,
         payload: { id, newStatus }
+    }
+}
+
+export function saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
+                             departureIndex, returnIndex, packVariant, service, sellerId) {
+    return {
+        type: REQUEST_SAVE_DELIVERY,
+        payload: { deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
+            departureIndex, returnIndex, packVariant, service, sellerId }
+    }
+}
+
+export function fetchDelivery(id) {
+    return {
+        type: REQUEST_DELIVERY,
+        payload: id
+    }
+}
+
+export function fetchDeliveries(id) {
+    return {
+        type: REQUEST_DELIVERIES,
+        payload: id
+    }
+}
+
+export function updateDelivery(id, deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
+                             departureIndex, returnIndex, packVariant, service, sellerId) {
+    return {
+        type: REQUEST_UPDATE_DELIVERY,
+        payload: { id, deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
+            departureIndex, returnIndex, packVariant, service, sellerId }
     }
 }
