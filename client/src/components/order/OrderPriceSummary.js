@@ -1,7 +1,10 @@
 import React from 'react';
 import {Card} from "react-bootstrap";
+import {useSelector} from "react-redux";
 
-const OrderPriceSummary = ({order}) => {
+const OrderPriceSummary = () => {
+    const order = useSelector(state => state.orderReducer.currentOrder);
+
     return (
         <Card className={"mt-2 border-radius-10 shadow-sm h-100"}>
             <div className={"d-flex p-2 ms-3"}>

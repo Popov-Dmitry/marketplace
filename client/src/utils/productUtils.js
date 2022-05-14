@@ -38,3 +38,7 @@ export const positiveNumber = (event) => {
         event.target.value = event.target.value * -1;
     }
 }
+
+export const daysLag = (date1, date2) => {
+    return Math.ceil(Math.abs(date1 - date2) / (1000 * 3600 * 24));
+}
