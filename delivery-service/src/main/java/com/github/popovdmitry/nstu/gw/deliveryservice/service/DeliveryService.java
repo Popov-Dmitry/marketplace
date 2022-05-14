@@ -39,4 +39,19 @@ public class DeliveryService {
         delivery.setSellerId(deliveryDto.getSellerId());
         return deliveryRepository.save(delivery);
     }
+
+    public Delivery updateDelivery(Long id, DeliveryDto deliveryDto) throws NotFoundException {
+        Delivery delivery = deliveryRepository.findById(id).orElseThrow(() ->
+                new NotFoundException(String.format("Delivery with id %d is not found", id)));
+        delivery.setDeliveryVariant(deliveryDto.getDeliveryVariant());
+        delivery.setDeliveryPriceIncluded(deliveryDto.getDeliveryPriceIncluded());
+        delivery.setDeliveryPrice(deliveryDto.getDeliveryPrice());
+        delivery.setDeliveryPriceVariant(deliveryDto.getDeliveryPriceVariant());
+        delivery.setDepartureIndex(deliveryDto.getDepartureIndex());
+        delivery.setReturnIndex(deliveryDto.getReturnIndex());
+        delivery.setPackVariant(deliveryDto.getPackVariant());
+        delivery.setService(deliveryDto.getService());
+        delivery.setSellerId(deliveryDto.getSellerId());
+        return deliveryRepository.save(delivery);
+    }
 }

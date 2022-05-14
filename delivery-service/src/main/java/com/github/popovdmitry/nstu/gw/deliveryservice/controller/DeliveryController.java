@@ -58,7 +58,23 @@ public class DeliveryController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED")
     })
     public ResponseEntity<List<Delivery>> getDeliveriesBySellerId(@Parameter(description = "Seller id", required = true, example = "123")
-                                                                @PathVariable Long id) {
+                                                                      @PathVariable Long id) {
         return ResponseEntity.ok(deliveryService.findBySellerId(id));
+    }
+
+    @PatchMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Update delivery by id")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED"),
+            @ApiResponse(code = 404, message = "NOT FOUND")
+    })
+    public ResponseEntity<Delivery> updateDelivery(@Parameter(description = "Delivery id", required = true, example = "123")
+                                                       @PathVariable Long id,
+                                                   @Parameter(description = "Delivery dto", required = true)
+                                                        @RequestBody DeliveryDto deliveryDto)
+            throws NotFoundException {
+        return ResponseEntity.ok(deliveryService.updateDelivery(id, deliveryDto));
     }
 }

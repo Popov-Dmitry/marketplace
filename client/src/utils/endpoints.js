@@ -49,10 +49,15 @@ export const GET_SELLER_INFO = "/verification/"; //{id}
 export const GET_SELLER_INFO_COUNT = "/verification/count/";
 export const UPDATE_SELLER_INFO = "/verification/"; //{id}
 
-export const ADD_ORDER = "/orders/"; //{id}
+export const ADD_ORDER = "/orders/";
 export const GET_ORDER_BY_ID = "/orders/"; //{id}
 export const GET_ORDER_BY_CUSTOMER_ID = "/orders/customers/"; //{id}
 export const GET_ORDER_BY_SELLER_ID = "/orders/sellers/"; //{id}
 export const GET_ORDER_BY_PRODUCT_ID = "/orders/product/"; //{productDetailsId}/{id}
 export const GET_ORDER_BY_PRODUCT_DETAILS_ID = "/orders/product/"; //{productDetailsId}
 export const UPDATE_ORDER_STATUS = "/orders/"; //{id}
+
+export const ADD_DELIVERY = "/deliveries/";
+export const GET_DELIVERY_BY_ID = "/deliveries/"; //{id}
+export const GET_DELIVERIES_BY_SELLER_ID = "/deliveries/"; //{id}
+export const UPDATE_DELIVERY = "/deliveries/"; //{id}
