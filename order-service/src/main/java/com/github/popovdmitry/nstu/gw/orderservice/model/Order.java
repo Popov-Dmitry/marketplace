@@ -72,6 +72,6 @@ public class Order {
     @ApiModelProperty(example = "Синий, XXL", position = 14)
     private String variant;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Return aReturn;
 }

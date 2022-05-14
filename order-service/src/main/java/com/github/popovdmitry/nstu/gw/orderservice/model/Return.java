@@ -27,7 +27,6 @@ public class Return {
     @ApiModelProperty(example = "Пятно на одежде", position = 2)
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 }
