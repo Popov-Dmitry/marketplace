@@ -18,13 +18,13 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO, REQUEST_ORDERS,
+    REQUEST_DELETE_PHOTO, REQUEST_ORDER, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES,
+    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
     REQUEST_SELLER_INFO,
     REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
@@ -306,5 +306,19 @@ export function fetchOrders(fetchBy, id) {
     return {
         type: REQUEST_ORDERS,
         payload: { fetchBy, id }
+    }
+}
+
+export function fetchOrder(id) {
+    return {
+        type: REQUEST_ORDER,
+        payload: id
+    }
+}
+
+export function fetchSeller(id) {
+    return {
+        type: REQUEST_SELLER,
+        payload: id
     }
 }

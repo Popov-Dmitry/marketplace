@@ -2,29 +2,48 @@ import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
     ADD_PRODUCT_DETAILS_ID,
     AUTH_USER,
-    DELETE_CART, DELETE_CLOTHES, DELETE_CLOTHES_DETAILS, DELETE_PHOTO, FETCH_ALL_SELLERS_INFO,
+    DELETE_CART,
+    DELETE_CLOTHES,
+    DELETE_CLOTHES_DETAILS,
+    DELETE_PHOTO,
+    FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
-    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_ORDERS,
-    FETCH_PHOTOS_NAMES, FETCH_SELLER_INFO, FETCH_SELLERS_INFO_COUNT,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO,
+    FETCH_ORDER,
+    FETCH_ORDERS,
+    FETCH_PHOTOS_NAMES, FETCH_SELLER,
+    FETCH_SELLER_INFO,
+    FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
     HIDE_ALERT,
-    REQUEST_ALERT, REQUEST_ALL_SELLERS_INFO,
+    REQUEST_ALERT,
+    REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
     REQUEST_CLOTHES_SEARCH_PANEL_INFO,
-    REQUEST_DELETE_CART, REQUEST_DELETE_CLOTHES, REQUEST_DELETE_CLOTHES_DETAILS, REQUEST_DELETE_PHOTO, REQUEST_ORDERS,
+    REQUEST_DELETE_CART,
+    REQUEST_DELETE_CLOTHES,
+    REQUEST_DELETE_CLOTHES_DETAILS,
+    REQUEST_DELETE_PHOTO,
+    REQUEST_ORDER,
+    REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER,
-    REQUEST_SAVE_CART, REQUEST_SAVE_ORDER,
+    REQUEST_SAVE_CART,
+    REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT,
-    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER_INFO, REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
+    REQUEST_SELLER_INFO,
+    REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_SELLER_INFO,
-    REQUEST_UPDATE_USER, REQUEST_UPLOAD_PHOTO,
+    REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_SELLER_INFO,
+    REQUEST_UPDATE_USER,
+    REQUEST_UPLOAD_PHOTO,
     REQUEST_USER_BY_EMAIL,
     SAVE_CART,
     SET_USER_ROLE,
@@ -52,7 +71,7 @@ import {
 import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, MODER, SELLER} from "../utils/roles";
-import {fetchSellerByEmail, registrationSeller, updateSeller} from "../http/sellerApi";
+import {fetchSellerByEmail, fetchSellerById, registrationSeller, updateSeller} from "../http/sellerApi";
 import {fetchModerByEmail} from "../http/moderApi";
 import {
     fetchAllSellersInfo,
@@ -61,7 +80,7 @@ import {
     updateSellerInfoById
 } from "../http/verificationApi";
 import {
-    fetchOrderByCustomerId,
+    fetchOrderById,
     fetchOrdersByCustomerId,
     fetchOrdersByProductDetailsId,
     fetchOrdersByProductId,
@@ -96,7 +115,9 @@ export function* watchAll() {
         takeEvery(REQUEST_SELLER_INFO, requestSellerInfoWorker),
         takeEvery(REQUEST_UPDATE_SELLER_INFO, requestUpdateSellerInfoWorker),
         takeEvery(REQUEST_SAVE_ORDER, requestSaveOrderWorker),
-        takeEvery(REQUEST_ORDERS, requestFetchOrdersWorker)
+        takeEvery(REQUEST_ORDERS, requestFetchOrdersWorker),
+        takeEvery(REQUEST_ORDER, requestFetchOrderWorker),
+        takeEvery(REQUEST_SELLER, requestSellerWorker)
     ]);
 }
 
@@ -695,6 +716,40 @@ function* requestFetchOrdersWorker(action) {
     }
     catch (e) {
         console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchOrderWorker(action) {
+    try {
+        const payload = yield call(fetchOrderById, action.payload);
+        yield put({ type: FETCH_ORDER, payload })
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSellerWorker(action) {
+    try {
+        const payload = yield call(fetchSellerById, action.payload);
+        yield put({ type: FETCH_SELLER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
         yield put({
             type: REQUEST_ALERT,
             payload: {
