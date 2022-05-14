@@ -23,17 +23,17 @@ export const fetchClothesBySellerId = async (sellerId) => {
     return data;
 }
 
-export const saveClothes = async (color, size, count, regularPrice, price, weight, clothesDetailsId, brand, title, description,
-                                  composition, category, season, type, productionCountry, care, style, sellerId) => {
+export const saveClothes = async (color, size, count, regularPrice, price, weight, deliveryId, clothesDetailsId, brand, title,
+                                  description, composition, category, season, type, productionCountry, care, style, sellerId) => {
     const {data} = await $authHost.post(ADD_CLOTHES,
-        { color, size, count, regularPrice, weight, clothesDetailsId, brand, title, description, composition,
+        { color, size, count, regularPrice, weight, deliveryId, clothesDetailsId, brand, title, description, composition,
             category, season, type, productionCountry, care, style, sellerId });
     return data;
 }
 
-export const updateClothes = async (clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight) => {
+export const updateClothes = async (clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight, deliveryId) => {
     const {data} = await $authHost.patch(UPDATE_CLOTHES + clothesDetailsId + "/" + clothesId,
-        { color, size, count, regularPrice, price, weight });
+        { color, size, count, regularPrice, price, weight, deliveryId });
     return data;
 }
 

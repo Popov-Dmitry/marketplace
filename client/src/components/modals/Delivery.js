@@ -70,7 +70,7 @@ const Delivery = ({show, onHide}) => {
                 if (currentDelivery !== null) {
                     setTimeout(() => dispatch(setCurrentDelivery(null)), 300);
                 }
-                onHide();
+                onHide(false);
             }}
             centered
         >

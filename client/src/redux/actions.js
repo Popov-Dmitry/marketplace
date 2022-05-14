@@ -143,10 +143,10 @@ export function fetchClothesBySellerId(sellerId) {
     }
 }
 
-export function updateClothes(clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight) {
+export function updateClothes(clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight, deliveryId) {
     return {
         type: REQUEST_UPDATE_CLOTHES,
-        payload: { clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight }
+        payload: { clothesDetailsId, clothesId, color, size, count, regularPrice, price, weight, deliveryId }
     }
 }
 
