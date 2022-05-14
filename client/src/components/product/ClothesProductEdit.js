@@ -214,6 +214,7 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                             setRegularPrice(0);
                             setWeight(0);
                             setPhotos([]);
+                            setDeliveryId(0);
                             document.getElementById("files-input").value = null;
                         }}
                     >

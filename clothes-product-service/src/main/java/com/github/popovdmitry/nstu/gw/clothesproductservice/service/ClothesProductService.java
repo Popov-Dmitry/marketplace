@@ -59,6 +59,7 @@ public class ClothesProductService {
         clothes.setRegularPrice(clothesProductDto.getRegularPrice());
         clothes.setPrice(clothesProductDto.getPrice());
         clothes.setWeight(clothesProductDto.getWeight());
+        clothes.setDeliveryId(clothesProductDto.getDeliveryId());
         if (Objects.nonNull(clothesProductDto.getClothesDetailsId())) {
             clothes.setClothesDetails(findByClothesDetailsId(clothesProductDto.getClothesDetailsId()));
             saveClothesReplyDto.setClothesDetailsId(clothesProductDto.getClothesDetailsId());
@@ -119,6 +120,9 @@ public class ClothesProductService {
         }
         if (Objects.nonNull(clothesDTO.getWeight()) && clothesDTO.getWeight() > 0) {
             clothes.setWeight(clothesDTO.getWeight());
+        }
+        if (Objects.nonNull(clothesDTO.getDeliveryId())) {
+            clothes.setDeliveryId(clothesDTO.getDeliveryId());
         }
 
         return clothesRepository.save(clothes);

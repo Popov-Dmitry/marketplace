@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Button, Card, Col, Image, Row} from "react-bootstrap";
 import OrderStatus from "./OrderStatus";
 import {useDispatch, useSelector} from "react-redux";
@@ -6,6 +6,8 @@ import {daysLag} from "../../utils/productUtils";
 import {useHistory} from "react-router-dom";
 import {CUSTOMER, SELLER} from "../../utils/roles";
 import {updateOrderStatus} from "../../redux/actions";
+import Confirmation from "../modals/Confirmation";
+import ReturnProduct from "../modals/ReturnProduct";
 
 const OrderProductCard = () => {
     const dispatch = useDispatch();
@@ -14,6 +16,8 @@ const OrderProductCard = () => {
     const photos = useSelector(state => state.photoReducer.photosNames);
     const userRole = useSelector(state => state.userReducer.userRole);
     const orderDaysLag = useMemo(() => daysLag(new Date().getTime(), new Date(order.orderDate).getTime()), [order]);
+    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+    const [isReturnVisible, setIsReturnVisible] = useState(false);
 
     const onUpdateOrderStatusClick = () => {
         switch (order.status) {
@@ -69,7 +73,24 @@ const OrderProductCard = () => {
                         <div className={"mt-2"}>
                             <OrderStatus status={order.status}/>
                         </div>
-                        {userRole === CUSTOMER && orderDaysLag < 15 && <div className={"mt-1"}>Вернуть товары</div>}
+                        {userRole === CUSTOMER && orderDaysLag < 15 && order.status === "DELIVERED" &&
+                            <Button
+                                variant={"outline-danger"}
+                                className={"mt-3 border-radius-50 w-100"}
+                                onClick={() => setIsReturnVisible(true)}
+                            >
+                                Вернуть товары
+                            </Button>
+                        }
+                        {userRole === CUSTOMER && order.status === "CREATED" &&
+                            <Button
+                                variant={"outline-danger"}
+                                className={"mt-3 border-radius-50 w-100"}
+                                onClick={() => setIsConfirmationVisible(true)}
+                            >
+                                Отменить заказ
+                            </Button>
+                        }
                         {userRole === SELLER && (order.status === "CREATED" || order.status === "ACCEPTED" ||
                                 order.status === "DELIVERY" || order.status === "WAITING" || order.status === "RETURN") &&
                             <div className={"mb-1"}>
@@ -92,6 +113,14 @@ const OrderProductCard = () => {
                     </div>
                 </Col>
             </Row>
+            <Confirmation
+                show={isConfirmationVisible}
+                onHide={setIsConfirmationVisible}
+                onConfirm={() => dispatch(updateOrderStatus(order.id, "CANCELED"))}
+                onCancel={setIsConfirmationVisible}
+                text={"Отменить заказ?"}
+            />
+            <ReturnProduct show={isReturnVisible} onHide={setIsReturnVisible}/>
         </Card>
     );
 };

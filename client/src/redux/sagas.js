@@ -360,7 +360,8 @@ function* requestUpdateClothesWorker(action) {
     try {
         const resp = yield call(updateClothes, action.payload.clothesDetailsId, action.payload.clothesId,
             action.payload.color, action.payload.size, action.payload.count, action.payload.regularPrice,
-            (action.payload.price !== "" && action.payload.price > 0) ? action.payload.price : null , action.payload.weight);
+            (action.payload.price !== "" && action.payload.price > 0) ? action.payload.price : null ,
+            action.payload.weight, action.payload.deliveryId);
         yield put({ type: UPDATE_CLOTHES, payload: { clothesDetailsId: action.payload.clothesDetailsId, clothes: resp }});
         yield put({
             type: REQUEST_ALERT,
