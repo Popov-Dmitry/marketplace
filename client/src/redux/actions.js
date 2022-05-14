@@ -45,10 +45,10 @@ export function authUser(email, password, userRole) {
     }
 }
 
-export function fetchUserById(id) {
+export function fetchUserById(userRole, id) {
     return {
         type: REQUEST_USER_BY_ID,
-        payload: id
+        payload: { userRole, id }
     }
 }
 

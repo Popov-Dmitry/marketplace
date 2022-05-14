@@ -50,7 +50,7 @@ public class DeliveryController {
         return ResponseEntity.ok(deliveryService.findById(id));
     }
 
-    @GetMapping(value = "/seller/{id}", produces = "application/json")
+    @GetMapping(value = "/sellers/{id}", produces = "application/json")
     @Operation(summary = "Get all deliveries by seller id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),

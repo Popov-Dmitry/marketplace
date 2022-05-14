@@ -19,6 +19,31 @@ const Delivery = ({show, onHide}) => {
     const [smsToSender, setSmsToSender] = useState(false);
     const [smsToRecipient, setSmsToRecipient] = useState(false);
 
+    const onSaveClick = () => {
+        let service = "";
+        if (smsToSender && !smsToRecipient) {
+            service = "41";
+        }
+        if (!smsToSender && smsToRecipient) {
+            service = "42"
+        }
+        if (smsToSender && smsToRecipient) {
+            service = "41,42"
+        }
+        dispatch(saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice,
+            deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id));
+        setDeliveryVariant("");
+        setDeliveryPriceIncluded(true);
+        setDeliveryPrice(0);
+        setDeliveryPriceVariant("");
+        setDepartureIndex("");
+        setReturnIndex("");
+        setPackVariant("");
+        setSmsToSender(false);
+        setSmsToRecipient(false);
+        onHide();
+    }
+
     return (
         <Modal
             show={show}
@@ -176,20 +201,7 @@ const Delivery = ({show, onHide}) => {
                 <Button
                     variant={"main"}
                     className={"mt-3 border-radius-10 float-end"}
-                    onClick={() => {
-                        let service = "";
-                        if (smsToSender && !smsToRecipient) {
-                            service = "41";
-                        }
-                        if (!smsToSender && smsToRecipient) {
-                            service = "42"
-                        }
-                        if (smsToSender && smsToRecipient) {
-                            service = "41,42"
-                        }
-                        dispatch(saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice,
-                            deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id));
-                    }}
+                    onClick={onSaveClick}
                 >
                     Сохранить
                 </Button>

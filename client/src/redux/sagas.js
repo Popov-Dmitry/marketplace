@@ -72,7 +72,7 @@ import {deleteCart, fetchCart, saveCart, updateCart} from "../http/cartApi";
 import {login} from "../http/authApi";
 import {CUSTOMER, MODER, SELLER} from "../utils/roles";
 import {fetchSellerByEmail, fetchSellerById, registrationSeller, updateSeller} from "../http/sellerApi";
-import {fetchModerByEmail} from "../http/moderApi";
+import {fetchModerByEmail, fetchModerById} from "../http/moderApi";
 import {
     fetchAllSellersInfo,
     fetchSellerInfoById,
@@ -179,7 +179,16 @@ function* requestUserByEmailWorker(action) {
 
 function* requestUserByIdWorker(action) {
     try {
-        const payload = yield call(fetchCustomerById, action.payload);
+        let payload;
+        if (action.payload.userRole === CUSTOMER) {
+            payload = yield call(fetchCustomerById, action.payload.id);
+        }
+        if (action.payload.userRole === SELLER) {
+            payload = yield call(fetchSellerById, action.payload.id);
+        }
+        if (action.payload.userRole === MODER) {
+            payload = yield call(fetchModerById, action.payload.id);
+        }
         yield put({ type: FETCH_USER , payload });
         yield put({ type: AUTH_USER , payload: true });
     }

@@ -5,18 +5,20 @@ import security from "../assets/security.png";
 import purse from "../assets/purse.png";
 import addresses from "../assets/location.png";
 import shop from "../assets/shop.png";
+import delivery from "../assets/delivery.png";
 import PersonalData from "../components/account/PersonalData";
 import {useHistory, useLocation} from "react-router-dom";
 import {
     ACCOUNT_ADDRESSES_ROUTE,
     ACCOUNT_CARDS_ROUTE,
     ACCOUNT_PERSONAL_ROUTE,
-    ACCOUNT_SECURITY_ROUTE, SELLER_SHOP_ROUTE
+    ACCOUNT_SECURITY_ROUTE, SELLER_DELIVERY_ROUTE, SELLER_SHOP_ROUTE
 } from "../utils/consts";
 import Security from "../components/account/Security";
 import {useSelector} from "react-redux";
 import {CUSTOMER, SELLER} from "../utils/roles";
 import ShopData from "../components/account/ShopData";
+import DeliveryData from "../components/account/DeliveryData";
 
 const Account = () => {
     const location = useLocation();
@@ -93,25 +95,43 @@ const Account = () => {
                     }
                     {userRole === SELLER &&
                         <div>
-                            <Button
-                                variant={"light"}
-                                className={`w-100 text-start ps-3 ${location.pathname === SELLER_SHOP_ROUTE && "main-color"}`}
-                                onClick={() => history.push(SELLER_SHOP_ROUTE)}
-                            >
-                                <Image
-                                    src={shop}
-                                    width="25px"
-                                    height="25px"
-                                    className={`me-2 ${location.pathname === SELLER_SHOP_ROUTE && "black-to-main"}`}
-                                />
-                                Магазин
-                            </Button>
+                            <div>
+                                <Button
+                                    variant={"light"}
+                                    className={`w-100 text-start ps-3 ${location.pathname === SELLER_DELIVERY_ROUTE && "main-color"}`}
+                                    onClick={() => history.push(SELLER_DELIVERY_ROUTE)}
+                                >
+                                    <Image
+                                        src={delivery}
+                                        width="25px"
+                                        height="25px"
+                                        className={`me-2 ${location.pathname === SELLER_DELIVERY_ROUTE && "black-to-main"}`}
+                                    />
+                                    Доставка
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    variant={"light"}
+                                    className={`w-100 text-start ps-3 ${location.pathname === SELLER_SHOP_ROUTE && "main-color"}`}
+                                    onClick={() => history.push(SELLER_SHOP_ROUTE)}
+                                >
+                                    <Image
+                                        src={shop}
+                                        width="25px"
+                                        height="25px"
+                                        className={`me-2 ${location.pathname === SELLER_SHOP_ROUTE && "black-to-main"}`}
+                                    />
+                                    Магазин
+                                </Button>
+                            </div>
                         </div>
                     }
                 </Col>
                 <Col>
                     {location.pathname === ACCOUNT_PERSONAL_ROUTE && <PersonalData/>}
                     {location.pathname === ACCOUNT_SECURITY_ROUTE && <Security/>}
+                    {location.pathname === SELLER_DELIVERY_ROUTE && <DeliveryData/>}
                     {location.pathname === SELLER_SHOP_ROUTE && <ShopData/>}
                 </Col>
             </Row>

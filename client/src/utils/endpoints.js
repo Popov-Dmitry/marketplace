@@ -59,5 +59,5 @@ export const UPDATE_ORDER_STATUS = "/orders/"; //{id}
 
 export const ADD_DELIVERY = "/deliveries/";
 export const GET_DELIVERY_BY_ID = "/deliveries/"; //{id}
-export const GET_DELIVERIES_BY_SELLER_ID = "/deliveries/"; //{id}
+export const GET_DELIVERIES_BY_SELLER_ID = "/deliveries/sellers/"; //{id}
 export const UPDATE_DELIVERY = "/deliveries/"; //{id}
