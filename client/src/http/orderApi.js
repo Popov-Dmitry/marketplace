@@ -38,7 +38,7 @@ export const fetchOrdersByProductDetailsId = async (detailsId) => {
     return data;
 }
 
-export const updateOrderStatus = async (status) => {
-    const {data} = await $authHost.post(UPDATE_ORDER_STATUS, { status });
+export const updateOrderStatus = async (id, status) => {
+    const {data} = await $authHost.patch(UPDATE_ORDER_STATUS + id, { status });
     return data;
 }

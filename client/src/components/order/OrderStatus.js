@@ -11,7 +11,7 @@ const OrderStatus = ({status}) => {
                 {status === "CREATED" && "Создан"}
                 {status === "ACCEPTED" && "Принят"}
                 {status === "DELIVERY" && "Доставляется"}
-                {status === "WAITING" && "Ожидает в точке выдачи"}
+                {status === "WAITING" && "Ожидает получения"}
                 {status === "DELIVERED" && "Доставлен"}
                 {status === "RETURN" && "Возврат"}
                 {status === "RETURNED" && "Возвращен"}

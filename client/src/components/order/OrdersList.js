@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearPhotoStore, fetchOrders, fetchPhotosNames} from "../../redux/actions";
-import {CUSTOMER} from "../../utils/roles";
 import OrderItem from "./OrderItem";
 
 const OrdersList = () => {
     const dispatch = useDispatch();
     const orders = useSelector(state => state.orderReducer.orders);
-    const user = useSelector(state => state.userReducer.user);
+    const userReducer = useSelector(state => state.userReducer);
 
-    useEffect(() => dispatch(fetchOrders(CUSTOMER, user.id)), []);
+    useEffect(() => dispatch(fetchOrders(userReducer.userRole, userReducer.user.id)), []);
     useEffect(() => {
         dispatch(clearPhotoStore());
         orders.forEach(order =>

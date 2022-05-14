@@ -14,7 +14,7 @@ import {
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER,
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
@@ -29,7 +29,7 @@ import {
     REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_ORDER_STATUS,
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
@@ -320,5 +320,19 @@ export function fetchSeller(id) {
     return {
         type: REQUEST_SELLER,
         payload: id
+    }
+}
+
+export function fetchCustomer(id) {
+    return {
+        type: REQUEST_CUSTOMER,
+        payload: id
+    }
+}
+
+export function updateOrderStatus(id, newStatus) {
+    return {
+        type: REQUEST_UPDATE_ORDER_STATUS,
+        payload: { id, newStatus }
     }
 }

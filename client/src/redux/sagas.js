@@ -9,7 +9,7 @@ import {
     FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
-    FETCH_CLOTHES_SEARCH_PANEL_INFO,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER,
     FETCH_ORDER,
     FETCH_ORDERS,
     FETCH_PHOTOS_NAMES, FETCH_SELLER,
@@ -23,7 +23,7 @@ import {
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER,
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
@@ -40,7 +40,7 @@ import {
     REQUEST_SELLERS_INFO_COUNT,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_ORDER_STATUS,
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
@@ -52,7 +52,7 @@ import {
     UPDATE_CLOTHES,
     UPDATE_CLOTHES_DETAILS
 } from "./types";
-import {fetchCustomerByEmail, registrationCustomer, updateCustomer} from "../http/customerApi";
+import {fetchCustomerByEmail, fetchCustomerById, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
     deleteClothes, deleteClothesDetails,
     fetchClothesBySellerId,
@@ -83,8 +83,8 @@ import {
     fetchOrderById,
     fetchOrdersByCustomerId,
     fetchOrdersByProductDetailsId,
-    fetchOrdersByProductId,
-    saveOrder
+    fetchOrdersByProductId, fetchOrdersBySellerId,
+    saveOrder, updateOrderStatus
 } from "../http/orderApi";
 
 export function* watchAll() {
@@ -117,7 +117,9 @@ export function* watchAll() {
         takeEvery(REQUEST_SAVE_ORDER, requestSaveOrderWorker),
         takeEvery(REQUEST_ORDERS, requestFetchOrdersWorker),
         takeEvery(REQUEST_ORDER, requestFetchOrderWorker),
-        takeEvery(REQUEST_SELLER, requestSellerWorker)
+        takeEvery(REQUEST_SELLER, requestSellerWorker),
+        takeEvery(REQUEST_CUSTOMER, requestCustomerWorker),
+        takeEvery(REQUEST_UPDATE_ORDER_STATUS, requestUpdateOrderStatusWorker)
     ]);
 }
 
@@ -704,7 +706,7 @@ function* requestFetchOrdersWorker(action) {
             payload = yield call(fetchOrdersByCustomerId, action.payload.id);
         }
         if (action.payload.fetchBy === SELLER) {
-            payload = yield call(fetchOrdersByCustomerId, action.payload.id);
+            payload = yield call(fetchOrdersBySellerId, action.payload.id);
         }
         if (action.payload.fetchBy === "productId") {
             payload = yield call(fetchOrdersByProductId, action.payload.id);
@@ -747,6 +749,40 @@ function* requestSellerWorker(action) {
     try {
         const payload = yield call(fetchSellerById, action.payload);
         yield put({ type: FETCH_SELLER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestCustomerWorker(action) {
+    try {
+        const payload = yield call(fetchCustomerById, action.payload);
+        yield put({ type: FETCH_CUSTOMER, payload })
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestUpdateOrderStatusWorker(action) {
+    try {
+        const payload = yield call(updateOrderStatus, action.payload.id, action.payload.newStatus);
+        yield put({ type: FETCH_ORDER, payload })
     }
     catch (e) {
         console.log(e.response.request.response);

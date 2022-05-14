@@ -30,8 +30,8 @@ import ProductEdit from "./pages/seller/ProductEdit";
 import MainModer from "./pages/moder/MainModer";
 import Verifications from "./pages/moder/Verifications";
 import Verification from "./pages/moder/Verification";
-import Orders from "./pages/customer/Orders";
-import Order from "./pages/customer/Order";
+import Orders from "./pages/Orders";
+import Order from "./pages/Order";
 
 export const publicCustomerRoutes = [
     {
@@ -138,6 +138,14 @@ export const authSellerRoutes = [
     {
         path: SELLER_PRODUCTS_ROUTE + "/:detailsId" + NEW_PRODUCT_ROUTE,
         Component: ProductEdit
+    },
+    {
+        path: ORDERS_ROUTE,
+        Component: Orders
+    },
+    {
+        path: ORDERS_ROUTE + "/:id",
+        Component: Order
     }
 ];
 
