@@ -5,6 +5,7 @@ import {positiveNumber} from "../../utils/productUtils";
 import Checkbox from "../Checkbox";
 import {useDispatch, useSelector} from "react-redux";
 import {saveDelivery, setCurrentDelivery, updateDelivery} from "../../redux/actions";
+import {blink} from "../../utils/uiUtils";
 
 const Delivery = ({show, onHide}) => {
     const dispatch = useDispatch();
@@ -30,9 +31,37 @@ const Delivery = ({show, onHide}) => {
         setPackVariant(currentDelivery !== null && currentDelivery.packVariant ? currentDelivery.packVariant : "");
         setSmsToSender(currentDelivery !== null && currentDelivery.service && currentDelivery.service.includes("41"));
         setSmsToRecipient(currentDelivery !== null && currentDelivery.service && currentDelivery.service.includes("42"));
-    }, [currentDelivery])
+    }, [currentDelivery]);
+
+    const validation = () => {
+        let errors = 0;
+        if (deliveryVariant === "") {
+            errors++;
+            blink("delivery-variant");
+        }
+        if (!deliveryPriceIncluded) {
+            if (deliveryVariant === "RUSSIAN_POST") {
+                if (deliveryPriceVariant.trim().length < 1) {
+                    blink("delivery-price-variant");
+                    errors++;
+                }
+                if (departureIndex.trim().length < 1) {
+                    blink("departure-index");
+                    errors++;
+                }
+                if (packVariant.trim().length < 1) {
+                    blink("pack-variant");
+                    errors++;
+                }
+            }
+        }
+        return errors === 0;
+    }
 
     const onSaveClick = () => {
+        if (!validation()) {
+            return;
+        }
         let service = "";
         if (smsToSender && !smsToRecipient) {
             service = "41";

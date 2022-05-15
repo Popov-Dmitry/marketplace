@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {saveReturn} from "../../redux/actions";
+import {blink} from "../../utils/uiUtils";
 
 const ReturnProduct = ({show, onHide}) => {
     const dispatch = useDispatch();
@@ -48,6 +49,10 @@ const ReturnProduct = ({show, onHide}) => {
                         variant={"main"}
                         className={"mt-3 float-end border-radius-50"}
                         onClick={() => {
+                            if (reason.trim().length === 0) {
+                                blink("reason");
+                                return;
+                            }
                             dispatch(saveReturn(reason, description, orderId));
                             onHide(false);
                         }}

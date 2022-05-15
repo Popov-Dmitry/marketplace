@@ -30,16 +30,31 @@ export const deliveryReducer = (state = initialState, action) => {
             return { ...state, deliveries: state.deliveries.map(delivery =>
                     action.payload.id === delivery.id ? action.payload : delivery) };
         case SAVE_ADDRESS:
-            const newAddresses = [ ...state.addresses ];
-            newAddresses.push(action.payload);
-            return { ...state, addresses: newAddresses };
+            let newAddresses = [ ...state.addresses ];
+            if (action.payload.isMain === true) {
+                newAddresses = newAddresses.map(a => a.isMain === true ? { ...a, isMain: false } : a);
+                newAddresses.push(action.payload);
+                return { ...state, addresses: newAddresses, mainAddress: action.payload };
+            }
+            else {
+                newAddresses.push(action.payload);
+                return { ...state, addresses: newAddresses };
+            }
         case FETCH_ADDRESS:
             return { ...state, mainAddress: action.payload };
         case FETCH_ADDRESSES:
             return { ...state, addresses: action.payload };
         case UPDATE_ADDRESS:
-            return { ...state, addresses: state.addresses.map(address =>
-                    action.payload.id === address.id ? action.payload : address) };
+            if (action.payload.isMain === true && state.addresses.find(a => a.id === action.payload.id).isMain !== true) {
+                let newAddresses = [ ...state.addresses ];
+                newAddresses = newAddresses.map(a => a.isMain === true ? { ...a, isMain: false } : a)
+                    .map(address => action.payload.id === address.id ? action.payload : address);
+                return { ...state, addresses: newAddresses, mainAddress: action.payload };
+            }
+            else {
+                return { ...state, addresses: state.addresses.map(address =>
+                        action.payload.id === address.id ? action.payload : address) };
+            }
         case DELETE_ADDRESS:
             const address = state.addresses.find(a => a.id === action.payload);
             if (address.isMain === true) {
