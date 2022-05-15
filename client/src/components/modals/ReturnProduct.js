@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {saveReturn} from "../../redux/actions";
 
 const ReturnProduct = ({show, onHide}) => {
+    const dispatch = useDispatch();
+    const orderId = useSelector(state => state.returnReducer.currentOrderId);
     const [reason, setReason] = useState("");
     const [description, setDescription] = useState("");
 
@@ -42,6 +46,10 @@ const ReturnProduct = ({show, onHide}) => {
                     <Button
                         variant={"main"}
                         className={"mt-3 float-end border-radius-50"}
+                        onClick={() => {
+                            dispatch(saveReturn(reason, description, orderId));
+                            onHide(false);
+                        }}
                     >
                         Подтвердить
                     </Button>

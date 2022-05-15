@@ -12,7 +12,7 @@ import {
     FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER, FETCH_DELIVERIES, FETCH_DELIVERY,
     FETCH_ORDER,
     FETCH_ORDERS,
-    FETCH_PHOTOS_NAMES, FETCH_SELLER,
+    FETCH_PHOTOS_NAMES, FETCH_RETURN, FETCH_SELLER,
     FETCH_SELLER_INFO,
     FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
@@ -34,7 +34,7 @@ import {
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
-    REQUEST_SAVE_PRODUCT,
+    REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
     REQUEST_SELLER_INFO,
     REQUEST_SELLERS_INFO_COUNT,
@@ -87,6 +87,7 @@ import {
     saveOrder, updateOrderStatus
 } from "../http/orderApi";
 import {fetchDeliveriesBySellerId, fetchDeliveryById, saveDelivery, updateDelivery} from "../http/deliveryApi";
+import {saveReturn} from "../http/returnApi";
 
 export function* watchAll() {
     yield all([
@@ -125,7 +126,8 @@ export function* watchAll() {
         takeEvery(REQUEST_SAVE_DELIVERY, requestSaveDeliveryWorker),
         takeEvery(REQUEST_DELIVERY, requestDeliveryByIdWorker),
         takeEvery(REQUEST_DELIVERIES, requestDeliveriesBySellerIdWorker),
-        takeEvery(REQUEST_UPDATE_DELIVERY, requestUpdateDeliveryWorker)
+        takeEvery(REQUEST_UPDATE_DELIVERY, requestUpdateDeliveryWorker),
+        takeEvery(REQUEST_SAVE_RETURN, requestSaveReturnWorker)
     ]);
 }
 
@@ -713,7 +715,7 @@ function* requestSaveOrderWorker(action) {
         yield call(saveOrder, action.payload.productDetailsId, action.payload.productId, action.payload.count,
             action.payload.customerId, action.payload.address, action.payload.sellerId, action.payload.productType,
             action.payload.regularPrice, action.payload.price);
-        yield call(deleteCart, action.payload.cartId)
+        yield call(deleteCart, action.payload.cartId);
     }
     catch (e) {
         console.log(e);
@@ -742,7 +744,7 @@ function* requestFetchOrdersWorker(action) {
         if (action.payload.fetchBy === "productDetails") {
             payload = yield call(fetchOrdersByProductDetailsId, action.payload.id);
         }
-        yield put({ type: FETCH_ORDERS, payload })
+        yield put({ type: FETCH_ORDERS, payload });
     }
     catch (e) {
         console.log(e);
@@ -759,7 +761,7 @@ function* requestFetchOrdersWorker(action) {
 function* requestFetchOrderWorker(action) {
     try {
         const payload = yield call(fetchOrderById, action.payload);
-        yield put({ type: FETCH_ORDER, payload })
+        yield put({ type: FETCH_ORDER, payload });
     }
     catch (e) {
         console.log(e);
@@ -776,7 +778,7 @@ function* requestFetchOrderWorker(action) {
 function* requestSellerWorker(action) {
     try {
         const payload = yield call(fetchSellerById, action.payload);
-        yield put({ type: FETCH_SELLER, payload })
+        yield put({ type: FETCH_SELLER, payload });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -793,7 +795,7 @@ function* requestSellerWorker(action) {
 function* requestCustomerWorker(action) {
     try {
         const payload = yield call(fetchCustomerById, action.payload);
-        yield put({ type: FETCH_CUSTOMER, payload })
+        yield put({ type: FETCH_CUSTOMER, payload });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -810,7 +812,7 @@ function* requestCustomerWorker(action) {
 function* requestUpdateOrderStatusWorker(action) {
     try {
         const payload = yield call(updateOrderStatus, action.payload.id, action.payload.newStatus);
-        yield put({ type: FETCH_ORDER, payload })
+        yield put({ type: FETCH_ORDER, payload });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -832,7 +834,7 @@ function* requestSaveDeliveryWorker(action) {
             action.payload.returnIndex.length > 0 ? action.payload.returnIndex : null,
             action.payload.packVariant.length > 0 ? action.payload.packVariant : null,
             action.payload.service.length > 0 ? action.payload.service : null, action.payload.sellerId);
-        yield put({ type: SAVE_DELIVERY, payload })
+        yield put({ type: SAVE_DELIVERY, payload });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -849,7 +851,7 @@ function* requestSaveDeliveryWorker(action) {
 function* requestDeliveryByIdWorker(action) {
     try {
         const payload = yield call(fetchDeliveryById, action.payload);
-        yield put({ type: FETCH_DELIVERY, payload })
+        yield put({ type: FETCH_DELIVERY, payload });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -866,7 +868,7 @@ function* requestDeliveryByIdWorker(action) {
 function* requestDeliveriesBySellerIdWorker(action) {
     try {
         const payload = yield call(fetchDeliveriesBySellerId, action.payload);
-        yield put({ type: FETCH_DELIVERIES, payload })
+        yield put({ type: FETCH_DELIVERIES, payload });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -888,7 +890,26 @@ function* requestUpdateDeliveryWorker(action) {
             action.payload.returnIndex.length > 0 ? action.payload.returnIndex : null,
             action.payload.packVariant.length > 0 ? action.payload.packVariant : null,
             action.payload.service.length > 0 ? action.payload.service : null, action.payload.sellerId);
-        yield put({ type: UPDATE_DELIVERY, payload })
+        yield put({ type: UPDATE_DELIVERY, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSaveReturnWorker(action) {
+    try {
+        const payload1 = yield call(saveReturn, action.payload.reason, action.payload.description, action.payload.orderId);
+        yield put({ type: FETCH_RETURN, payload: payload1 });
+        const payload2 = yield call(fetchOrderById, action.payload.orderId);
+        yield put({ type: FETCH_ORDER, payload: payload2 });
     }
     catch (e) {
         console.log(e.response.request.response);

@@ -23,7 +23,7 @@ import {
     REQUEST_REGISTRATION_USER,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
-    REQUEST_SAVE_PRODUCT,
+    REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
     REQUEST_SELLER_INFO,
     REQUEST_SELLERS_INFO_COUNT,
@@ -34,7 +34,7 @@ import {
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
     REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID,
-    SELECT_ITEM,
+    SELECT_ITEM, SET_CURRENT_ORDER_ID,
     SET_USER_ROLE
 } from "./types";
 
@@ -380,5 +380,19 @@ export function setCurrentDelivery(delivery) {
     return {
         type: FETCH_DELIVERY,
         payload: delivery
+    }
+}
+
+export function saveReturn(reason, description, orderId) {
+    return {
+        type: REQUEST_SAVE_RETURN,
+        payload: { reason, description, orderId }
+    }
+}
+
+export function setCurrentOrderId(id) {
+    return {
+        type: SET_CURRENT_ORDER_ID,
+        payload: id
     }
 }

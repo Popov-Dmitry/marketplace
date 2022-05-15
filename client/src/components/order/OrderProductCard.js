@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {daysLag} from "../../utils/productUtils";
 import {useHistory} from "react-router-dom";
 import {CUSTOMER, SELLER} from "../../utils/roles";
-import {updateOrderStatus} from "../../redux/actions";
+import {setCurrentOrderId, updateOrderStatus} from "../../redux/actions";
 import Confirmation from "../modals/Confirmation";
 import ReturnProduct from "../modals/ReturnProduct";
 
@@ -77,7 +77,10 @@ const OrderProductCard = () => {
                             <Button
                                 variant={"outline-danger"}
                                 className={"mt-3 border-radius-50 w-100"}
-                                onClick={() => setIsReturnVisible(true)}
+                                onClick={() => {
+                                    dispatch(setCurrentOrderId(order.id));
+                                    setIsReturnVisible(true);
+                                }}
                             >
                                 Вернуть товары
                             </Button>
