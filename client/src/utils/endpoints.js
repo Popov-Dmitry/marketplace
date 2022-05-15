@@ -57,6 +57,9 @@ export const GET_ORDER_BY_PRODUCT_ID = "/orders/product/"; //{productDetailsId}/
 export const GET_ORDER_BY_PRODUCT_DETAILS_ID = "/orders/product/"; //{productDetailsId}
 export const UPDATE_ORDER_STATUS = "/orders/"; //{id}
 
+export const ADD_RETURN = "/orders/returns/";
+export const GET_RETURN_BY_ID = "/orders/returns/"; //{id}
+
 export const ADD_DELIVERY = "/deliveries/";
 export const GET_DELIVERY_BY_ID = "/deliveries/"; //{id}
 export const GET_DELIVERIES_BY_SELLER_ID = "/deliveries/sellers/"; //{id}
