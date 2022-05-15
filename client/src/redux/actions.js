@@ -5,22 +5,22 @@ import {
     ADD_PRODUCT_DETAILS_ID,
     ADD_PRODUCT_PHOTOS,
     CLEAR_PHOTO_STORE,
-    CLEAR_SELECTED_ITEMS, FETCH_DELIVERY,
+    CLEAR_SELECTED_ITEMS, FETCH_ADDRESS, FETCH_DELIVERY,
     HIDE_ALERT,
-    REMOVE_FILTER,
+    REMOVE_FILTER, REQUEST_ADDRESS, REQUEST_ADDRESSES,
     REQUEST_ALERT,
     REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER, REQUEST_DELETE_ADDRESS,
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
     REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY, REQUEST_ORDER, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
-    REQUEST_REGISTRATION_USER,
+    REQUEST_REGISTRATION_USER, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
@@ -380,6 +380,48 @@ export function setCurrentDelivery(delivery) {
     return {
         type: FETCH_DELIVERY,
         payload: delivery
+    }
+}
+
+export function saveAddress(address, index, customerId, isMain) {
+    return {
+        type: REQUEST_SAVE_ADDRESS,
+        payload: { address, index, customerId, isMain }
+    }
+}
+
+export function fetchAddress(id) {
+    return {
+        type: REQUEST_ADDRESS,
+        payload: id
+    }
+}
+
+export function fetchAddresses(id) {
+    return {
+        type: REQUEST_ADDRESSES,
+        payload: id
+    }
+}
+
+export function updateAddress(id, address, index, customerId, isMain) {
+    return {
+        type: REQUEST_UPDATE_DELIVERY,
+        payload: { id, address, index, customerId, isMain }
+    }
+}
+
+export function deleteAddress(id) {
+    return {
+        type: REQUEST_DELETE_ADDRESS,
+        payload: id
+    }
+}
+
+export function setMainAddress(address) {
+    return {
+        type: FETCH_ADDRESS,
+        payload: address
     }
 }
 

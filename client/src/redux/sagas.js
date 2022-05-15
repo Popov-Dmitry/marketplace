@@ -1,11 +1,11 @@
 import {takeEvery,all, put, call, delay} from 'redux-saga/effects'
 import {
     ADD_PRODUCT_DETAILS_ID,
-    AUTH_USER,
+    AUTH_USER, DELETE_ADDRESS,
     DELETE_CART,
     DELETE_CLOTHES,
     DELETE_CLOTHES_DETAILS,
-    DELETE_PHOTO,
+    DELETE_PHOTO, FETCH_ADDRESS, FETCH_ADDRESSES,
     FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
@@ -16,14 +16,14 @@ import {
     FETCH_SELLER_INFO,
     FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
-    HIDE_ALERT,
+    HIDE_ALERT, REQUEST_ADDRESS, REQUEST_ADDRESSES,
     REQUEST_ALERT,
     REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER, REQUEST_DELETE_ADDRESS,
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
@@ -31,23 +31,23 @@ import {
     REQUEST_ORDER,
     REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
-    REQUEST_REGISTRATION_USER,
+    REQUEST_REGISTRATION_USER, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
     REQUEST_SELLER_INFO,
-    REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_SELLERS_INFO_COUNT, REQUEST_UPDATE_ADDRESS,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
     REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_DELIVERY, REQUEST_UPDATE_ORDER_STATUS,
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
-    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID,
+    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID, SAVE_ADDRESS,
     SAVE_CART, SAVE_DELIVERY,
     SET_USER_ROLE,
-    SHOW_ALERT,
+    SHOW_ALERT, UPDATE_ADDRESS,
     UPDATE_CART,
     UPDATE_CLOTHES,
     UPDATE_CLOTHES_DETAILS, UPDATE_DELIVERY
@@ -88,6 +88,13 @@ import {
 } from "../http/orderApi";
 import {fetchDeliveriesBySellerId, fetchDeliveryById, saveDelivery, updateDelivery} from "../http/deliveryApi";
 import {saveReturn} from "../http/returnApi";
+import {
+    deleteAddress,
+    fetchAddressById,
+    fetchAddressesByCustomerId,
+    saveAddress,
+    updateAddress
+} from "../http/addressApi";
 
 export function* watchAll() {
     yield all([
@@ -127,6 +134,11 @@ export function* watchAll() {
         takeEvery(REQUEST_DELIVERY, requestDeliveryByIdWorker),
         takeEvery(REQUEST_DELIVERIES, requestDeliveriesBySellerIdWorker),
         takeEvery(REQUEST_UPDATE_DELIVERY, requestUpdateDeliveryWorker),
+        takeEvery(REQUEST_SAVE_ADDRESS, requestSaveAddressWorker),
+        takeEvery(REQUEST_ADDRESS, requestAddressByIdWorker),
+        takeEvery(REQUEST_ADDRESSES, requestAddressesByCustomerIdWorker),
+        takeEvery(REQUEST_UPDATE_ADDRESS, requestUpdateAddressWorker),
+        takeEvery(REQUEST_DELETE_ADDRESS, requestDeleteAddressWorker),
         takeEvery(REQUEST_SAVE_RETURN, requestSaveReturnWorker)
     ]);
 }
@@ -891,6 +903,93 @@ function* requestUpdateDeliveryWorker(action) {
             action.payload.packVariant.length > 0 ? action.payload.packVariant : null,
             action.payload.service.length > 0 ? action.payload.service : null, action.payload.sellerId);
         yield put({ type: UPDATE_DELIVERY, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSaveAddressWorker(action) {
+    try {
+        const payload = yield call(saveAddress, action.payload.address, action.payload.index,
+            action.payload.customerId, action.payload.isMain);
+        yield put({ type: SAVE_ADDRESS, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestAddressByIdWorker(action) {
+    try {
+        const payload = yield call(fetchAddressById, action.payload);
+        yield put({ type: FETCH_ADDRESS, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestAddressesByCustomerIdWorker(action) {
+    try {
+        const payload = yield call(fetchAddressesByCustomerId, action.payload);
+        yield put({ type: FETCH_ADDRESSES, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestUpdateAddressWorker(action) {
+    try {
+        const payload = yield call(updateAddress, action.payload.id, action.payload.address, action.payload.index,
+            action.payload.customerId, action.payload.isMain);
+        yield put({ type: UPDATE_ADDRESS, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestDeleteAddressWorker(action) {
+    try {
+        const payload = yield call(deleteAddress, action.payload);
+        yield put({ type: DELETE_ADDRESS, payload });
     }
     catch (e) {
         console.log(e.response.request.response);

@@ -1,26 +1,33 @@
 import {$authHost} from "./index";
-import {ADD_DELIVERY, GET_DELIVERIES_BY_SELLER_ID, GET_DELIVERY_BY_ID, UPDATE_DELIVERY} from "../utils/endpoints";
+import {
+    ADD_ADDRESS,
+    DELETE_ADDRESS, GET_ADDRESS_BY_ID, GET_ADDRESSES_BY_CUSTOMER_ID,
+    UPDATE_ADDRESS
+} from "../utils/endpoints";
 
 export const saveAddress = async (address, index, customerId, isMain) => {
-    const {data} = await $authHost.post(ADD_DELIVERY,
+    const {data} = await $authHost.post(ADD_ADDRESS,
         { address, index, customerId, isMain });
     return data;
 }
 
-export const fetchDeliveryById = async (id) => {
-    const {data} = await $authHost.get(GET_DELIVERY_BY_ID + id);
+export const fetchAddressById = async (id) => {
+    const {data} = await $authHost.get(GET_ADDRESS_BY_ID + id);
     return data;
 }
 
-export const fetchDeliveriesBySellerId = async (id) => {
-    const {data} = await $authHost.get(GET_DELIVERIES_BY_SELLER_ID + id);
+export const fetchAddressesByCustomerId = async (id) => {
+    const {data} = await $authHost.get(GET_ADDRESSES_BY_CUSTOMER_ID + id);
     return data;
 }
 
-export const updateDelivery = async (id, deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
-                                     departureIndex, returnIndex, packVariant, service, sellerId) => {
-    const {data} = await $authHost.patch(UPDATE_DELIVERY + id,
-        { deliveryVariant, deliveryPriceIncluded, deliveryPrice, deliveryPriceVariant,
-            departureIndex, returnIndex, packVariant, service, sellerId });
+export const updateAddress = async (id, address, index, customerId, isMain) => {
+    const {data} = await $authHost.patch(UPDATE_ADDRESS + id,
+        { address, index, customerId, isMain });
+    return data;
+}
+
+export const deleteAddress = async (id) => {
+    const {data} = await $authHost.delete(DELETE_ADDRESS + id);
     return data;
 }
