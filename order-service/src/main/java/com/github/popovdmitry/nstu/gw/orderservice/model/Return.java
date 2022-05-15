@@ -1,5 +1,7 @@
 package com.github.popovdmitry.nstu.gw.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -27,6 +29,8 @@ public class Return {
     @ApiModelProperty(example = "Пятно на одежде", position = 2)
     private String description;
 
+    @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JsonBackReference
     private Order order;
 }
