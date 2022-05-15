@@ -89,7 +89,7 @@ const Delivery = ({show, onHide}) => {
         setPackVariant("");
         setSmsToSender(false);
         setSmsToRecipient(false);
-        onHide();
+        onHide(false);
     }
 
     return (

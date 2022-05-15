@@ -16,7 +16,7 @@ import remove from "../../assets/remove.png";
 import Confirmation from "../modals/Confirmation";
 import {SELLER_NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
 import {positiveNumber} from "../../utils/productUtils";
-import DeliveriesList from "../DeliveriesList";
+import DeliveriesList from "../delivery/DeliveriesList";
 
 const ClothesProductEdit = ({clothes, setIsDone}) => {
     const dispatch = useDispatch();

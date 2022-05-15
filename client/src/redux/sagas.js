@@ -903,6 +903,13 @@ function* requestUpdateDeliveryWorker(action) {
             action.payload.packVariant.length > 0 ? action.payload.packVariant : null,
             action.payload.service.length > 0 ? action.payload.service : null, action.payload.sellerId);
         yield put({ type: UPDATE_DELIVERY, payload });
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно обновлены"
+            }
+        });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -973,6 +980,13 @@ function* requestUpdateAddressWorker(action) {
         const payload = yield call(updateAddress, action.payload.id, action.payload.address, action.payload.index,
             action.payload.customerId, action.payload.isMain);
         yield put({ type: UPDATE_ADDRESS, payload });
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно обновлены"
+            }
+        });
     }
     catch (e) {
         console.log(e.response.request.response);
@@ -988,11 +1002,18 @@ function* requestUpdateAddressWorker(action) {
 
 function* requestDeleteAddressWorker(action) {
     try {
-        const payload = yield call(deleteAddress, action.payload);
-        yield put({ type: DELETE_ADDRESS, payload });
+        yield call(deleteAddress, action.payload);
+        yield put({ type: DELETE_ADDRESS, payload: action.payload });
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "success",
+                text: "Данные успешно удалены"
+            }
+        });
     }
     catch (e) {
-        console.log(e.response.request.response);
+        console.log(e);
         yield put({
             type: REQUEST_ALERT,
             payload: {

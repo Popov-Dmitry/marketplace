@@ -1,16 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import Checkbox from "../Checkbox";
 import {blink} from "../../utils/uiUtils";
-import {saveAddress} from "../../redux/actions";
+import {deleteAddress, saveAddress, setCurrentAddress, updateAddress} from "../../redux/actions";
 
 const AddressEdit = ({show, onHide}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.userReducer.user);
+    const currentAddress = useSelector(state => state.deliveryReducer.currentAddress);
     const [address, setAddress] = useState("");
     const [index, setIndex] = useState("");
     const [isMain, setIsMain] = useState(false);
+
+    useEffect(() => {
+        setAddress(currentAddress !== null ? currentAddress.address : "");
+        setIndex(currentAddress !== null ? currentAddress.index : "");
+        setIsMain(currentAddress !== null ? currentAddress.isMain : false);
+    }, [currentAddress]);
 
     const validation = () => {
         let errors = 0;
@@ -23,12 +30,17 @@ const AddressEdit = ({show, onHide}) => {
             errors++;
         }
         return errors === 0;
-    }
+    };
 
     return (
         <Modal
             show={show}
-            onHide={onHide}
+            onHide={() => {
+                if (currentAddress !== null) {
+                    setTimeout(() => dispatch(setCurrentAddress(null)), 300);
+                }
+                onHide(false);
+            }}
             centered
         >
             <Modal.Header closeButton>
@@ -62,18 +74,46 @@ const AddressEdit = ({show, onHide}) => {
                     />
                 </div>
 
-                <Button
-                    variant={"main"}
-                    className={"mt-1 border-radius-10 float-end"}
-                    onClick={() => {
-                        if (!validation()) {
-                            return;
-                        }
-                        dispatch(saveAddress(address, index, user.id, isMain));
-                    }}
-                >
-                    Сохранить
-                </Button>
+                <div className={currentAddress !== null ? "mt-1 d-flex justify-content-between" : ""}>
+                    {currentAddress !== null &&
+                        <Button
+                            variant={"danger"}
+                            className={"mt-1 border-radius-10"}
+                            onClick={() => {
+                                dispatch(deleteAddress(currentAddress.id));
+                                setAddress("");
+                                setIndex("");
+                                setIsMain(false);
+                                onHide(false);
+                            }}
+                        >
+                            Удалить
+                        </Button>
+                    }
+                    <Button
+                        variant={"main"}
+                        className={`mt-1 border-radius-10 ${currentAddress === null && "float-end"}`}
+                        onClick={() => {
+                            if (!validation()) {
+                                return;
+                            }
+                            if (currentAddress !== null) {
+                                dispatch(updateAddress(currentAddress.id, address, index, user.id, isMain));
+                            }
+                            else {
+                                dispatch(saveAddress(address, index, user.id, isMain));
+                            }
+                            setAddress("");
+                            setIndex("");
+                            setIsMain(false);
+                            onHide(false);
+                        }}
+                    >
+                        Сохранить
+                    </Button>
+                </div>
+
+
             </Modal.Body>
         </Modal>
     );

@@ -52,7 +52,7 @@ public class AddressController {
         return ResponseEntity.ok(addressService.findById(id));
     }
 
-    @GetMapping(value = "/customer/{id}", produces = "application/json")
+    @GetMapping(value = "/customers/{id}", produces = "application/json")
     @Operation(summary = "Get addresses by customer id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
@@ -87,7 +87,7 @@ public class AddressController {
         return ResponseEntity.ok(addressService.updateAddress(id, addressDto));
     }
 
-    @DeleteMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete address by id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),

@@ -67,6 +67,6 @@ export const UPDATE_DELIVERY = "/deliveries/"; //{id}
 
 export const ADD_ADDRESS = "/deliveries/addresses/";
 export const GET_ADDRESS_BY_ID = "/deliveries/addresses/"; //{id}
-export const GET_ADDRESSES_BY_CUSTOMER_ID = "/deliveries/addresses/customer/"; //{id}
+export const GET_ADDRESSES_BY_CUSTOMER_ID = "/deliveries/addresses/customers/"; //{id}
 export const UPDATE_ADDRESS = "/deliveries/addresses/"; //{id}
 export const DELETE_ADDRESS = "/deliveries/addresses/"; //{id}

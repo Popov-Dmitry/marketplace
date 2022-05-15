@@ -1,5 +1,5 @@
 import React from 'react';
-import {setCurrentDelivery} from "../redux/actions";
+import {setCurrentDelivery} from "../../redux/actions";
 import {Card} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 
@@ -11,7 +11,7 @@ const DeliveryItem = ({delivery, isDeliveryEditVisible, setIsDeliveryEditVisible
             id={delivery.id}
             className={`mt-2 border-radius-10 shadow-sm p-2 fs-5 cursor-pointer 
             ${typeof deliveryId != "undefined" && deliveryId === delivery.id && "product-item-param-active-border"}`}
-            onClick={(e) => {
+            onClick={() => {
                 if (typeof isDeliveryEditVisible != "undefined") {
                     dispatch(setCurrentDelivery(delivery));
                     setIsDeliveryEditVisible(true);

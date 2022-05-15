@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button} from "react-bootstrap";
 import Delivery from "../modals/Delivery";
 import {fetchDeliveries} from "../../redux/actions";
-import DeliveriesList from "../DeliveriesList";
+import DeliveriesList from "../delivery/DeliveriesList";
 
 const DeliveryData = () => {
     const dispatch = useDispatch();
