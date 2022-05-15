@@ -17,6 +17,20 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorDto(e.getMessage()));
     }
 
+    @ExceptionHandler(BadStatusException.class)
+    public ResponseEntity<ApiErrorDto> handleBadStatusException(BadStatusException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiErrorDto(e.getMessage()));
+    }
+
+    @ExceptionHandler(ReturnTimeExpiredException.class)
+    public ResponseEntity<ApiErrorDto> handleReturnTimeExpiredException(Exception e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiErrorDto(e.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorDto> handleException(Exception e) {
         return ResponseEntity
