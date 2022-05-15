@@ -5,7 +5,7 @@ import {
     FETCH_DELIVERIES,
     FETCH_DELIVERY,
     SAVE_ADDRESS,
-    SAVE_DELIVERY, UPDATE_ADDRESS,
+    SAVE_DELIVERY, SET_CURRENT_ADDRESS, UPDATE_ADDRESS,
     UPDATE_DELIVERY
 } from "./types";
 
@@ -13,7 +13,8 @@ const initialState = {
     deliveries: [],
     currentDelivery: null,
     addresses: [],
-    mainAddress: null
+    mainAddress: null,
+    currentAddress: null
 }
 
 export const deliveryReducer = (state = initialState, action) => {
@@ -67,6 +68,8 @@ export const deliveryReducer = (state = initialState, action) => {
             else {
                 return { ...state, addresses: state.addresses.filter(a => a.id !== action.payload) };
             }
+        case SET_CURRENT_ADDRESS:
+            return { ...state, currentAddress: action.payload };
         default:
             return state;
     }

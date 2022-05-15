@@ -26,7 +26,7 @@ import {
     REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
     REQUEST_SELLER_INFO,
-    REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_SELLERS_INFO_COUNT, REQUEST_UPDATE_ADDRESS,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
     REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_DELIVERY, REQUEST_UPDATE_ORDER_STATUS,
@@ -34,7 +34,7 @@ import {
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
     REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID,
-    SELECT_ITEM, SET_CURRENT_ORDER_ID,
+    SELECT_ITEM, SET_CURRENT_ADDRESS, SET_CURRENT_ORDER_ID,
     SET_USER_ROLE
 } from "./types";
 
@@ -406,7 +406,7 @@ export function fetchAddresses(id) {
 
 export function updateAddress(id, address, index, customerId, isMain) {
     return {
-        type: REQUEST_UPDATE_DELIVERY,
+        type: REQUEST_UPDATE_ADDRESS,
         payload: { id, address, index, customerId, isMain }
     }
 }
@@ -421,6 +421,13 @@ export function deleteAddress(id) {
 export function setMainAddress(address) {
     return {
         type: FETCH_ADDRESS,
+        payload: address
+    }
+}
+
+export function setCurrentAddress(address) {
+    return {
+        type: SET_CURRENT_ADDRESS,
         payload: address
     }
 }
