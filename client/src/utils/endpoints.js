@@ -64,3 +64,9 @@ export const ADD_DELIVERY = "/deliveries/";
 export const GET_DELIVERY_BY_ID = "/deliveries/"; //{id}
 export const GET_DELIVERIES_BY_SELLER_ID = "/deliveries/sellers/"; //{id}
 export const UPDATE_DELIVERY = "/deliveries/"; //{id}
+
+export const ADD_ADDRESS = "/deliveries/addresses/";
+export const GET_ADDRESS_BY_ID = "/deliveries/addresses/"; //{id}
+export const GET_ADDRESSES_BY_CUSTOMER_ID = "/deliveries/addresses/customer/"; //{id}
+export const UPDATE_ADDRESS = "/deliveries/addresses/"; //{id}
+export const DELETE_ADDRESS = "/deliveries/addresses/"; //{id}
