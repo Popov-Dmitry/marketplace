@@ -4,7 +4,6 @@ import {useSelector} from "react-redux";
 
 const ReturnOrderCard = () => {
     const order = useSelector(state => state.orderReducer.currentOrder);
-    console.log(order.ret)
 
     return (
         <Card className={"mt-2 border-radius-10 shadow-sm"}>
