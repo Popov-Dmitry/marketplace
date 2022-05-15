@@ -19,6 +19,7 @@ import {useSelector} from "react-redux";
 import {CUSTOMER, SELLER} from "../utils/roles";
 import ShopData from "../components/account/ShopData";
 import DeliveryData from "../components/account/DeliveryData";
+import AddressData from "../components/account/AddressData";
 
 const Account = () => {
     const location = useLocation();
@@ -131,6 +132,7 @@ const Account = () => {
                 <Col>
                     {location.pathname === ACCOUNT_PERSONAL_ROUTE && <PersonalData/>}
                     {location.pathname === ACCOUNT_SECURITY_ROUTE && <Security/>}
+                    {location.pathname === ACCOUNT_ADDRESSES_ROUTE && <AddressData/>}
                     {location.pathname === SELLER_DELIVERY_ROUTE && <DeliveryData/>}
                     {location.pathname === SELLER_SHOP_ROUTE && <ShopData/>}
                 </Col>
