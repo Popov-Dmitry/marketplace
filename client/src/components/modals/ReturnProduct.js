@@ -33,6 +33,7 @@ const ReturnProduct = ({show, onHide}) => {
                         <option value={"FIT"}>Товар не подошел</option>
                         <option value={"QUALITY"}>Проблемы с качеством товара</option>
                         <option value={"COUNT"}>Несоответствие количества</option>
+                        <option value={"OTHER"}>Другое</option>
                     </Form.Select>
                     <Form.Label className={"mt-2"}>Опишите проблему</Form.Label>
                     <Form.Control
