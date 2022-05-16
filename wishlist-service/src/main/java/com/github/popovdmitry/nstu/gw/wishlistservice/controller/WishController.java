@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class WishController {
     private final WishService wishService;
 
     @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Wish> createWish(@RequestBody WishDto wishDto) {
+    public ResponseEntity<Wish> createWish(@RequestBody WishDto wishDto) throws EntityExistsException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(wishService.saveWish(wishDto));

@@ -39,7 +39,7 @@ public class WishService {
         return wishRepository.findAllByProductId(productId);
     }
 
-    public Wish saveWish(WishDto wishDto) {
+    public Wish saveWish(WishDto wishDto) throws EntityExistsException {
         if (wishRepository.findByCustomerIdAndProductTypeAndProductId(
                 wishDto.getCustomerId(), wishDto.getProductType(), wishDto.getProductId()).isEmpty()) {
             Wish wish = new Wish();
