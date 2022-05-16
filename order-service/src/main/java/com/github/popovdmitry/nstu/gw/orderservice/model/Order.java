@@ -1,5 +1,7 @@
 package com.github.popovdmitry.nstu.gw.orderservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -71,4 +73,8 @@ public class Order {
     @Column(name = "variant")
     @ApiModelProperty(example = "Синий, XXL", position = 14)
     private String variant;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Return ret;
 }

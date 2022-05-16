@@ -7,6 +7,7 @@ import OrderStatusChart from "../components/order/OrderStatusChart";
 import OrderPriceSummary from "../components/order/OrderPriceSummary";
 import OrderProductCard from "../components/order/OrderProductCard";
 import {CUSTOMER, SELLER} from "../utils/roles";
+import ReturnOrderCard from "../components/order/ReturnOrderCard";
 
 const Order = () => {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const Order = () => {
     return (
         <Container className={"mt-2"}>
             <OrderStatusChart status={order.status}/>
-            <Card className={"mt-2 border-radius-10 shadow-sm"}>
+            <Card className={"mt-4 border-radius-10 shadow-sm"}>
                 <div className={"p-2 ms-3 fs-5"}>
                     <div>
                         <div className={"fw-bold"}>Адрес доставки</div>
@@ -50,6 +51,7 @@ const Order = () => {
             </Card>
 
             <OrderProductCard/>
+            {order.ret !== null && <ReturnOrderCard/>}
 
             {userRole === CUSTOMER &&
                 <Row>
@@ -58,7 +60,9 @@ const Order = () => {
                             <div className={"p-2 ms-3 fs-5"}>
                                 <div>Магазин <NavLink to={""}>{seller && seller.shopName}</NavLink></div>
                                 <div>Написать продавцу</div>
-                                <div>Оценить покупку</div>
+                                {(order.status === "DELIVERED" || order.status === "RETURN" || order.status === "RETURNED") &&
+                                    <div>Оценить покупку</div>
+                                }
                             </div>
                         </Card>
                     </Col>

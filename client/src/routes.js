@@ -11,7 +11,7 @@ import {
     MAIN_ROUTE,
     NEW_PRODUCT_ROUTE, ORDERS_ROUTE,
     REGISTRATION_ROUTE,
-    SEARCH_ROUTE,
+    SEARCH_ROUTE, SELLER_DELIVERY_ROUTE,
     SELLER_NEW_PRODUCT_ROUTE,
     SELLER_PRODUCTS_ROUTE,
     SELLER_SHOP_ROUTE, VERIFICATION_ROUTE
@@ -113,6 +113,10 @@ export const authSellerRoutes = [
     },
     {
         path: ACCOUNT_CARDS_ROUTE,
+        Component: Account
+    },
+    {
+        path: SELLER_DELIVERY_ROUTE,
         Component: Account
     },
     {

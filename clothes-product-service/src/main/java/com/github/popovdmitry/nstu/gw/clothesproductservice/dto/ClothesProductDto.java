@@ -18,6 +18,7 @@ public class ClothesProductDto {
     private Long regularPrice;
     private Long price;
     private Long weight;
+    private Long deliveryId;
 
     private Long clothesDetailsId;
 

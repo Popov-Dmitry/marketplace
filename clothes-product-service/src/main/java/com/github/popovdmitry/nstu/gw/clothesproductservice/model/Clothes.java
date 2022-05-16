@@ -47,4 +47,8 @@ public class Clothes {
     @Column(name = "weight")
     @ApiModelProperty(example = "356", notes = "in grams")
     private Long weight;
+
+    @Column(name = "delivery_id")
+    @ApiModelProperty(example = "51")
+    private Long deliveryId;
 }

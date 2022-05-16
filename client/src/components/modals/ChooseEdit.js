@@ -21,12 +21,12 @@ const ChooseEdit = ({show, onHide, product}) => {
         if (choice === "count") {
             if ((add !== 0 && subtract !== 0) || (add - subtract !== 0)) {
                 dispatch(updateClothes(product.id, id, null, null,
-                    currentCount + add - subtract, null, null, null));
+                    currentCount + add - subtract, null, null, null, null));
             }
         }
         if (choice === "price") {
             dispatch(updateClothes(product.id, id, null, null,
-                null, regularPrice, price, null));
+                null, regularPrice, price, null, null));
         }
         if (choice === "productDeletion") {
             dispatch(deleteClothes(product.id, id));

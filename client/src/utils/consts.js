@@ -14,6 +14,7 @@ export const CART_ROUTE = "/my/cart";
 export const ORDERS_ROUTE = "/my/orders";
 export const WISHLIST_ROUTE = "/my/wishlist";
 
+export const SELLER_DELIVERY_ROUTE = "/my/delivery";
 export const SELLER_SHOP_ROUTE = "/my/shop";
 export const SELLER_PRODUCTS_ROUTE = "/my/products";
 export const SELLER_NEW_PRODUCT_ROUTE = "/my/products/new";

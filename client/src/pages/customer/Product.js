@@ -45,7 +45,7 @@ const Product = () => {
 
     return (
         <Container>
-            {clothes && photos ?
+            {clothes && photos.length > 0 ?
                 <div>
                     <Row className={"mt-4"}>
                         <Col id={"images"} md={1} className={"m-auto"}>

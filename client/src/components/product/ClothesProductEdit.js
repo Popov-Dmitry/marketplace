@@ -15,9 +15,8 @@ import {useHistory} from "react-router-dom";
 import remove from "../../assets/remove.png";
 import Confirmation from "../modals/Confirmation";
 import {SELLER_NEW_PRODUCT_ROUTE, SELLER_PRODUCTS_ROUTE} from "../../utils/consts";
-import ToggleSwitch from "../ToggleSwitch";
 import {positiveNumber} from "../../utils/productUtils";
-import Checkbox from "../Checkbox";
+import DeliveriesList from "../delivery/DeliveriesList";
 
 const ClothesProductEdit = ({clothes, setIsDone}) => {
     const dispatch = useDispatch();
@@ -34,16 +33,7 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
     const [detailsId, setDetailsId] = useState(0);
     const [id, setId] = useState(0);
     const [selectedPhoto, setSelectedPhoto] = useState("");
-
-    const [deliveryVariant, setDeliveryVariant] = useState("");
-    const [deliveryPriceIncluded, setDeliveryPriceIncluded] = useState(true);
-    const [deliveryPrice, setDeliveryPrice] = useState(0);
-    const [deliveryPriceVariant, setDeliveryPriceVariant] = useState("");
-    const [departureIndex, setDepartureIndex] = useState("");
-    const [returnIndex, setReturnIndex] = useState("");
-    const [packVariant, setPackVariant] = useState("");
-    const [smsToSender, setSmsToSender] = useState(false);
-    const [smsToRecipient, setSmsToRecipient] = useState(false);
+    const [deliveryId, setDeliveryId] = useState((clothes && clothes.deliveryId) ? clothes.deliveryId : 0)
 
     useEffect(() => {
         setDetailsId(history.location.pathname.split("/")[3]);
@@ -64,25 +54,9 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
             blink("files-input");
             errors++;
         }
-        if (deliveryVariant.trim().length < 1) {
-            blink("delivery-variant");
+        if (deliveryId === 0) {
+            blink("delivery");
             errors++;
-        }
-        if (!deliveryPriceIncluded) {
-            if (deliveryVariant === "RUSSIAN_POST") {
-                if (deliveryPriceVariant.trim().length < 1) {
-                    blink("delivery-price-variant");
-                    errors++;
-                }
-                if (departureIndex.trim().length < 1) {
-                    blink("departure-index");
-                    errors++;
-                }
-                if (packVariant.trim().length < 1) {
-                    blink("pack-variant");
-                    errors++;
-                }
-            }
         }
         return errors === 0;
     };
@@ -111,7 +85,7 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
     };
 
     return (
-        <Form className={""}>
+        <Form>
             <Form.Label className={"mt-2 opacity-95"}>Цвет <span className={"text-danger"}>*</span></Form.Label>
             <Form.Control
                 id={"color"}
@@ -211,146 +185,8 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                 </Row>
             }
             <div>
-                <Form.Label className={"mt-2 opacity-95"}>Доставка <span className={"text-danger"}>*</span></Form.Label>
-                <Form.Select
-                    id={"delivery-variant"}
-                    className={"border-radius-10 w-25"}
-                    value={deliveryVariant}
-                    onChange={e => setDeliveryVariant(e.target.value)}
-                >
-                    <option hidden>Доставка</option>
-                    <option value="MY">Моя</option>
-                    <option value="RUSSIAN_POST">Почта России</option>
-                </Form.Select>
-                {deliveryVariant.length > 0 &&
-                    <div>
-                        <Form.Label className={"mt-2 opacity-95"}>
-                            Включена в стоимость <span className={"text-danger"}>*</span>
-                        </Form.Label>
-                        <ToggleSwitch
-                            name={"deliveryPriceIncluded"}
-                            checked={deliveryPriceIncluded}
-                            onChange={(e) => setDeliveryPriceIncluded(e.target.checked)}
-                        />
-                        {!deliveryPriceIncluded && deliveryVariant === "MY" &&
-                            <div>
-                                <Form.Label className={"mt-2 opacity-95"}>
-                                    Стоимость доставки <span className={"text-danger"}>*</span>
-                                </Form.Label>
-                                <Form.Control
-                                    id={"my-delivery-price"}
-                                    className={"border-radius-10 w-50"}
-                                    placeholder="Стоимость доставки"
-                                    type={"number"}
-                                    value={deliveryPrice}
-                                    onChange={e => {
-                                        positiveNumber(e);
-                                        setDeliveryPrice(e.target.value);
-                                    }}
-                                />
-                            </div>
-                        }
-                        {!deliveryPriceIncluded && deliveryVariant === "RUSSIAN_POST" &&
-                            <div>
-                                <Form.Label className={"mt-2 opacity-95"}>
-                                    Стоимость доставки <span className={"text-danger"}>*</span>
-                                </Form.Label>
-                                <Form.Select
-                                    id={"delivery-price-variant"}
-                                    className={"border-radius-10 w-25"}
-                                    value={deliveryPriceVariant}
-                                    onChange={e => setDeliveryPriceVariant(e.target.value)}
-                                >
-                                    <option hidden>Стоимость доставки</option>
-                                    <option value="FIXED">Фиксированная</option>
-                                    <option value="CALCULATE">Рассчитывать для каждого отправления</option>
-                                </Form.Select>
-                                {deliveryPriceVariant === "FIXED" &&
-                                    <div>
-                                        <Form.Control
-                                            id={"fixed-delivery-price"}
-                                            className={"mt-3 border-radius-10 w-50"}
-                                            placeholder="Стоимость доставки"
-                                            type={"number"}
-                                            value={deliveryPrice}
-                                            onChange={e => {
-                                                positiveNumber(e);
-                                                setDeliveryPrice(e.target.value);
-                                            }}
-                                        />
-                                    </div>
-                                }
-                                {deliveryPriceVariant === "CALCULATE" &&
-                                    <div>
-                                        <Form.Label className={"mt-2 opacity-95"}>
-                                            Индекс места отправления <span className={"text-danger"}>*</span>
-                                        </Form.Label>
-                                        <Form.Control
-                                            id={"departure-index"}
-                                            className={"border-radius-10 w-50"}
-                                            placeholder="Индекс места отправления"
-                                            value={departureIndex}
-                                            onChange={e => setDepartureIndex(e.target.value)}
-                                        />
-                                        <Form.Label className={"mt-2 opacity-95"}>Индекс места вручения возврата</Form.Label>
-                                        <Form.Control
-                                            className={"border-radius-10 w-50"}
-                                            placeholder="Индекс места вручения возврата"
-                                            value={returnIndex}
-                                            onChange={e => setReturnIndex(e.target.value)}
-                                        />
-                                        <Form.Label className={"mt-2 opacity-95"}>
-                                            Упаковка <span className={"text-danger"}>*</span>
-                                        </Form.Label>
-                                        <Form.Select
-                                            id={"pack-variant"}
-                                            className={"border-radius-10 w-25"}
-                                            value={packVariant}
-                                            onChange={e => setPackVariant(e.target.value)}
-                                        >
-                                            <option hidden>Упаковка</option>
-                                            <option value="10">Коробка «S»</option>
-                                            <option value="11">Пакет полиэтиленовый «S»</option>
-                                            <option value="12">Конверт с воздушно-пузырчатой пленкой «S»</option>
-                                            <option value="20">Коробка «M»</option>
-                                            <option value="21">Пакет полиэтиленовый «M»</option>
-                                            <option value="22">Конверт с воздушно-пузырчатой пленкой «M»</option>
-                                            <option value="30">Коробка «L»</option>
-                                            <option value="31">Пакет полиэтиленовый «L»</option>
-                                            <option value="40">Коробка «XL»</option>
-                                            <option value="41">Пакет полиэтиленовый «XL»</option>
-                                        </Form.Select>
-                                        <a
-                                            className={"fst-italic"}
-                                            href="https://www.pochta.ru/support/post-rules/package-materials"
-                                            target="_blank"
-                                        >
-                                            Посмотреть размеры
-                                        </a>
-                                        <div className={"mt-2"}>
-                                            <div>
-                                                <Checkbox
-                                                    name={"smsToSender"}
-                                                    checked={smsToSender}
-                                                    onChange={(e) => setSmsToSender(e.target.checked)}
-                                                    text={"Пакет СМС уведомлений отправителю"}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Checkbox
-                                                    name={"smsToRecipient"}
-                                                    checked={smsToRecipient}
-                                                    onChange={(e) => setSmsToRecipient(e.target.checked)}
-                                                    text={"Пакет СМС уведомлений получателю"}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        }
-                    </div>
-                }
+                <div id={"delivery"} className={"fs-4 fw-bold"}>Доставка</div>
+                <DeliveriesList deliveryId={deliveryId} setDeliveryId={setDeliveryId}/>
             </div>
             <div className={"mt-2 mb-3 w-50"}>
                 {!clothes &&
@@ -363,12 +199,12 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                             }
                             if (!clothes) {
                                 if (history.location.pathname === SELLER_NEW_PRODUCT_ROUTE) {
-                                    const product = {color, size, count, regularPrice, weight};
+                                    const product = { color, size, count, regularPrice, weight, deliveryId };
                                     dispatch(addProduct(product));
                                     dispatch(addProductPhotos({...photos}));
                                 }
                                 else {
-                                    const product = { color, size, count, regularPrice, weight };
+                                    const product = { color, size, count, regularPrice, weight, deliveryId };
                                     dispatch(saveProduct("CLOTHES", null, detailsId, product, {...photos}, user.id));
                                 }
                             }
@@ -378,6 +214,7 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                             setRegularPrice(0);
                             setWeight(0);
                             setPhotos([]);
+                            setDeliveryId(0);
                             document.getElementById("files-input").value = null;
                         }}
                     >
@@ -392,7 +229,7 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                             return;
                         }
                         if (clothes) {
-                            dispatch(updateClothes(detailsId, id, color, size, null, null, null, weight));
+                            dispatch(updateClothes(detailsId, id, color, size, null, null, null, weight, deliveryId));
                             if (photos.length > 0) {
                                 dispatch(uploadPhotos("CLOTHES", detailsId, id, photos));
                                 setPhotos([]);
@@ -402,13 +239,13 @@ const ClothesProductEdit = ({clothes, setIsDone}) => {
                         }
                         else {
                             if (history.location.pathname === SELLER_NEW_PRODUCT_ROUTE) {
-                                const product = { color, size, count, regularPrice, weight };
+                                const product = { color, size, count, regularPrice, weight, deliveryId };
                                 dispatch(addProduct(product));
                                 dispatch(addProductPhotos({...photos}));
                                 setIsDone(true);
                             }
                             else {
-                                const product = { color, size, count, regularPrice, weight };
+                                const product = { color, size, count, regularPrice, weight, deliveryId };
                                 dispatch(saveProduct("CLOTHES", null, detailsId, product, {...photos}, user.id));
                                 history.push(SELLER_PRODUCTS_ROUTE);
                             }
