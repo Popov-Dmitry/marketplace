@@ -1,5 +1,6 @@
 package com.github.popovdmitry.nstu.gw.wishlistservice.repository;
 
+import com.github.popovdmitry.nstu.gw.wishlistservice.model.ProductType;
 import com.github.popovdmitry.nstu.gw.wishlistservice.model.Wish;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,5 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
     List<Wish> findAllByProductDetailsId(Long productDetailsId);
     List<Wish> findAllByProductId(Long productId);
     Optional<Wish> findByProductId(Long productId);
+    Optional<Wish> findByCustomerIdAndProductTypeAndProductId(Long customerId, ProductType productType, Long productId);
 }
