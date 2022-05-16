@@ -14,6 +14,5 @@ export const fetchRussianPostDeliveryPrice = async (from, to, weight, pack, ret,
             service
         }
     });
-    console.log(data);
     return data;
 }

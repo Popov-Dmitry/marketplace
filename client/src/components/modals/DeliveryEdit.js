@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {saveDelivery, setCurrentDelivery, updateDelivery} from "../../redux/actions";
 import {blink} from "../../utils/uiUtils";
 
-const Delivery = ({show, onHide}) => {
+const DeliveryEdit = ({show, onHide}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.userReducer.user);
     const currentDelivery = useSelector(state => state.deliveryReducer.currentDelivery);
@@ -74,11 +74,13 @@ const Delivery = ({show, onHide}) => {
         }
         if (currentDelivery !== null) {
             dispatch(updateDelivery(currentDelivery.id, deliveryVariant, deliveryPriceIncluded, deliveryPrice,
-                deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id))
+                deliveryPriceVariant, departureIndex.split("").join(""), returnIndex.split("").join(""),
+                packVariant, service, user.id))
         }
         else {
             dispatch(saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice,
-                deliveryPriceVariant, departureIndex, returnIndex, packVariant, service, user.id));
+                deliveryPriceVariant, departureIndex.split("").join(""), returnIndex.split("").join(""),
+                packVariant, service, user.id));
         }
         setDeliveryVariant("");
         setDeliveryPriceIncluded(true);
@@ -263,4 +265,4 @@ const Delivery = ({show, onHide}) => {
     );
 };
 
-export default Delivery;
+export default DeliveryEdit;

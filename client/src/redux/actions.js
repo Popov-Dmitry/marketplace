@@ -20,7 +20,7 @@ import {
     REQUEST_DELETE_CLOTHES_DETAILS,
     REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY, REQUEST_MAIN_ADDRESS, REQUEST_ORDER, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
-    REQUEST_REGISTRATION_USER, REQUEST_SAVE_ADDRESS,
+    REQUEST_REGISTRATION_USER, REQUEST_RUSSIAN_POST_DELIVERY, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
@@ -383,10 +383,10 @@ export function setCurrentDelivery(delivery) {
     }
 }
 
-export function fetchRussianPostDelivery(id) {
+export function fetchRussianPostDelivery(from, to, weight, pack, ret, price, service) {
     return {
-        type: REQUEST_DELIVERIES,
-        payload: id
+        type: REQUEST_RUSSIAN_POST_DELIVERY,
+        payload: { from, to, weight, pack, ret, price, service }
     }
 }
 

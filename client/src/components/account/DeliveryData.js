@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "react-bootstrap";
-import Delivery from "../modals/Delivery";
+import DeliveryEdit from "../modals/DeliveryEdit";
 import {fetchDeliveries} from "../../redux/actions";
 import DeliveriesList from "../delivery/DeliveriesList";
 
@@ -27,7 +27,7 @@ const DeliveryData = () => {
                 <DeliveriesList isDeliveryEditVisible={isDeliveryEditVisible} setIsDeliveryEditVisible={setIsDeliveryEditVisible}/>
             </div>
 
-            <Delivery show={isDeliveryEditVisible} onHide={setIsDeliveryEditVisible}/>
+            <DeliveryEdit show={isDeliveryEditVisible} onHide={setIsDeliveryEditVisible}/>
         </div>
     );
 };

@@ -6,8 +6,9 @@ import {getColorsByDetails, getCurrentClothes, getSizesByColor} from "../../util
 import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
-import {saveCart} from "../../redux/actions";
+import {fetchDelivery, fetchMainAddress, fetchRussianPostDelivery, saveCart} from "../../redux/actions";
 import CountControl from "../CountControl";
+import ProductDeliveryInfo from "./ProductDeliveryInfo";
 
 const ProductInfo = ({clothes}) => {
     const history = useHistory();
@@ -16,10 +17,10 @@ const ProductInfo = ({clothes}) => {
         getCurrentClothes(clothes.clothes, history.location.pathname.split("/")[3]), [clothes]);
     const user = useSelector(state => state.userReducer);
     const cartItem = useSelector(state => state.cartReducer.info);
+    const delivery = useSelector(state => state.deliveryReducer.currentDelivery);
+    const mainAddress = useSelector(state => state.deliveryReducer.mainAddress);
     const colors = useMemo(() => getColorsByDetails(clothes.clothes), [clothes]);
     const sizes = useMemo(() => getSizesByColor(clothes.clothes, currentClothes.color), [clothes, currentClothes]);
-
-    console.log(currentClothes)
 
     const addToCartClick = () => {
         if (user.isAuth && user.user.id) {
@@ -30,8 +31,28 @@ const ProductInfo = ({clothes}) => {
         }
     }
 
-    useEffect(() => console.log(cartItem.find(c =>
-        c.productDetailsId === clothes.id && c.productId === currentClothes.id)), [cartItem])
+    useEffect(() => {
+        if(currentClothes.hasOwnProperty("deliveryId")) {
+            dispatch(fetchDelivery(currentClothes.deliveryId));
+        }
+    }, [currentClothes]);
+
+    useEffect(() => {
+        if (user.user.hasOwnProperty("id")) {
+            dispatch(fetchMainAddress(user.user.id));
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (delivery !== null && mainAddress !== null && delivery.hasOwnProperty("deliveryVariant") &&
+            delivery.hasOwnProperty("deliveryPriceVariant") && mainAddress.hasOwnProperty("index")) {
+            if (delivery.deliveryVariant === "RUSSIAN_POST" && delivery.deliveryPriceVariant === "CALCULATE") {
+                dispatch(fetchRussianPostDelivery(delivery.departureIndex, mainAddress.index, currentClothes.weight,
+                    delivery.packVariant, delivery.returnIndex,
+                    currentClothes.price !== null ? currentClothes.price : currentClothes.regularPrice, delivery.service));
+            }
+        }
+    }, [delivery, mainAddress, currentClothes])
 
     return (
         <div>
@@ -53,7 +74,7 @@ const ProductInfo = ({clothes}) => {
                             className={`product-item-param-hover product-item-param-border p-2 me-1 fs-6 cursor-pointer
                             ${color === currentClothes.color && "product-item-param-active-border"}`}
                             onClick={e => history.push(CLOTHES_ROUTE + "/" + clothes.id + "/" +
-                                clothes.clothes.find(c => c.color === e.target.textContent).id)}
+                                clothes.clothes.find(c => c.color === e.target.textContent && c.count > 0 && c.count > 0).id)}
                         >
                             {color}
                         </span>)}
@@ -75,7 +96,10 @@ const ProductInfo = ({clothes}) => {
                         </span>)}
                 </div>
             </div>
-            <div className={"mt-4 d-flex"}>
+            <div className={"mt-4"}>
+                {delivery !== null && <ProductDeliveryInfo/>}
+            </div>
+            <div className={"mt-3 d-flex"}>
                 {cartItem.find(c =>
                     c.productDetailsId === clothes.id && c.productId === currentClothes.id) ?
                     <CountControl item={cartItem.find(c =>
