@@ -23,11 +23,6 @@ public class WishService {
                 new NotFoundException(String.format("Wish with id %d is not found", id)));
     }
 
-    public Wish findByProductId(Long productId) throws NotFoundException {
-        return wishRepository.findByProductId(productId).orElseThrow(() ->
-                new NotFoundException(String.format("Wish with product id %d is not found", productId)));
-    }
-
     public List<Wish> findAllByCustomerId(Long customerId) {
         return wishRepository.findAllByCustomerId(customerId);
     }
@@ -62,8 +57,7 @@ public class WishService {
     }
 
     public void deleteWish(Long id) throws NotFoundException {
-        Wish wish = wishRepository.findById(id).orElseThrow(() ->
-                new NotFoundException(String.format("Wish with id %d is not found", id)));
+        Wish wish = findById(id);
         wishRepository.delete(wish);
     }
 }
