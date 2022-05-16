@@ -1,10 +1,11 @@
 import React from 'react';
 import {useSelector} from "react-redux";
+import {NavLink} from "react-router-dom";
+import {ACCOUNT_ADDRESSES_ROUTE} from "../../utils/consts";
 
 const ProductDeliveryInfo = () => {
     const delivery = useSelector(state => state.deliveryReducer.currentDelivery);
     const russianPostDelivery = useSelector(state => state.deliveryReducer.russianPostDelivery);
-    const mainAddress = useSelector(state => state.deliveryReducer.mainAddress);
 
     return (
         <div>
@@ -44,6 +45,7 @@ const ProductDeliveryInfo = () => {
                     </div>
                 }
             </div>
+            <div><NavLink to={ACCOUNT_ADDRESSES_ROUTE} className={"text-black-50"}>Изменить адрес доставки</NavLink></div>
         </div>
     );
 };

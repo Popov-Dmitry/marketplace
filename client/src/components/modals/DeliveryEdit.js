@@ -74,12 +74,12 @@ const DeliveryEdit = ({show, onHide}) => {
         }
         if (currentDelivery !== null) {
             dispatch(updateDelivery(currentDelivery.id, deliveryVariant, deliveryPriceIncluded, deliveryPrice,
-                deliveryPriceVariant, departureIndex.split("").join(""), returnIndex.split("").join(""),
+                deliveryPriceVariant, departureIndex.split(" ").join(""), returnIndex.split(" ").join(""),
                 packVariant, service, user.id))
         }
         else {
             dispatch(saveDelivery(deliveryVariant, deliveryPriceIncluded, deliveryPrice,
-                deliveryPriceVariant, departureIndex.split("").join(""), returnIndex.split("").join(""),
+                deliveryPriceVariant, departureIndex.split(" ").join(""), returnIndex.split(" ").join(""),
                 packVariant, service, user.id));
         }
         setDeliveryVariant("");
@@ -117,7 +117,17 @@ const DeliveryEdit = ({show, onHide}) => {
                         id={"delivery-variant"}
                         className={"border-radius-10 w-75"}
                         value={deliveryVariant}
-                        onChange={e => setDeliveryVariant(e.target.value)}
+                        onChange={e => {
+                            setDeliveryPriceIncluded(true);
+                            setDeliveryPrice(0);
+                            setDeliveryPriceVariant("");
+                            setDepartureIndex("");
+                            setReturnIndex("");
+                            setPackVariant("");
+                            setSmsToSender(false);
+                            setSmsToRecipient(false);
+                            setDeliveryVariant(e.target.value);
+                        }}
                     >
                         <option hidden>Вариант доставки</option>
                         <option value="MY">Моя</option>
@@ -131,7 +141,16 @@ const DeliveryEdit = ({show, onHide}) => {
                             <ToggleSwitch
                                 name={"deliveryPriceIncluded"}
                                 checked={deliveryPriceIncluded}
-                                onChange={(e) => setDeliveryPriceIncluded(e.target.checked)}
+                                onChange={(e) => {
+                                    setDeliveryPrice(0);
+                                    setDeliveryPriceVariant("");
+                                    setDepartureIndex("");
+                                    setReturnIndex("");
+                                    setPackVariant("");
+                                    setSmsToSender(false);
+                                    setSmsToRecipient(false);
+                                    setDeliveryPriceIncluded(e.target.checked);
+                                }}
                             />
                             {!deliveryPriceIncluded && deliveryVariant === "MY" &&
                                 <div>
@@ -160,7 +179,15 @@ const DeliveryEdit = ({show, onHide}) => {
                                         id={"delivery-price-variant"}
                                         className={"border-radius-10 w-75"}
                                         value={deliveryPriceVariant}
-                                        onChange={e => setDeliveryPriceVariant(e.target.value)}
+                                        onChange={e => {
+                                            setDeliveryPrice(0);
+                                            setDepartureIndex("");
+                                            setReturnIndex("");
+                                            setPackVariant("");
+                                            setSmsToSender(false);
+                                            setSmsToRecipient(false);
+                                            setDeliveryPriceVariant(e.target.value);
+                                        }}
                                     >
                                         <option hidden>Стоимость доставки</option>
                                         <option value="FIXED">Фиксированная</option>

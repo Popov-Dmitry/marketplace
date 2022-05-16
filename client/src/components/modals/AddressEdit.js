@@ -98,10 +98,10 @@ const AddressEdit = ({show, onHide}) => {
                                 return;
                             }
                             if (currentAddress !== null) {
-                                dispatch(updateAddress(currentAddress.id, address, index, user.id, isMain));
+                                dispatch(updateAddress(currentAddress.id, address, index.split(" ").join(""), user.id, isMain));
                             }
                             else {
-                                dispatch(saveAddress(address, index, user.id, isMain));
+                                dispatch(saveAddress(address, index.split(" ").join(""), user.id, isMain));
                             }
                             setAddress("");
                             setIndex("");
