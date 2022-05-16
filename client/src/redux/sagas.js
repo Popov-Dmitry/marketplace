@@ -9,10 +9,10 @@ import {
     FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
-    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER, FETCH_DELIVERIES, FETCH_DELIVERY,
+    FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER, FETCH_DELIVERIES, FETCH_DELIVERY, FETCH_MAIN_ADDRESS,
     FETCH_ORDER,
     FETCH_ORDERS,
-    FETCH_PHOTOS_NAMES, FETCH_RETURN, FETCH_SELLER,
+    FETCH_PHOTOS_NAMES, FETCH_RETURN, FETCH_RUSSIAN_POST_DELIVERY, FETCH_SELLER,
     FETCH_SELLER_INFO,
     FETCH_SELLERS_INFO_COUNT,
     FETCH_USER,
@@ -31,7 +31,7 @@ import {
     REQUEST_ORDER,
     REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
-    REQUEST_REGISTRATION_USER, REQUEST_SAVE_ADDRESS,
+    REQUEST_REGISTRATION_USER, REQUEST_RUSSIAN_POST_DELIVERY, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
     REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
@@ -95,6 +95,7 @@ import {
     saveAddress,
     updateAddress
 } from "../http/addressApi";
+import {fetchRussianPostDeliveryPrice} from "../http/russianPostApi";
 
 export function* watchAll() {
     yield all([
@@ -134,6 +135,7 @@ export function* watchAll() {
         takeEvery(REQUEST_DELIVERY, requestDeliveryByIdWorker),
         takeEvery(REQUEST_DELIVERIES, requestDeliveriesBySellerIdWorker),
         takeEvery(REQUEST_UPDATE_DELIVERY, requestUpdateDeliveryWorker),
+        takeEvery(REQUEST_RUSSIAN_POST_DELIVERY, requestRussianPostDeliveryWorker),
         takeEvery(REQUEST_SAVE_ADDRESS, requestSaveAddressWorker),
         takeEvery(REQUEST_ADDRESS, requestAddressByIdWorker),
         takeEvery(REQUEST_ADDRESSES, requestAddressesByCustomerIdWorker),
@@ -923,6 +925,24 @@ function* requestUpdateDeliveryWorker(action) {
     }
 }
 
+function* requestRussianPostDeliveryWorker(action) {
+    try {
+        const payload = yield call(fetchRussianPostDeliveryPrice, action.payload.from, action.payload.to,
+            action.payload.weight, action.payload.pack, action.payload.ret, action.payload.price, action.payload.service);
+        yield put({ type: FETCH_RUSSIAN_POST_DELIVERY, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
 function* requestSaveAddressWorker(action) {
     try {
         const payload = yield call(saveAddress, action.payload.address, action.payload.index,
@@ -943,7 +963,7 @@ function* requestSaveAddressWorker(action) {
 
 function* requestAddressByIdWorker(action) {
     try {
-        const payload = yield call(fetchAddressById, action.payload);
+        const payload = yield call(fetchAddressById, action.payload.id);
         yield put({ type: FETCH_ADDRESS, payload });
     }
     catch (e) {
@@ -960,8 +980,15 @@ function* requestAddressByIdWorker(action) {
 
 function* requestAddressesByCustomerIdWorker(action) {
     try {
-        const payload = yield call(fetchAddressesByCustomerId, action.payload);
-        yield put({ type: FETCH_ADDRESSES, payload });
+        const payload = yield call(fetchAddressesByCustomerId, action.payload.id,
+            action.payload.hasOwnProperty("isMain") ? action.payload.isMain : false);
+
+        if (action.payload.hasOwnProperty("isMain")) {
+            yield put({ type: FETCH_ADDRESS, payload: payload[0] });
+        }
+        else {
+            yield put({ type: FETCH_ADDRESSES, payload });
+        }
     }
     catch (e) {
         console.log(e.response.request.response);

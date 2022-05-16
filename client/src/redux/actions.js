@@ -18,7 +18,7 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY, REQUEST_ORDER, REQUEST_ORDERS,
+    REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY, REQUEST_MAIN_ADDRESS, REQUEST_ORDER, REQUEST_ORDERS,
     REQUEST_PHOTOS_NAMES,
     REQUEST_REGISTRATION_USER, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
@@ -383,6 +383,13 @@ export function setCurrentDelivery(delivery) {
     }
 }
 
+export function fetchRussianPostDelivery(id) {
+    return {
+        type: REQUEST_DELIVERIES,
+        payload: id
+    }
+}
+
 export function saveAddress(address, index, customerId, isMain) {
     return {
         type: REQUEST_SAVE_ADDRESS,
@@ -397,10 +404,17 @@ export function fetchAddress(id) {
     }
 }
 
+export function fetchMainAddress(id) {
+    return {
+        type: REQUEST_ADDRESSES,
+        payload: { id, isMain: true }
+    }
+}
+
 export function fetchAddresses(id) {
     return {
         type: REQUEST_ADDRESSES,
-        payload: id
+        payload: { id }
     }
 }
 

@@ -3,7 +3,7 @@ import {
     FETCH_ADDRESS,
     FETCH_ADDRESSES,
     FETCH_DELIVERIES,
-    FETCH_DELIVERY,
+    FETCH_DELIVERY, FETCH_RUSSIAN_POST_DELIVERY,
     SAVE_ADDRESS,
     SAVE_DELIVERY, SET_CURRENT_ADDRESS, UPDATE_ADDRESS,
     UPDATE_DELIVERY
@@ -12,6 +12,7 @@ import {
 const initialState = {
     deliveries: [],
     currentDelivery: null,
+    russianPostDelivery: null,
     addresses: [],
     mainAddress: null,
     currentAddress: null
@@ -70,6 +71,8 @@ export const deliveryReducer = (state = initialState, action) => {
             }
         case SET_CURRENT_ADDRESS:
             return { ...state, currentAddress: action.payload };
+        case FETCH_RUSSIAN_POST_DELIVERY:
+            return { ...state, russianPostDelivery: action.payload };
         default:
             return state;
     }

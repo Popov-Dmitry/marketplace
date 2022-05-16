@@ -16,9 +16,16 @@ export const fetchAddressById = async (id) => {
     return data;
 }
 
-export const fetchAddressesByCustomerId = async (id) => {
-    const {data} = await $authHost.get(GET_ADDRESSES_BY_CUSTOMER_ID + id);
-    return data;
+export const fetchAddressesByCustomerId = async (id, isMain) => {
+    if (isMain === true) {
+        const {data} = await $authHost.get(GET_ADDRESSES_BY_CUSTOMER_ID + id, { params: { isMain } });
+        return data;
+    }
+    else {
+        const {data} = await $authHost.get(GET_ADDRESSES_BY_CUSTOMER_ID + id);
+        return data;
+    }
+
 }
 
 export const updateAddress = async (id, address, index, customerId, isMain) => {
