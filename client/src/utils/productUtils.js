@@ -42,3 +42,8 @@ export const positiveNumber = (event) => {
 export const daysLag = (date1, date2) => {
     return Math.ceil(Math.abs(date1 - date2) / (1000 * 3600 * 24));
 }
+
+export const findWish = (wishlist, productType, productDetailsId, productId) => {
+    return wishlist.find(wish =>
+        wish.productType === productType && wish.productDetailsId === productDetailsId && wish.productId === productId);
+}

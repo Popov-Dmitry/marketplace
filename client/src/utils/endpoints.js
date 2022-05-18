@@ -71,9 +71,9 @@ export const GET_ADDRESSES_BY_CUSTOMER_ID = "/deliveries/addresses/customers/"; 
 export const UPDATE_ADDRESS = "/deliveries/addresses/"; //{id}
 export const DELETE_ADDRESS = "/deliveries/addresses/"; //{id}
 
-export const ADD_WISH = "/wishlist/";
-export const GET_WISHLIST_BY_CUSTOMER_ID = "/wishlist/"; //{id}
-export const GET_WISHLIST_BY_SELLER_ID = "/wishlist/sellers/"; //{id}
-export const GET_WISHLIST_BY_PRODUCT_DETAILS_ID = "/wishlist/products/"; //{detailsId}
-export const GET_WISHLIST_BY_PRODUCT_ID = "/wishlist/products/"; //{detailsId}/{id}
-export const DELETE_WISH = "/wishlist/"; //{id}
+export const ADD_WISH = "/wishlists/";
+export const GET_WISHLIST_BY_CUSTOMER_ID = "/wishlists/"; //{id}
+export const GET_WISHLIST_BY_SELLER_ID = "/wishlists/sellers/"; //{id}
+export const GET_WISHLIST_BY_PRODUCT_DETAILS_ID = "/wishlists/products/"; //{detailsId}
+export const GET_WISHLIST_BY_PRODUCT_ID = "/wishlists/products/"; //{detailsId}/{id}
+export const DELETE_WISH = "/wishlists/"; //{id}

@@ -1121,13 +1121,6 @@ function* requestFetchWishlistWorker(action) {
     }
     catch (e) {
         console.log(e.response.request.response);
-        yield put({
-            type: REQUEST_ALERT,
-            payload: {
-                variant: "danger",
-                text: "Что-то пошло не так"
-            }
-        });
     }
 }
 

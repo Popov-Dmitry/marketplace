@@ -2,11 +2,18 @@ import React, {useEffect, useMemo} from 'react';
 import {Button, Image} from "react-bootstrap";
 import favoriteShaded from "../../assets/heart_shaded.png";
 import favorite from "../../assets/heart.png";
-import {getColorsByDetails, getCurrentClothes, getSizesByColor} from "../../utils/productUtils";
+import {findWish, getColorsByDetails, getCurrentClothes, getSizesByColor} from "../../utils/productUtils";
 import {useHistory} from "react-router-dom";
 import {CLOTHES_ROUTE} from "../../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchDelivery, fetchMainAddress, fetchRussianPostDelivery, saveCart} from "../../redux/actions";
+import {
+    deleteWish,
+    fetchDelivery,
+    fetchMainAddress,
+    fetchRussianPostDelivery,
+    saveCart,
+    saveWish
+} from "../../redux/actions";
 import CountControl from "../CountControl";
 import ProductDeliveryInfo from "./ProductDeliveryInfo";
 
@@ -17,11 +24,15 @@ const ProductInfo = ({clothes}) => {
         getCurrentClothes(clothes.clothes, history.location.pathname.split("/")[3]), [clothes]);
     const user = useSelector(state => state.userReducer);
     const cartItem = useSelector(state => state.cartReducer.info);
+    const wishlist = useSelector(state => state.wishlistReducer.wishlist);
     const delivery = useSelector(state => state.deliveryReducer.currentDelivery);
     const mainAddress = useSelector(state => state.deliveryReducer.mainAddress);
     const colors = useMemo(() => getColorsByDetails(clothes.clothes), [clothes]);
     const sizes = useMemo(() => getSizesByColor(clothes.clothes, currentClothes.color), [clothes, currentClothes]);
+    const wish = useMemo(() => findWish(wishlist, "CLOTHES", clothes.id, currentClothes.id),
+        [wishlist, clothes, currentClothes]);
 
+    console.log(wish)
     const addToCartClick = () => {
         if (user.isAuth && user.user.id) {
             dispatch(saveCart(user.user.id, "CLOTHES", clothes.id, currentClothes.id, 1));
@@ -52,7 +63,7 @@ const ProductInfo = ({clothes}) => {
                     currentClothes.price !== null ? currentClothes.price : currentClothes.regularPrice, delivery.service));
             }
         }
-    }, [delivery, mainAddress, currentClothes])
+    }, [delivery, mainAddress, currentClothes]);
 
     return (
         <div>
@@ -117,8 +128,27 @@ const ProductInfo = ({clothes}) => {
                 <Button
                     variant={"light"}
                     size={"lg"}
-                    onMouseEnter={(e) => e.target.firstChild.src = favoriteShaded}
-                    onMouseLeave={(e) => e.target.firstChild.src = favorite}
+                    className={cartItem.find(c => c.productDetailsId === clothes.id &&
+                        c.productId === currentClothes.id) ? "ms-3 h-75" : ""}
+                    onMouseEnter={(e) => {
+                        if (typeof wish == "undefined") {
+                            e.target.firstChild.src = favoriteShaded;
+                        }
+
+                    }}
+                    onMouseLeave={(e) => {
+                        if (typeof wish == "undefined") {
+                            e.target.firstChild.src = favorite;
+                        }
+                    }}
+                    onClick={() => {
+                        if (typeof wish == "undefined") {
+                            dispatch(saveWish("CLOTHES", clothes.id, currentClothes.id, user.user.id, clothes.sellerId));
+                        }
+                        else {
+                            dispatch(deleteWish(wish.id));
+                        }
+                    }}
                 >
                     <Image
                         src={favorite}
