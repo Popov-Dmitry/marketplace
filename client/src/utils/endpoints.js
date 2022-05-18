@@ -70,3 +70,10 @@ export const GET_ADDRESS_BY_ID = "/deliveries/addresses/"; //{id}
 export const GET_ADDRESSES_BY_CUSTOMER_ID = "/deliveries/addresses/customers/"; //{id}
 export const UPDATE_ADDRESS = "/deliveries/addresses/"; //{id}
 export const DELETE_ADDRESS = "/deliveries/addresses/"; //{id}
+
+export const ADD_WISH = "/wishlist/";
+export const GET_WISHLIST_BY_CUSTOMER_ID = "/wishlist/"; //{id}
+export const GET_WISHLIST_BY_SELLER_ID = "/wishlist/sellers/"; //{id}
+export const GET_WISHLIST_BY_PRODUCT_DETAILS_ID = "/wishlist/products/"; //{detailsId}
+export const GET_WISHLIST_BY_PRODUCT_ID = "/wishlist/products/"; //{detailsId}/{id}
+export const DELETE_WISH = "/wishlist/"; //{id}
