@@ -1,10 +1,18 @@
-import {ADD_PRODUCT, ADD_PRODUCT_DETAILS, ADD_PRODUCT_DETAILS_ID, ADD_PRODUCT_PHOTOS} from "./types";
+import {
+    ADD_PRODUCT,
+    ADD_PRODUCT_DETAILS,
+    ADD_PRODUCT_DETAILS_ID,
+    ADD_PRODUCT_PHOTOS,
+    CLEAR_PRODUCTS,
+    FETCH_PRODUCT
+} from "./types";
 
 const initialState = {
     productDetails: {},
     detailsId: null,
     product: {},
-    photos: null
+    photos: null,
+    products: []
 }
 
 export const productReducer = (state = initialState, action) => {
@@ -17,6 +25,12 @@ export const productReducer = (state = initialState, action) => {
             return { ...state, product: action.payload };
         case ADD_PRODUCT_PHOTOS:
             return { ...state, photos: action.payload };
+        case FETCH_PRODUCT:
+            const newProducts = [ ...state.products ];
+            newProducts.push(action.payload);
+            return { ...state, products: newProducts };
+        case CLEAR_PRODUCTS:
+            return { ...state, products: [] };
         default:
             return state;
     }

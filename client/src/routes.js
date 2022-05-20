@@ -14,7 +14,7 @@ import {
     SEARCH_ROUTE, SELLER_DELIVERY_ROUTE,
     SELLER_NEW_PRODUCT_ROUTE,
     SELLER_PRODUCTS_ROUTE,
-    SELLER_SHOP_ROUTE, VERIFICATION_ROUTE
+    SELLER_SHOP_ROUTE, VERIFICATION_ROUTE, WISHLIST_ROUTE
 } from "./utils/consts";
 import MainCustomer from "./pages/customer/MainCustomer";
 import Account from "./pages/Account";
@@ -32,6 +32,7 @@ import Verifications from "./pages/moder/Verifications";
 import Verification from "./pages/moder/Verification";
 import Orders from "./pages/Orders";
 import Order from "./pages/Order";
+import Wishlist from "./pages/customer/Wishlist";
 
 export const publicCustomerRoutes = [
     {
@@ -80,6 +81,10 @@ export const authCustomerRoutes = [
     {
         path: ORDERS_ROUTE + "/:id",
         Component: Order
+    },
+    {
+        path: WISHLIST_ROUTE,
+        Component: Wishlist
     }
 ];
 

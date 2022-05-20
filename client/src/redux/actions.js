@@ -4,37 +4,61 @@ import {
     ADD_PRODUCT_DETAILS,
     ADD_PRODUCT_DETAILS_ID,
     ADD_PRODUCT_PHOTOS,
-    CLEAR_PHOTO_STORE,
-    CLEAR_SELECTED_ITEMS, FETCH_ADDRESS, FETCH_DELIVERY,
+    CLEAR_PHOTO_STORE, CLEAR_PRODUCTS,
+    CLEAR_SELECTED_ITEMS, CLEAR_SELLERS,
+    FETCH_ADDRESS,
+    FETCH_DELIVERY,
     HIDE_ALERT,
-    REMOVE_FILTER, REQUEST_ADDRESS, REQUEST_ADDRESSES,
+    REMOVE_FILTER,
+    REQUEST_ADDRESS,
+    REQUEST_ADDRESSES,
     REQUEST_ALERT,
     REQUEST_ALL_SELLERS_INFO,
     REQUEST_AUTH,
     REQUEST_AUTH_AND_FETCH_USER,
     REQUEST_CART,
     REQUEST_CLOTHES_BY_SELLER_ID,
-    REQUEST_CLOTHES_SEARCH_PANEL_INFO, REQUEST_CUSTOMER, REQUEST_DELETE_ADDRESS,
+    REQUEST_CLOTHES_SEARCH_PANEL_INFO,
+    REQUEST_CUSTOMER,
+    REQUEST_DELETE_ADDRESS,
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY, REQUEST_MAIN_ADDRESS, REQUEST_ORDER, REQUEST_ORDERS,
-    REQUEST_PHOTOS_NAMES,
-    REQUEST_REGISTRATION_USER, REQUEST_RUSSIAN_POST_DELIVERY, REQUEST_SAVE_ADDRESS,
-    REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
+    REQUEST_DELETE_PHOTO,
+    REQUEST_DELETE_WISH,
+    REQUEST_DELIVERIES,
+    REQUEST_DELIVERY,
+    REQUEST_MAIN_ADDRESS,
+    REQUEST_ORDER,
+    REQUEST_ORDERS,
+    REQUEST_PHOTOS_NAMES, REQUEST_PRODUCT,
+    REQUEST_REGISTRATION_USER,
+    REQUEST_RUSSIAN_POST_DELIVERY,
+    REQUEST_SAVE_ADDRESS,
+    REQUEST_SAVE_CART,
+    REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
-    REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
-    REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
+    REQUEST_SAVE_PRODUCT,
+    REQUEST_SAVE_RETURN,
+    REQUEST_SAVE_WISH,
+    REQUEST_SEARCH_CLOTHES,
+    REQUEST_SELLER,
     REQUEST_SELLER_INFO,
-    REQUEST_SELLERS_INFO_COUNT, REQUEST_UPDATE_ADDRESS,
+    REQUEST_SELLERS_INFO_COUNT,
+    REQUEST_UPDATE_ADDRESS,
     REQUEST_UPDATE_CART,
     REQUEST_UPDATE_CLOTHES,
-    REQUEST_UPDATE_CLOTHES_DETAILS, REQUEST_UPDATE_DELIVERY, REQUEST_UPDATE_ORDER_STATUS,
+    REQUEST_UPDATE_CLOTHES_DETAILS,
+    REQUEST_UPDATE_DELIVERY,
+    REQUEST_UPDATE_ORDER_STATUS,
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
-    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID,
-    SELECT_ITEM, SET_CURRENT_ADDRESS, SET_CURRENT_ORDER_ID,
+    REQUEST_USER_BY_EMAIL,
+    REQUEST_USER_BY_ID, REQUEST_WISHLIST,
+    SELECT_ITEM,
+    SET_CURRENT_ADDRESS,
+    SET_CURRENT_ORDER_ID,
     SET_USER_ROLE
 } from "./types";
 
@@ -276,6 +300,19 @@ export function addProductPhotos(photos) {
     }
 }
 
+export function fetchProduct(productType, productDetailsId, productId) {
+    return {
+        type: REQUEST_PRODUCT,
+        payload: { productType, productDetailsId, productId }
+    }
+}
+
+export function clearProducts() {
+    return {
+        type: CLEAR_PRODUCTS
+    }
+}
+
 export function fetchSellersInfoCount() {
     return {
         type: REQUEST_SELLERS_INFO_COUNT
@@ -327,6 +364,12 @@ export function fetchSeller(id) {
     return {
         type: REQUEST_SELLER,
         payload: id
+    }
+}
+
+export function clearSellers() {
+    return {
+        type: CLEAR_SELLERS
     }
 }
 
@@ -456,6 +499,27 @@ export function saveReturn(reason, description, orderId) {
 export function setCurrentOrderId(id) {
     return {
         type: SET_CURRENT_ORDER_ID,
+        payload: id
+    }
+}
+
+export function saveWish(productType, productDetailsId, productId, customerId, sellerId) {
+    return {
+        type: REQUEST_SAVE_WISH,
+        payload: { productType, productDetailsId, productId, customerId, sellerId }
+    }
+}
+
+export function fetchWishlist(fetchBy, id) {
+    return {
+        type: REQUEST_WISHLIST,
+        payload: { fetchBy, id }
+    }
+}
+
+export function deleteWish(id) {
+    return {
+        type: REQUEST_DELETE_WISH,
         payload: id
     }
 }

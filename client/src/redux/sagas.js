@@ -5,17 +5,17 @@ import {
     DELETE_CART,
     DELETE_CLOTHES,
     DELETE_CLOTHES_DETAILS,
-    DELETE_PHOTO, FETCH_ADDRESS, FETCH_ADDRESSES,
+    DELETE_PHOTO, DELETE_WISH, FETCH_ADDRESS, FETCH_ADDRESSES,
     FETCH_ALL_SELLERS_INFO,
     FETCH_CART,
     FETCH_CLOTHES,
     FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER, FETCH_DELIVERIES, FETCH_DELIVERY, FETCH_MAIN_ADDRESS,
     FETCH_ORDER,
     FETCH_ORDERS,
-    FETCH_PHOTOS_NAMES, FETCH_RETURN, FETCH_RUSSIAN_POST_DELIVERY, FETCH_SELLER,
+    FETCH_PHOTOS_NAMES, FETCH_PRODUCT, FETCH_RETURN, FETCH_RUSSIAN_POST_DELIVERY, FETCH_SELLER,
     FETCH_SELLER_INFO,
     FETCH_SELLERS_INFO_COUNT,
-    FETCH_USER,
+    FETCH_USER, FETCH_WISHLIST,
     HIDE_ALERT, REQUEST_ADDRESS, REQUEST_ADDRESSES,
     REQUEST_ALERT,
     REQUEST_ALL_SELLERS_INFO,
@@ -27,14 +27,14 @@ import {
     REQUEST_DELETE_CART,
     REQUEST_DELETE_CLOTHES,
     REQUEST_DELETE_CLOTHES_DETAILS,
-    REQUEST_DELETE_PHOTO, REQUEST_DELIVERIES, REQUEST_DELIVERY,
+    REQUEST_DELETE_PHOTO, REQUEST_DELETE_WISH, REQUEST_DELIVERIES, REQUEST_DELIVERY,
     REQUEST_ORDER,
     REQUEST_ORDERS,
-    REQUEST_PHOTOS_NAMES,
+    REQUEST_PHOTOS_NAMES, REQUEST_PRODUCT,
     REQUEST_REGISTRATION_USER, REQUEST_RUSSIAN_POST_DELIVERY, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
-    REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN,
+    REQUEST_SAVE_PRODUCT, REQUEST_SAVE_RETURN, REQUEST_SAVE_WISH,
     REQUEST_SEARCH_CLOTHES, REQUEST_SELLER,
     REQUEST_SELLER_INFO,
     REQUEST_SELLERS_INFO_COUNT, REQUEST_UPDATE_ADDRESS,
@@ -44,8 +44,8 @@ import {
     REQUEST_UPDATE_SELLER_INFO,
     REQUEST_UPDATE_USER,
     REQUEST_UPLOAD_PHOTO,
-    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID, SAVE_ADDRESS,
-    SAVE_CART, SAVE_DELIVERY,
+    REQUEST_USER_BY_EMAIL, REQUEST_USER_BY_ID, REQUEST_WISHLIST, SAVE_ADDRESS,
+    SAVE_CART, SAVE_DELIVERY, SAVE_WISH,
     SET_USER_ROLE,
     SHOW_ALERT, UPDATE_ADDRESS,
     UPDATE_CART,
@@ -54,7 +54,7 @@ import {
 } from "./types";
 import {fetchCustomerByEmail, fetchCustomerById, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
-    deleteClothes, deleteClothesDetails,
+    deleteClothes, deleteClothesDetails, fetchClothes,
     fetchClothesBySellerId,
     fetchSearchPanelInfo,
     saveClothes,
@@ -96,6 +96,13 @@ import {
     updateAddress
 } from "../http/addressApi";
 import {fetchRussianPostDeliveryPrice} from "../http/russianPostApi";
+import {
+    deleteWish,
+    fetchWishlistByCustomerId,
+    fetchWishlistByProductDetailsId, fetchWishlistByProductId,
+    fetchWishlistBySellerId,
+    saveWish
+} from "../http/wishlistApi";
 
 export function* watchAll() {
     yield all([
@@ -120,6 +127,7 @@ export function* watchAll() {
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
         takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
         takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker),
+        takeEvery(REQUEST_PRODUCT, requestFetchProductWorker),
         takeEvery(REQUEST_SAVE_PRODUCT, requestSaveProductWorker),
         takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker),
         takeEvery(REQUEST_ALL_SELLERS_INFO, requestAllSellersInfoWorker),
@@ -141,7 +149,10 @@ export function* watchAll() {
         takeEvery(REQUEST_ADDRESSES, requestAddressesByCustomerIdWorker),
         takeEvery(REQUEST_UPDATE_ADDRESS, requestUpdateAddressWorker),
         takeEvery(REQUEST_DELETE_ADDRESS, requestDeleteAddressWorker),
-        takeEvery(REQUEST_SAVE_RETURN, requestSaveReturnWorker)
+        takeEvery(REQUEST_SAVE_RETURN, requestSaveReturnWorker),
+        takeEvery(REQUEST_SAVE_WISH, requestSaveWishWorker),
+        takeEvery(REQUEST_WISHLIST, requestFetchWishlistWorker),
+        takeEvery(REQUEST_DELETE_WISH, requestDeleteWishWorker),
     ]);
 }
 
@@ -531,6 +542,26 @@ function* requestUploadPhotoWorker(action) {
             photosNames
         };
         yield put({ type: FETCH_PHOTOS_NAMES, payload });
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchProductWorker(action) {
+    try {
+        let payload;
+        if (action.payload.productType === "CLOTHES") {
+            payload = yield call(fetchClothes, action.payload.productDetailsId, action.payload.productId);
+        }
+        yield put({ type: FETCH_PRODUCT, payload });
     }
     catch (e) {
         console.log(e);
@@ -1057,6 +1088,67 @@ function* requestSaveReturnWorker(action) {
         yield put({ type: FETCH_RETURN, payload: payload1 });
         const payload2 = yield call(fetchOrderById, action.payload.orderId);
         yield put({ type: FETCH_ORDER, payload: payload2 });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestSaveWishWorker(action) {
+    try {
+        const payload = yield call(saveWish, action.payload.productType, action.payload.productDetailsId,
+            action.payload.productId, action.payload.customerId, action.payload.sellerId);
+        yield put({ type: SAVE_WISH, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchWishlistWorker(action) {
+    try {
+        let payload;
+        switch (action.payload.fetchBy) {
+            case CUSTOMER:
+                payload = yield call(fetchWishlistByCustomerId, action.payload.id);
+                break;
+            case SELLER:
+                payload = yield call(fetchWishlistBySellerId, action.payload.id);
+                break;
+            case "PRODUCT_DETAILS_ID":
+                payload = yield call(fetchWishlistByProductDetailsId, action.payload.id);
+                break;
+            case "PRODUCT_ID":
+                payload = yield call(fetchWishlistByProductId, action.payload.id);
+                break;
+            default:
+                return;
+        }
+        yield put({ type: FETCH_WISHLIST, payload });
+    }
+    catch (e) {
+        console.log(e.response.request.response);
+    }
+}
+
+function* requestDeleteWishWorker(action) {
+    try {
+        yield call(deleteWish, action.payload);
+        yield put({ type: DELETE_WISH, payload: action.payload });
     }
     catch (e) {
         console.log(e.response.request.response);
