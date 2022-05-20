@@ -13,7 +13,7 @@ export const wishlistReducer = (state = initialState, action) => {
         case FETCH_WISHLIST:
             return { ...state, wishlist: action.payload };
         case DELETE_WISH:
-            return { ...state, wishlist: state.wishlist.filter(wish => wish.id !== action.payload.id) };
+            return { ...state, wishlist: state.wishlist.filter(wish => wish.id !== action.payload) };
         default:
             return state;
     }

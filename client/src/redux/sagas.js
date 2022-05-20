@@ -12,7 +12,7 @@ import {
     FETCH_CLOTHES_SEARCH_PANEL_INFO, FETCH_CUSTOMER, FETCH_DELIVERIES, FETCH_DELIVERY, FETCH_MAIN_ADDRESS,
     FETCH_ORDER,
     FETCH_ORDERS,
-    FETCH_PHOTOS_NAMES, FETCH_RETURN, FETCH_RUSSIAN_POST_DELIVERY, FETCH_SELLER,
+    FETCH_PHOTOS_NAMES, FETCH_PRODUCT, FETCH_RETURN, FETCH_RUSSIAN_POST_DELIVERY, FETCH_SELLER,
     FETCH_SELLER_INFO,
     FETCH_SELLERS_INFO_COUNT,
     FETCH_USER, FETCH_WISHLIST,
@@ -30,7 +30,7 @@ import {
     REQUEST_DELETE_PHOTO, REQUEST_DELETE_WISH, REQUEST_DELIVERIES, REQUEST_DELIVERY,
     REQUEST_ORDER,
     REQUEST_ORDERS,
-    REQUEST_PHOTOS_NAMES,
+    REQUEST_PHOTOS_NAMES, REQUEST_PRODUCT,
     REQUEST_REGISTRATION_USER, REQUEST_RUSSIAN_POST_DELIVERY, REQUEST_SAVE_ADDRESS,
     REQUEST_SAVE_CART, REQUEST_SAVE_DELIVERY,
     REQUEST_SAVE_ORDER,
@@ -54,7 +54,7 @@ import {
 } from "./types";
 import {fetchCustomerByEmail, fetchCustomerById, registrationCustomer, updateCustomer} from "../http/customerApi";
 import {
-    deleteClothes, deleteClothesDetails,
+    deleteClothes, deleteClothesDetails, fetchClothes,
     fetchClothesBySellerId,
     fetchSearchPanelInfo,
     saveClothes,
@@ -127,6 +127,7 @@ export function* watchAll() {
         takeEvery(REQUEST_DELETE_CART, requestDeleteCartWorker),
         takeEvery(REQUEST_UPDATE_CART, requestUpdateCartWorker),
         takeEvery(REQUEST_SAVE_CART, requestSaveCartWorker),
+        takeEvery(REQUEST_PRODUCT, requestFetchProductWorker),
         takeEvery(REQUEST_SAVE_PRODUCT, requestSaveProductWorker),
         takeEvery(REQUEST_SELLERS_INFO_COUNT, requestSellersInfoCountWorker),
         takeEvery(REQUEST_ALL_SELLERS_INFO, requestAllSellersInfoWorker),
@@ -541,6 +542,26 @@ function* requestUploadPhotoWorker(action) {
             photosNames
         };
         yield put({ type: FETCH_PHOTOS_NAMES, payload });
+    }
+    catch (e) {
+        console.log(e);
+        yield put({
+            type: REQUEST_ALERT,
+            payload: {
+                variant: "danger",
+                text: "Что-то пошло не так"
+            }
+        });
+    }
+}
+
+function* requestFetchProductWorker(action) {
+    try {
+        let payload;
+        if (action.payload.productType === "CLOTHES") {
+            payload = yield call(fetchClothes, action.payload.productDetailsId, action.payload.productId);
+        }
+        yield put({ type: FETCH_PRODUCT, payload });
     }
     catch (e) {
         console.log(e);
@@ -1126,8 +1147,8 @@ function* requestFetchWishlistWorker(action) {
 
 function* requestDeleteWishWorker(action) {
     try {
-        const payload = yield call(deleteWish, action.payload);
-        yield put({ type: DELETE_WISH, payload });
+        yield call(deleteWish, action.payload);
+        yield put({ type: DELETE_WISH, payload: action.payload });
     }
     catch (e) {
         console.log(e.response.request.response);

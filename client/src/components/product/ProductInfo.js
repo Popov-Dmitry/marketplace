@@ -32,7 +32,6 @@ const ProductInfo = ({clothes}) => {
     const wish = useMemo(() => findWish(wishlist, "CLOTHES", clothes.id, currentClothes.id),
         [wishlist, clothes, currentClothes]);
 
-    console.log(wish)
     const addToCartClick = () => {
         if (user.isAuth && user.user.id) {
             dispatch(saveCart(user.user.id, "CLOTHES", clothes.id, currentClothes.id, 1));
@@ -151,7 +150,7 @@ const ProductInfo = ({clothes}) => {
                     }}
                 >
                     <Image
-                        src={favorite}
+                        src={typeof wish == "undefined" ? favorite : favoriteShaded}
                         width="30px"
                         height="30px"
                         className={"black-to-main"}

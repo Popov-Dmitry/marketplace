@@ -33,6 +33,6 @@ export const fetchWishlistByProductId = async (id) => {
 }
 
 export const deleteWish = async (id) => {
-    const {data} = await $authHost.get(DELETE_WISH + id);
+    const {data} = await $authHost.delete(DELETE_WISH + id);
     return data;
 }

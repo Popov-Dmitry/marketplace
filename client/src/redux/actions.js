@@ -4,8 +4,8 @@ import {
     ADD_PRODUCT_DETAILS,
     ADD_PRODUCT_DETAILS_ID,
     ADD_PRODUCT_PHOTOS,
-    CLEAR_PHOTO_STORE,
-    CLEAR_SELECTED_ITEMS,
+    CLEAR_PHOTO_STORE, CLEAR_PRODUCTS,
+    CLEAR_SELECTED_ITEMS, CLEAR_SELLERS,
     FETCH_ADDRESS,
     FETCH_DELIVERY,
     HIDE_ALERT,
@@ -31,7 +31,7 @@ import {
     REQUEST_MAIN_ADDRESS,
     REQUEST_ORDER,
     REQUEST_ORDERS,
-    REQUEST_PHOTOS_NAMES,
+    REQUEST_PHOTOS_NAMES, REQUEST_PRODUCT,
     REQUEST_REGISTRATION_USER,
     REQUEST_RUSSIAN_POST_DELIVERY,
     REQUEST_SAVE_ADDRESS,
@@ -300,6 +300,19 @@ export function addProductPhotos(photos) {
     }
 }
 
+export function fetchProduct(productType, productDetailsId, productId) {
+    return {
+        type: REQUEST_PRODUCT,
+        payload: { productType, productDetailsId, productId }
+    }
+}
+
+export function clearProducts() {
+    return {
+        type: CLEAR_PRODUCTS
+    }
+}
+
 export function fetchSellersInfoCount() {
     return {
         type: REQUEST_SELLERS_INFO_COUNT
@@ -351,6 +364,12 @@ export function fetchSeller(id) {
     return {
         type: REQUEST_SELLER,
         payload: id
+    }
+}
+
+export function clearSellers() {
+    return {
+        type: CLEAR_SELLERS
     }
 }
 
