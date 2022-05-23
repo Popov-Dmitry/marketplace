@@ -1,8 +1,10 @@
 package com.github.popovdmitry.nstu.gw.deliveryservice.controller;
 
+import com.github.popovdmitry.nstu.gw.deliveryservice.config.Swagger2Config;
 import com.github.popovdmitry.nstu.gw.deliveryservice.dto.AddressDto;
 import com.github.popovdmitry.nstu.gw.deliveryservice.model.Address;
 import com.github.popovdmitry.nstu.gw.deliveryservice.service.AddressService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(value = "/addresses")
+@Api(tags = {Swagger2Config.TAG_DELIVERY})
 public class AddressController {
 
     private final AddressService addressService;

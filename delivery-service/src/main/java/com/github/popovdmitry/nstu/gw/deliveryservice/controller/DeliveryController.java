@@ -1,8 +1,10 @@
 package com.github.popovdmitry.nstu.gw.deliveryservice.controller;
 
+import com.github.popovdmitry.nstu.gw.deliveryservice.config.Swagger2Config;
 import com.github.popovdmitry.nstu.gw.deliveryservice.dto.DeliveryDto;
 import com.github.popovdmitry.nstu.gw.deliveryservice.model.Delivery;
 import com.github.popovdmitry.nstu.gw.deliveryservice.service.DeliveryService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Api(tags = {Swagger2Config.TAG_DELIVERY})
 public class DeliveryController {
 
     private final DeliveryService deliveryService;
