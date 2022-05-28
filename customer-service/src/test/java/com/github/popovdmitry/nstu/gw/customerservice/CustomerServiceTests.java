@@ -25,7 +25,7 @@ class CustomerServiceTests {
     private CustomerRepository customerRepository;
 
     @Test
-    void addCustomer() throws Exception {
+    void addCustomerTest() throws Exception {
         CustomerDto customerDto = new CustomerDto("first", "second", "email@te.st",
                 "password", Sex.MALE, 1, 1, 2000);
         Customer customer = new Customer(1L, "first", "second", "email@te.st",
@@ -43,7 +43,7 @@ class CustomerServiceTests {
     }
 
     @Test
-    void findCustomerById() throws Exception {
+    void findCustomerByIdTest() throws Exception {
         Customer customer = new Customer(1L, "first", "second", "email@te.st",
                 "password", Sex.MALE, 1, 1, 2000);
 
@@ -58,7 +58,7 @@ class CustomerServiceTests {
     }
 
     @Test
-    void findCustomerByEmail() throws Exception {
+    void findCustomerByEmailTest() throws Exception {
         Customer customer = new Customer(1L, "first", "second", "email@te.st",
                 "password", Sex.MALE, 1, 1, 2000);
 
@@ -74,7 +74,7 @@ class CustomerServiceTests {
     }
 
     @Test
-    void updateCustomer() throws Exception {
+    void updateCustomerTest() throws Exception {
         CustomerDto customerDto = new CustomerDto("first", "second", "email@te.st",
                 "updatedPassword", Sex.MALE, 1, 1, 2000);
         Customer customer = new Customer(1L, "first", "second", "email@te.st",
@@ -95,7 +95,7 @@ class CustomerServiceTests {
     }
 
     @Test
-    void deleteCustomer() throws Exception {
+    void deleteCustomerTest() throws Exception {
         Customer customer = new Customer(1L, "first", "second", "email@te.st",
                 "password", Sex.MALE, 1, 1, 2000);
 
