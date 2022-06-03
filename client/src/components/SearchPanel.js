@@ -15,14 +15,32 @@ const SearchPanel = () => {
 
     useEffect(() => dispatch(fetchSearchClothes(filter)), [filter]);
 
-    const onChange = (event) => {
+    const onSizeChange = (event) => {
         if (event.target.checked) {
-            dispatch(addFilter(event.target.name, event.target.value));
+            dispatch(addFilter("sizes", event.target.value));
         }
         else {
-            dispatch(removeFilter(event.target.name, event.target.value));
+            dispatch(removeFilter("sizes", event.target.value));
         }
-    }
+    };
+
+    const onSeasonChange = (event) => {
+        if (event.target.checked) {
+            dispatch(addFilter("seasons", event.target.value));
+        }
+        else {
+            dispatch(removeFilter("seasons", event.target.value));
+        }
+    };
+
+    const onSexChange = (event) => {
+        if (event.target.checked) {
+            dispatch(addFilter("categories", event.target.value));
+        }
+        else {
+            dispatch(removeFilter("categories", event.target.value));
+        }
+    };
 
     const onMaxPriceChange = (event) => {
         setMaxPrice(event.target.value);
@@ -33,11 +51,11 @@ const SearchPanel = () => {
         else {
             dispatch(removeFilter("price", null));
         }
-    }
+    };
 
     const doneTyping = (val) => {
         dispatch(addFilter("price", val));
-    }
+    };
 
     return (
         <Row>
@@ -71,14 +89,21 @@ const SearchPanel = () => {
                         <Form.Label className={"fw-bold"}>Цвет</Form.Label>
                         <div className={`${searchPanelInfo.colors.length > 4 && "panel-scroll"}`}>
                         {searchPanelInfo.colors.map(color =>
-                            <Form.Check
-                                key={color}
-                                type={"checkbox"}
-                                value={color}
-                                label={color}
-                                name={"colors"}
-                                onChange={onChange}
-                            />
+                            <div key={color}>
+                                <Checkbox
+                                    value={color}
+                                    name={color}
+                                    text={color}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            dispatch(addFilter("colors", e.target.value));
+                                        }
+                                        else {
+                                            dispatch(removeFilter("colors", e.target.value));
+                                        }
+                                    }}
+                                />
+                            </div>
                         )}
                         </div>
                     </div>
@@ -86,15 +111,15 @@ const SearchPanel = () => {
                 <div>
                     <Form.Label className={"fw-bold"}>Размер</Form.Label>
                     <div className={"panel-scroll"}>
-                        <Form.Check type={"checkbox"} value={"XXS"} label={"XXS"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"XS"} label={"XS"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"S"} label={"S"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"M"} label={"M"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"L"} label={"L"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"XL"} label={"XL"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"XXL"} label={"XXL"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"XXXL"} label={"XXXL"} name={"sizes"} onChange={onChange}/>
-                        <Form.Check type={"checkbox"} value={"XXXXL"} label={"XXXXL"} name={"sizes"} onChange={onChange}/>
+                        <div><Checkbox value={"XXS"} name={"XXS"} text={"XXS"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"XS"} name={"XS"} text={"XS"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"S"} name={"S"} text={"S"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"M"} name={"M"} text={"M"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"L"} name={"L"} text={"L"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"XL"} name={"XL"} text={"XL"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"XXL"} name={"XXL"} text={"XXL"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"XXXL"} name={"XXXL"} text={"XXXL"} onChange={onSizeChange} /></div>
+                        <div><Checkbox value={"XXXXL"} name={"XXXXL"} text={"XXXXL"} onChange={onSizeChange} /></div>
                     </div>
                 </div>
                 <div>
@@ -111,32 +136,54 @@ const SearchPanel = () => {
                         <Form.Label className={"fw-bold"}>Бренд</Form.Label>
                         <div className={`${searchPanelInfo.brands.length > 4 && "panel-scroll"}`}>
                         {searchPanelInfo.brands.map(brand =>
-                            <Form.Check
-                                key={brand}
-                                type={"checkbox"}
-                                value={brand}
-                                label={brand}
-                                name={"brands"}
-                                onChange={onChange}
-                            />
+                            <div key={brand}>
+                                <Checkbox
+                                    value={brand}
+                                    name={brand}
+                                    text={brand}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            dispatch(addFilter("brands", e.target.value));
+                                        }
+                                        else {
+                                            dispatch(removeFilter("brands", e.target.value));
+                                        }
+                                    }}
+                                />
+                            </div>
                         )}
                         </div>
                     </div>
                 }
                 <div>
                     <Form.Label className={"fw-bold"}>Сезон</Form.Label>
-                    <Form.Check type={"checkbox"} value={"WINTER"} label={"Зима"} name={"seasons"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"SPRING"} label={"Весна"} name={"seasons"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"SUMMER"} label={"Лето"} name={"seasons"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"AUTUMN"} label={"Осень"} name={"seasons"} onChange={onChange}/>
+                    <div className={"panel-scroll"}>
+                        <div><Checkbox value={"WINTER"} name={"WINTER"} text={"Зима"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"SPRING"} name={"SPRING"} text={"Весна"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"SUMMER"} name={"SUMMER"} text={"Лето"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"AUTUMN"} name={"AUTUMN"} text={"Осень"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"WINTER_SPRING"} name={"WINTER_SPRING"} text={"Зима-Весна"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"SPRING_SUMMER"} name={"SPRING_SUMMER"} text={"Весна-Лето"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"SUMMER_AUTUMN"} name={"SUMMER_AUTUMN"} text={"Лето-Осень"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"AUTUMN_WINTER"} name={"AUTUMN_WINTER"} text={"Осень-Зима"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"SPRING_AUTUMN"} name={"SPRING_AUTUMN"} text={"Весна-Осень"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"AUTUMN_SPRING"} name={"AUTUMN_SPRING"} text={"Осень-Весна"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"DEMISEASON"} name={"DEMISEASON"} text={"Демисезон"} onChange={onSeasonChange} /></div>
+                        <div><Checkbox value={"ANY"} name={"ANY"} text={"Любой"} onChange={onSeasonChange} /></div>
+                    </div>
                 </div>
                 <div>
                     <Form.Label className={"fw-bold"}>Пол</Form.Label>
-                    <Form.Check type={"checkbox"} value={"MEN"} label={"Мужчины"} name={"categories"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"WOMEN"} label={"Женщины"} name={"categories"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"UNISEX"} label={"Унисекс"} name={"categories"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"BOYS"} label={"Мальчики"} name={"categories"} onChange={onChange}/>
-                    <Form.Check type={"checkbox"} value={"GIRLS"} label={"Девочки"} name={"categories"} onChange={onChange}/>
+                    <div><Checkbox value={"MEN"} name={"MEN"} text={"Мужчины"} onChange={onSexChange} /></div>
+                    <div><Checkbox value={"WOMEN"} name={"WOMEN"} text={"Женщины"} onChange={onSexChange} /></div>
+                    <div><Checkbox value={"UNISEX"} name={"UNISEX"} text={"Унисекс"} onChange={onSexChange} /></div>
+                    <div><Checkbox value={"BOYS"} name={"BOYS"} text={"Мальчики"} onChange={onSexChange} /></div>
+                    <div><Checkbox value={"GIRLS"} name={"GIRLS"} text={"Девочки"} onChange={onSexChange} /></div>
+                    {/*<Form.Check type={"checkbox"} value={"MEN"} label={"Мужчины"} name={"categories"} onChange={onChange}/>*/}
+                    {/*<Form.Check type={"checkbox"} value={"WOMEN"} label={"Женщины"} name={"categories"} onChange={onChange}/>*/}
+                    {/*<Form.Check type={"checkbox"} value={"UNISEX"} label={"Унисекс"} name={"categories"} onChange={onChange}/>*/}
+                    {/*<Form.Check type={"checkbox"} value={"BOYS"} label={"Мальчики"} name={"categories"} onChange={onChange}/>*/}
+                    {/*<Form.Check type={"checkbox"} value={"GIRLS"} label={"Девочки"} name={"categories"} onChange={onChange}/>*/}
                 </div>
             </Form>
         </Row>

@@ -41,7 +41,7 @@ const NavBarCustomer = () => {
                     <Dropdown>
                         <DropdownToggle
                             variant={"main"}
-                            className={"d-flex justify-content-lg-between align-items-center nav-catalog-btn"}
+                            className={"d-flex justify-content-lg-between align-items-center nav-catalog-btn border-radius-10"}
                         >
                             <Image src={catalog} width="25px" height="25px"/>
                             <div className="fs-5 ms-2">

@@ -7,21 +7,21 @@ const CarouselMainPage = () => {
         <Carousel>
             <Carousel.Item>
                 <img
-                    className={"d-block w-100"}
+                    className={"d-block w-100 border-radius-50"}
                     src={sale}
                     alt="Summer sale"
                 />
             </Carousel.Item>
             <Carousel.Item>
                 <img
-                    className={"d-block w-100"}
+                    className={"d-block w-100 border-radius-50"}
                     src={sale}
                     alt="Summer sale"
                 />
             </Carousel.Item>
             <Carousel.Item>
                 <img
-                    className={"d-block w-100"}
+                    className={"d-block w-100 border-radius-50"}
                     src={sale}
                     alt="Summer sale"
                 />

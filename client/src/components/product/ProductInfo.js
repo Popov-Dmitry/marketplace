@@ -10,12 +10,13 @@ import {
     deleteWish,
     fetchDelivery,
     fetchMainAddress,
-    fetchRussianPostDelivery,
+    fetchRussianPostDelivery, fetchSeller,
     saveCart,
     saveWish
 } from "../../redux/actions";
 import CountControl from "../CountControl";
 import ProductDeliveryInfo from "./ProductDeliveryInfo";
+import shop from "../../assets/shop.png";
 
 const ProductInfo = ({clothes}) => {
     const history = useHistory();
@@ -27,6 +28,7 @@ const ProductInfo = ({clothes}) => {
     const wishlist = useSelector(state => state.wishlistReducer.wishlist);
     const delivery = useSelector(state => state.deliveryReducer.currentDelivery);
     const mainAddress = useSelector(state => state.deliveryReducer.mainAddress);
+    const seller = useSelector(state => state.sellerReducer.currentSeller);
     const colors = useMemo(() => getColorsByDetails(clothes.clothes), [clothes]);
     const sizes = useMemo(() => getSizesByColor(clothes.clothes, currentClothes.color), [clothes, currentClothes]);
     const wish = useMemo(() => findWish(wishlist, "CLOTHES", clothes.id, currentClothes.id),
@@ -39,7 +41,13 @@ const ProductInfo = ({clothes}) => {
         else {
             //TODO: добовлять в локальную корзину и при логине суммировать
         }
-    }
+    };
+
+    useEffect(() => {
+        if(clothes.hasOwnProperty("sellerId")) {
+            dispatch(fetchSeller(clothes.sellerId));
+        }
+    }, [clothes]);
 
     useEffect(() => {
         if(currentClothes.hasOwnProperty("deliveryId")) {
@@ -108,6 +116,14 @@ const ProductInfo = ({clothes}) => {
             </div>
             <div className={"mt-4"}>
                 {delivery !== null && <ProductDeliveryInfo/>}
+            </div>
+            <div className={"mt-2"}>
+                <Image
+                    src={shop}
+                    width="25px"
+                    height="25px"
+                />
+                <span className={"ms-2"}>{seller?.shopName}</span>
             </div>
             <div className={"mt-3 d-flex"}>
                 {cartItem.find(c =>
